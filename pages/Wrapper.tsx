@@ -14,7 +14,7 @@ const GlobalStyles = css`
   }
 `
 
-export const Wrapper = (props) => (
+const Wrapper = (props) => (
   <ThemeProvider theme={theme}>
     <script
       src="https://cdn.ethers.io/lib/ethers-5.0.umd.min.js"
@@ -25,3 +25,5 @@ export const Wrapper = (props) => (
     {props.children}
   </ThemeProvider>
 )
+
+export default Wrapper

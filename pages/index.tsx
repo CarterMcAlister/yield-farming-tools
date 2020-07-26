@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { Wrapper } from './Wrapper'
+import Wrapper from './Wrapper'
 // import PoolsList from './Pools'
 import Resources from './Info'
 import { Box, Heading, Text } from '@chakra-ui/core'
