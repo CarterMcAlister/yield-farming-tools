@@ -27,18 +27,18 @@ const ResourceItem = ({ name, url, description, isForBeginners = false }) => (
   <ListItem pt={4}>
     <Link isExternal href={url} color="cyan.700">
       {name}{' '}
-      {isForBeginners && (
-        <Tooltip
-          label="Beginner Friendly"
-          aria-label="Beginner Friendly"
-          bg="white"
-          color="black"
-          placement="right-end"
-        >
-          🔰
-        </Tooltip>
-      )}
     </Link>
+    {isForBeginners && (
+      <Tooltip
+        label="Beginner Friendly"
+        aria-label="Beginner Friendly"
+        bg="white"
+        color="black"
+        placement="right-end"
+      >
+        🔰
+      </Tooltip>
+    )}
     <Text fontSize="sm" color="gray.600">
       {description}
     </Text>
