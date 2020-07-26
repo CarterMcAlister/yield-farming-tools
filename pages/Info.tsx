@@ -1,5 +1,14 @@
 import React from 'react'
-import { Box, Grid, Text, Heading, List, ListItem, Link } from '@chakra-ui/core'
+import {
+  Box,
+  Grid,
+  Text,
+  Heading,
+  List,
+  ListItem,
+  Link,
+  Tooltip,
+} from '@chakra-ui/core'
 
 const Card = ({ children, ...props }) => (
   <Box
@@ -14,10 +23,21 @@ const Card = ({ children, ...props }) => (
   </Box>
 )
 
-const ResourceItem = ({ name, url, description }) => (
+const ResourceItem = ({ name, url, description, isForBeginners = false }) => (
   <ListItem pt={4}>
     <Link isExternal href={url} color="cyan.700">
-      {name}
+      {name}{' '}
+      {isForBeginners && (
+        <Tooltip
+          label="Beginner Friendly"
+          aria-label="Beginner Friendly"
+          bg="white"
+          color="black"
+          placement="right-end"
+        >
+          🔰
+        </Tooltip>
+      )}
     </Link>
     <Text fontSize="sm" color="gray.600">
       {description}
@@ -46,6 +66,7 @@ const InfoSection = (props) => (
           name="Matcha"
           url="https://matcha.xyz/"
           description="Seamless, user-friendly trading."
+          isForBeginners={true}
         />
         <ResourceItem
           name="Curve"
@@ -63,6 +84,7 @@ const InfoSection = (props) => (
           name="Argent"
           url="https://www.argent.xyz/"
           description="Phone wallet with built in dapps, trading, advanced security, and recovery features."
+          isForBeginners={true}
         />
         <ResourceItem
           name="Coinbase Wallet"
@@ -73,11 +95,6 @@ const InfoSection = (props) => (
           name="Metamask"
           url="https://metamask.io/"
           description="A browser based wallet that lets you interact with decentralized apps from your favorite browser. Supports Ledger and Trezor."
-        />
-        <ResourceItem
-          name="Trust Wallet"
-          url="https://trustwallet.com/"
-          description="Phone wallet decentralized app support"
         />
       </List>
     </Card>
@@ -157,6 +174,7 @@ const InfoSection = (props) => (
           name="Zapper"
           url="https://www.zapper.fi/"
           description="A dashboard for managing your DeFi assets and liabilites."
+          isForBeginners={true}
         />
         <ResourceItem
           name="DeBank"

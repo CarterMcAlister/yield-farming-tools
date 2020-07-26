@@ -11,7 +11,8 @@ export default function Home() {
       {/* <PoolsList /> */}
       <Card>
         <Heading as="h1" size="xl">
-          🧑‍🌾 Yield Farming Tools
+          <Box display={{ xs: 'block', md: 'inline' }}>🧑‍🌾 </Box>Yield Farming
+          Tools
         </Heading>
         <Text pl={{ xs: 0, md: 12 }} fontSize="md" color="gray.600">
           Pool return rates, starter guide, and strategies coming soon.
