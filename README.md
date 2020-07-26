@@ -3,5 +3,5 @@
 
 Built with React, Next.js and Chakra UI.
 
-Found this site useful? 
-Donations: carter.argent.xyz
+Find this site useful? 
+Donations: https://gitcoin.co/grants/1017/yield-farming-tools
