@@ -7,13 +7,14 @@ import { Box, Heading, Text } from '@chakra-ui/core'
 export default function Home() {
   return (
     <Wrapper>
+      <SEO />
       {/* <PoolsList /> */}
       <Card>
         <Heading as="h1" size="xl">
-          🧑‍🌾 Resources to help you maximize your yield.
+          🧑‍🌾 Yield Farming Tools
         </Heading>
-        <Text pl={12} fontSize="md" color="gray.600">
-          Pool return rates and strategies coming soon.
+        <Text pl={{ xs: 0, md: 12 }} fontSize="md" color="gray.600">
+          Pool return rates, starter guide, and strategies coming soon.
         </Text>
       </Card>
       <Resources />
@@ -33,4 +34,58 @@ const Card = ({ children, ...props }) => (
   >
     {children}
   </Box>
+)
+
+const SEO = () => (
+  <Head>
+    <title>Yield Farming Tools</title>
+    <meta name="title" content="Yield Farming Tools" />
+    <meta
+      name="description"
+      content="🧑‍🌾 Yield farming tools and strategies."
+    />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://yieldfarmingtools.com/" />
+    <meta property="og:title" content="Yield Farming Tools" />
+    <meta
+      property="og:description"
+      content="🧑‍🌾 Yield farming tools and strategies."
+    />
+    <meta
+      property="og:image"
+      content="https://yieldfarmingtools.com/icons/thumbnail.png"
+    />
+
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://yieldfarmingtools.com/" />
+    <meta property="twitter:title" content="Yield Farming Tools" />
+    <meta
+      property="twitter:description"
+      content="🧑‍🌾 Yield farming tools and strategies."
+    />
+    <meta
+      property="twitter:image"
+      content="https://yieldfarmingtools.com/icons/thumbnail.png"
+    />
+
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="icons/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="icons/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="icons/favicon-16x16.png"
+    />
+    <link rel="manifest" href="icons/site.webmanifest" />
+  </Head>
 )
