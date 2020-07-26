@@ -1,10 +1,17 @@
 import Head from 'next/head'
+import { useEffect } from 'react'
+import { Box, Heading, Text } from '@chakra-ui/core'
 import Wrapper from './Wrapper'
 // import PoolsList from './Pools'
 import Resources from './Info'
-import { Box, Heading, Text } from '@chakra-ui/core'
+import { useAnalytics } from '../hooks/useAnalytics'
 
 export default function Home() {
+  const { init, trackPageViewed } = useAnalytics()
+  useEffect(() => {
+    init('UA-156207639-2')
+    trackPageViewed()
+  }, [])
   return (
     <Wrapper>
       <SEO />
