@@ -16,10 +16,6 @@ const GlobalStyles = css`
 
 const Wrapper = (props) => (
   <ThemeProvider theme={theme}>
-    <script
-      src="https://cdn.ethers.io/lib/ethers-5.0.umd.min.js"
-      type="text/javascript"
-    />
     <CSSReset />
     <Global styles={GlobalStyles} />
     {props.children}

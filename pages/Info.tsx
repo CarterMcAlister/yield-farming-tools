@@ -161,6 +161,11 @@ const InfoSection = (props) => (
           description="A better CoinMarketCap."
         />
         <ResourceItem
+          name="Yield Farming Info"
+          url="https://yieldfarming.info"
+          description="See the APR for various yield farming pools."
+        />
+        <ResourceItem
           name="Nexus Mutual"
           url="https://nexusmutual.io/"
           description="Get coverage on your assets against a Smart Contract hack."
@@ -190,6 +195,11 @@ const InfoSection = (props) => (
           name="DeFi Saver"
           url="https://defisaver.com/"
           description="MakerDAO and Compound management, including the ability to automatically save a CDP from being liquidated."
+        />
+        <ResourceItem
+          name="Furocombo"
+          url="https://furucombo.app/"
+          description="DeFi legos. Allows you to combine multiple actions into one transaction."
         />
       </List>
     </Card>
