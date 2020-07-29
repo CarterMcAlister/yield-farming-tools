@@ -1,4 +1,3 @@
-import React from 'react'
 import {
   Box,
   Grid,
@@ -9,19 +8,7 @@ import {
   Link,
   Tooltip,
 } from '@chakra-ui/core'
-
-const Card = ({ children, ...props }) => (
-  <Box
-    backgroundColor="#fff"
-    boxShadow="lg"
-    rounded="lg"
-    m={4}
-    p={4}
-    {...props}
-  >
-    {children}
-  </Box>
-)
+import { Card } from '../components/Card'
 
 const ResourceItem = ({ name, url, description, isForBeginners = false }) => (
   <ListItem pt={4}>
