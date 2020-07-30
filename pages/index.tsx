@@ -1,12 +1,61 @@
 import Head from 'next/head'
 import { useEffect } from 'react'
-import { Box, Heading, Text } from '@chakra-ui/core'
+import { Box, Grid, Heading, Text } from '@chakra-ui/core'
+import { GraphQLClient } from 'graphql-request'
 import Wrapper from './Wrapper'
 import PoolsList from './Pools'
-import Resources from './Info'
 import { useAnalytics } from '../hooks/useAnalytics'
+import { ResourceCard } from '../components/ResourceCard'
+import { Card } from '../components/Card'
 
-export default function Home() {
+export const getStaticProps = async () => {
+  const graphcms = new GraphQLClient(
+    'https://api-us-west-2.graphcms.com/v2/ckd8c303l6v5e01z5c1mccopr/master'
+  )
+
+  const linkSectionContents = `
+    id
+    name
+    link
+    forBeginners
+    description {
+      text
+    }
+    
+  `
+
+  const sectionData = await graphcms.request(
+    `
+    {
+      tradingSection: infoLinks(where: {section: decentralized_trading}) {
+        ${linkSectionContents}
+      }
+      walletSection: infoLinks(where: {section: wallets}) {
+        ${linkSectionContents}
+      }
+      farmingSection: infoLinks(where: {section: yield_farming}) {
+        ${linkSectionContents}
+      }
+      utilitySection: infoLinks(where: {section: utilities}) {
+        ${linkSectionContents}
+      }
+      
+      
+    }
+    `
+  )
+
+  return {
+    props: sectionData,
+  }
+}
+
+export default function Home({
+  tradingSection,
+  walletSection,
+  farmingSection,
+  utilitySection,
+}) {
   const { init, trackPageViewed } = useAnalytics()
   useEffect(() => {
     init('UA-156207639-2')
@@ -17,32 +66,31 @@ export default function Home() {
       <SEO />
       <Card>
         <Heading as="h1" size="xl">
-          <Box display={{ xs: 'block', md: 'inline' }}>🧑‍🌾 </Box>Yield Farming
-          Tools
+          <Box display={{ xs: 'block', md: 'inline' }}>🧑‍🌾 </Box>
+          Yield Farming Tools
         </Heading>
         <Text pl={{ xs: 0, md: 12 }} fontSize="md" color="gray.600">
           Starter guide and strategies coming soon.
         </Text>
       </Card>
-      <PoolsList />
-      <Resources />
+      {/* <PoolsList /> */}
+
+      <Grid templateColumns={{ xs: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }}>
+        <ResourceCard
+          title="🚜 Yield Farming"
+          sectionContent={farmingSection}
+        />
+        <ResourceCard title="🧰 Utilities" sectionContent={utilitySection} />
+        <ResourceCard
+          title="📈 Decentralized Trading"
+          sectionContent={tradingSection}
+        />
+
+        <ResourceCard title="🔒 Wallets" sectionContent={walletSection} />
+      </Grid>
     </Wrapper>
   )
 }
-
-const Card = ({ children, ...props }) => (
-  <Box
-    backgroundColor="#fff"
-    boxShadow="lg"
-    rounded="lg"
-    m={4}
-    p={4}
-    pt={1}
-    {...props}
-  >
-    {children}
-  </Box>
-)
 
 const SEO = () => (
   <Head>
