@@ -2,8 +2,7 @@ import Head from 'next/head'
 import { useEffect } from 'react'
 import { Box, Grid, Heading, Text } from '@chakra-ui/core'
 import { GraphQLClient } from 'graphql-request'
-import Wrapper from './Wrapper'
-import PoolsList from './Pools'
+import Wrapper from '../components/Wrapper'
 import { useAnalytics } from '../hooks/useAnalytics'
 import { ResourceCard } from '../components/ResourceCard'
 import { Card } from '../components/Card'
@@ -39,8 +38,6 @@ export const getStaticProps = async () => {
       utilitySection: infoLinks(where: {section: utilities}) {
         ${linkSectionContents}
       }
-      
-      
     }
     `
   )

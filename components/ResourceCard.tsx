@@ -29,7 +29,6 @@ export const ResourceCard = ({ title, sectionContent }) => (
       {title}
     </Heading>
     <List>
-      {console.log(sectionContent)}
       {sectionContent.map(({ id, name, link, description, forBeginners }) => (
         <ResourceItem
           name={name}
