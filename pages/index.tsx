@@ -6,6 +6,7 @@ import Wrapper from '../components/Wrapper'
 import { useAnalytics } from '../hooks/useAnalytics'
 import { ResourceCard } from '../components/ResourceCard'
 import { Card } from '../components/Card'
+import { getPoolData } from './utils/pool-data'
 
 export const getStaticProps = async () => {
   const graphcms = new GraphQLClient(
@@ -57,6 +58,7 @@ export default function Home({
   useEffect(() => {
     init('UA-156207639-2')
     trackPageViewed()
+    // getPoolData()
   }, [])
   return (
     <Wrapper>
@@ -70,7 +72,7 @@ export default function Home({
           Starter guide and strategies coming soon.
         </Text>
       </Card>
-      {/* <PoolsList /> */}
+      <PoolsList />
 
       <Grid templateColumns={{ xs: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }}>
         <ResourceCard
@@ -78,6 +80,7 @@ export default function Home({
           sectionContent={farmingSection}
         />
         <ResourceCard title="🧰 Utilities" sectionContent={utilitySection} />
+
         <ResourceCard
           title="📈 Decentralized Trading"
           sectionContent={tradingSection}
