@@ -3,10 +3,10 @@ import {
   BALANCER_POOL_ABI,
   DAI_TOKEN_ADDR,
   ERC20_ABI,
-  YFII_BPT_STAKING_POOL_ADDR,
-  YFII_DAI_BPT_TOKEN_ADDR,
-  YFII_TOKEN_ADDR,
+  YFI_DAI_BPT_TOKEN_ADDR,
+  YFI_TOKEN_ADDR,
   YGOV_BPT_STAKING_POOL_ABI,
+  YGOV_BPT_STAKING_POOL_ADDR,
 } from '../../constants'
 import {
   get_synth_weekly_rewards,
@@ -21,17 +21,17 @@ export default async function main(App) {
   _print('Reading smart contracts...')
 
   const YGOV_BPT_POOL = new ethers.Contract(
-    YFII_BPT_STAKING_POOL_ADDR,
+    YGOV_BPT_STAKING_POOL_ADDR,
     YGOV_BPT_STAKING_POOL_ABI,
     App.provider
   )
   const YFI_DAI_BALANCER_POOL = new ethers.Contract(
-    YFII_DAI_BPT_TOKEN_ADDR,
+    YFI_DAI_BPT_TOKEN_ADDR,
     BALANCER_POOL_ABI,
     App.provider
   )
   const YFI_DAI_BPT_TOKEN_CONTRACT = new ethers.Contract(
-    YFII_DAI_BPT_TOKEN_ADDR,
+    YFI_DAI_BPT_TOKEN_ADDR,
     ERC20_ABI,
     App.provider
   )
@@ -41,10 +41,10 @@ export default async function main(App) {
   const earnedYFI = (await YGOV_BPT_POOL.earned(App.YOUR_ADDRESS)) / 1e18
   const totalBPTAmount = (await YFI_DAI_BALANCER_POOL.totalSupply()) / 1e18
   const totalStakedBPTAmount =
-    (await YFI_DAI_BPT_TOKEN_CONTRACT.balanceOf(YFII_BPT_STAKING_POOL_ADDR)) /
+    (await YFI_DAI_BPT_TOKEN_CONTRACT.balanceOf(YGOV_BPT_STAKING_POOL_ADDR)) /
     1e18
   const totalYFIAmount =
-    (await YFI_DAI_BALANCER_POOL.getBalance(YFII_TOKEN_ADDR)) / 1e18
+    (await YFI_DAI_BALANCER_POOL.getBalance(YFI_TOKEN_ADDR)) / 1e18
   const totalDAIAmount =
     (await YFI_DAI_BALANCER_POOL.getBalance(DAI_TOKEN_ADDR)) / 1e18
 
@@ -58,34 +58,26 @@ export default async function main(App) {
   _print('Finished reading smart contracts... Looking up prices... \n')
 
   // Look up prices
-  const prices = await lookUpPrices(['dai'])
+  const prices = await lookUpPrices(['yearn-finance', 'dai'])
+  const YFIPrice = prices['yearn-finance'].usd
   const DAIPrice = prices['dai'].usd
-  const YFIIPrice =
-    ((await YFI_DAI_BALANCER_POOL.getSpotPrice(
-      DAI_TOKEN_ADDR,
-      YFII_TOKEN_ADDR
-    )) /
-      1e18) *
-    DAIPrice
 
-  const BPTPrice = YFIPerBPT * YFIIPrice + DAIPerBPT * DAIPrice
+  const BPTPrice = YFIPerBPT * YFIPrice + DAIPerBPT * DAIPrice
 
   // Finished. Start printing
 
   _print('========== PRICES ==========')
-  _print(`1 YFII  = $${YFIIPrice}`)
-  _print(`1 DAI   = $${DAIPrice}\n`)
-  _print(`1 BPT   = [${YFIPerBPT} YFII, ${DAIPerBPT} DAI]`)
-  _print(
-    `        = ${toDollar(YFIPerBPT * YFIIPrice + DAIPerBPT * DAIPrice)}\n`
-  )
+  _print(`1 YFI  = $${YFIPrice}`)
+  _print(`1 DAI  = $${DAIPrice}\n`)
+  _print(`1 BPT  = [${YFIPerBPT} YFI, ${DAIPerBPT} DAI]`)
+  _print(`       = ${toDollar(YFIPerBPT * YFIPrice + DAIPerBPT * DAIPrice)}\n`)
 
   _print('========== STAKING =========')
   _print(
-    `There are total   : ${totalBPTAmount} BPT issued by YFII DAI Balancer Pool.`
+    `There are total   : ${totalBPTAmount} BPT issued by YFI DAI Balancer Pool.`
   )
   _print(
-    `There are total   : ${totalStakedBPTAmount} BPT staked in YFII's BPT staking pool.`
+    `There are total   : ${totalStakedBPTAmount} BPT staked in Ygov's BPT staking pool.`
   )
   _print(`                  = ${toDollar(totalStakedBPTAmount * BPTPrice)}\n`)
   _print(
@@ -95,34 +87,33 @@ export default async function main(App) {
     )}% of the pool)`
   )
   _print(
-    `                  = [${YFIPerBPT * stakedBPTAmount} YFII, ${
+    `                  = [${YFIPerBPT * stakedBPTAmount} YFI, ${
       DAIPerBPT * stakedBPTAmount
     } DAI]`
   )
   _print(
     `                  = ${toDollar(
-      YFIPerBPT * stakedBPTAmount * YFIIPrice +
+      YFIPerBPT * stakedBPTAmount * YFIPrice +
         DAIPerBPT * stakedBPTAmount * DAIPrice
     )}\n`
   )
 
-  // YFII REWARDS
-  _print('======== YFII REWARDS ========')
-  // _print(" (Temporarily paused until further emission model is voted by the community) ");
+  // YFI REWARDS
+  _print('======== YFI REWARDS ========')
   _print(
-    `Claimable Rewards : ${toFixed(earnedYFI, 4)} YFII = ${toDollar(
-      earnedYFI * YFIIPrice
+    `Claimable Rewards : ${toFixed(earnedYFI, 4)} YFI = ${toDollar(
+      earnedYFI * YFIPrice
     )}`
   )
   _print(
     `Weekly estimate   : ${toFixed(
       rewardPerToken * stakedBPTAmount,
       2
-    )} YFII = ${toDollar(
-      rewardPerToken * stakedBPTAmount * YFIIPrice
-    )} (out of total ${weekly_reward} YFII)`
+    )} YFI = ${toDollar(
+      rewardPerToken * stakedBPTAmount * YFIPrice
+    )} (out of total ${weekly_reward} YFI)`
   )
-  const YFIWeeklyROI = (rewardPerToken * YFIIPrice * 100) / BPTPrice
+  const YFIWeeklyROI = (rewardPerToken * YFIPrice * 100) / BPTPrice
   _print(`Weekly ROI in USD : ${toFixed(YFIWeeklyROI, 4)}%`)
   _print(`APY (unstable)    : ${toFixed(YFIWeeklyROI * 52, 4)}% \n`)
 
@@ -132,4 +123,8 @@ export default async function main(App) {
   _print(
     `    Check http://www.predictions.exchange/balancer/ for latest update \n`
   )
+
+  return {
+    apr: toFixed(YFIWeeklyROI * 52, 4),
+  }
 }

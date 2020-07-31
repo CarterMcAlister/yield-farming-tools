@@ -286,4 +286,7 @@ export default async function main(App) {
     `Stake ${toFixed(currentYFI / 1e18, 4)} YFI in your wallet`,
     approveYFIAndStake
   )
+  return {
+    apr: toFixed(YFIWeeklyROI * 52 + YCRVWeeklyROI * 52, 4),
+  }
 }

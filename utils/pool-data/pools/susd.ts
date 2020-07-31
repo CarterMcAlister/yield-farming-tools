@@ -142,4 +142,8 @@ export default async function main(App) {
 
   _print('======== CRV REWARDS ========')
   _print(`    Not distributed yet`)
+
+  return {
+    apr: toFixed(SNXWeeklyROI * 52, 4),
+  }
 }

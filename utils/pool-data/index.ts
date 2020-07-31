@@ -16,31 +16,24 @@ import ygov_vote from './pools/ygov_vote'
 import ygov_ycrv from './pools/ygov_ycrv'
 import ygov_ycrv_balancer from './pools/ygov_ycrv_balancer'
 import yusd_usdc from './pools/yusd_usdc'
-import { initEthers } from '../utils'
 
-export async function getPoolData() {
-  const App = await initEthers()
-  await ibtc(App)
-  await ieth(App)
-  await musd_mta(App)
-  await musd_usdc(App)
-  await musd_weth(App)
-  await snx_usdc(App)
-  await sbtc(App)
-  await seth(App)
-  await susd(App)
-  await sxau(App)
-  await yfii_dai(App)
-  await yfii_ycrv(App)
-  await ygov_balancer(App)
-  await ygov_rewards(App)
-  await ygov_vote(App)
-  await ygov_ycrv(App)
-  await ygov_ycrv_balancer(App)
-  await yusd_usdc(App)
-  console.log('done')
+export default {
+  ibtc,
+  ieth,
+  musd_mta,
+  musd_usdc,
+  musd_weth,
+  snx_usdc,
+  sbtc,
+  seth,
+  susd,
+  sxau,
+  yfii_dai,
+  yfii_ycrv,
+  ygov_balancer,
+  ygov_rewards,
+  ygov_vote,
+  ygov_ycrv,
+  ygov_ycrv_balancer,
+  yusd_usdc,
 }
-
-// export const getPoolData = {
-//   susd,
-// }

@@ -6,10 +6,10 @@ import {
 } from '../../utils'
 import { ethers } from 'ethers'
 import {
-  MUSD_MTA_BPT_TOKEN_ADDR,
+  MUSD_USDC_BPT_TOKEN_ADDR,
   BALANCER_POOL_ABI,
   ERC20_ABI,
-  MTA_TOKEN_ADDR,
+  USDC_ADDRESS,
   MUSD_TOKEN_ADDR,
 } from '../../constants'
 const _print = console.log
@@ -18,53 +18,55 @@ export default async function main(App) {
   _print(`Initialized ${App.YOUR_ADDRESS}`)
   _print('Reading smart contracts...')
 
-  const MUSD_MTA_BALANCER_POOL = new ethers.Contract(
-    MUSD_MTA_BPT_TOKEN_ADDR,
+  const MUSD_USDC_BALANCER_POOL = new ethers.Contract(
+    MUSD_USDC_BPT_TOKEN_ADDR,
     BALANCER_POOL_ABI,
     App.provider
   )
-  const MUSD_MTA_BPT_TOKEN_CONTRACT = new ethers.Contract(
-    MUSD_MTA_BPT_TOKEN_ADDR,
+  const MUSD_USDC_BPT_TOKEN_CONTRACT = new ethers.Contract(
+    MUSD_USDC_BPT_TOKEN_ADDR,
     ERC20_ABI,
     App.provider
   )
 
-  const totalBPTAmount = (await MUSD_MTA_BALANCER_POOL.totalSupply()) / 1e18
+  const totalBPTAmount = (await MUSD_USDC_BALANCER_POOL.totalSupply()) / 1e18
   const yourBPTAmount =
-    (await MUSD_MTA_BPT_TOKEN_CONTRACT.balanceOf(App.YOUR_ADDRESS)) / 1e18
+    (await MUSD_USDC_BPT_TOKEN_CONTRACT.balanceOf(App.YOUR_ADDRESS)) / 1e18
 
-  const totalMTAAmount =
-    (await MUSD_MTA_BALANCER_POOL.getBalance(MTA_TOKEN_ADDR)) / 1e18
+  const totalUSDCAmount =
+    (await MUSD_USDC_BALANCER_POOL.getBalance(USDC_ADDRESS)) / 1e6
   const totalMUSDAmount =
-    (await MUSD_MTA_BALANCER_POOL.getBalance(MUSD_TOKEN_ADDR)) / 1e18
+    (await MUSD_USDC_BALANCER_POOL.getBalance(MUSD_TOKEN_ADDR)) / 1e18
 
-  const MTAPerBPT = totalMTAAmount / totalBPTAmount
+  const USDCPerBPT = totalUSDCAmount / totalBPTAmount
   const MUSDPerBPT = totalMUSDAmount / totalBPTAmount
 
   // Find out reward rate
   const weekly_reward = 50000
-  const MTARewardPerBPT = weekly_reward / (totalBPTAmount - 100)
+  const MTARewardPerBPT = weekly_reward / totalBPTAmount
 
   _print('Finished reading smart contracts... Looking up prices... \n')
 
   // Look up prices
-  const prices = await lookUpPrices(['musd', 'meta'])
+  const prices = await lookUpPrices(['musd', 'meta', 'usd-coin'])
   const MTAPrice = prices['meta'].usd
   const MUSDPrice = prices['musd'].usd
+  const USDCPrice = prices['usd-coin'].usd
 
-  const BPTPrice = MTAPerBPT * MTAPrice + MUSDPerBPT * MUSDPrice
+  const BPTPrice = USDCPerBPT * USDCPrice + MUSDPerBPT * MUSDPrice
 
   // Finished. Start printing
 
   _print('========== PRICES ==========')
   _print(`1 MTA  = $${MTAPrice}`)
-  _print(`1 mUSD = $${MUSDPrice}\n`)
-  _print(`1 BPT  = [${MTAPerBPT} MTA, ${MUSDPerBPT} mUSD]`)
+  _print(`1 MUSD = $${MUSDPrice}`)
+  _print(`1 USDC = $${USDCPrice}\n`)
+  _print(`1 BPT  = [${MUSDPerBPT} MUSD, ${USDCPerBPT} USDC]`)
   _print(`       = ${toDollar(BPTPrice)}\n`)
 
   _print('========== STAKING =========')
   _print(
-    `There are total   : ${totalBPTAmount} BPT issued by mUSD-MTA Balancer Pool.`
+    `There are total   : ${totalBPTAmount} BPT issued by mUSD-USDC Balancer Pool.`
   )
   _print(`                  = ${toDollar(totalBPTAmount * BPTPrice)}\n`)
   _print(
@@ -74,7 +76,7 @@ export default async function main(App) {
     )}% of the pool)`
   )
   _print(
-    `                  = [${MTAPerBPT * yourBPTAmount} MTA, ${
+    `                  = [${USDCPerBPT * yourBPTAmount} USDC, ${
       MUSDPerBPT * yourBPTAmount
     } mUSD]`
   )
@@ -82,10 +84,6 @@ export default async function main(App) {
 
   // MTA REWARDS
   _print('======== MTA REWARDS ========')
-  _print(
-    '** Initial seeding of this pool (100 BPT) will not be considered for the MTA rewards.'
-  )
-  _print('** Therefore total eligible BPTs are total supply - 100 .\n')
   _print(
     `Weekly estimate   : ${toFixed(
       MTARewardPerBPT * yourBPTAmount,
@@ -104,4 +102,8 @@ export default async function main(App) {
     `Check http://www.predictions.exchange/balancer/ for accurate %`,
     'https://www.predictions.exchange/balancer/'
   )
+
+  return {
+    apr: toFixed(YFIWeeklyROI * 52, 4),
+  }
 }

@@ -103,4 +103,8 @@ export default async function main(App) {
     `Check http://www.predictions.exchange/balancer/ for accurate %`,
     'https://www.predictions.exchange/balancer/'
   )
+
+  return {
+    apr: toFixed(UMAWeeklyROI * 52, 4),
+  }
 }

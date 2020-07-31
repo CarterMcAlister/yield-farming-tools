@@ -213,10 +213,13 @@ export const get_synth_weekly_rewards = async function (
   synth_contract_instance
 ) {
   if (await isRewardPeriodOver(synth_contract_instance)) {
+    console.log('mainx 0')
     return 0
   }
 
   const rewardRate = await synth_contract_instance.rewardRate()
+  console.log('mainy ' + rewardRate)
+
   return Math.round((rewardRate / 1e18) * 604800)
 }
 

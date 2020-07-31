@@ -1,12 +1,12 @@
+import { Box, Flex, Grid, Heading, Text } from '@chakra-ui/core'
+import { GraphQLClient } from 'graphql-request'
 import Head from 'next/head'
 import { useEffect } from 'react'
-import { Box, Grid, Heading, Text } from '@chakra-ui/core'
-import { GraphQLClient } from 'graphql-request'
+import { Card } from '../components/Card'
+import { PoolSection } from '../components/Pools'
+import { ResourceCard } from '../components/ResourceCard'
 import Wrapper from '../components/Wrapper'
 import { useAnalytics } from '../hooks/useAnalytics'
-import { ResourceCard } from '../components/ResourceCard'
-import { Card } from '../components/Card'
-import { getPoolData } from './utils/pool-data'
 
 export const getStaticProps = async () => {
   const graphcms = new GraphQLClient(
@@ -27,6 +27,9 @@ export const getStaticProps = async () => {
   const sectionData = await graphcms.request(
     `
     {
+      toolSection: infoLinks(where: {section: tools}) {
+        ${linkSectionContents}
+      }
       tradingSection: infoLinks(where: {section: decentralized_trading}) {
         ${linkSectionContents}
       }
@@ -49,6 +52,7 @@ export const getStaticProps = async () => {
 }
 
 export default function Home({
+  toolSection,
   tradingSection,
   walletSection,
   farmingSection,
@@ -72,14 +76,28 @@ export default function Home({
           Starter guide and strategies coming soon.
         </Text>
       </Card>
-      <PoolsList />
 
+      <Flex direction={{ xs: 'column', lg: 'row' }} pb="1rem">
+        <Box width={{ xs: '100%', lg: '70%' }}>
+          <PoolSection />
+        </Box>
+        <Box flexGrow={1}>
+          <Text color="gray.600" fontWeight="bold" pt="1rem" pl="20px">
+            Tools
+          </Text>
+          <ResourceCard pt={0} title="" sectionContent={toolSection} />
+        </Box>
+      </Flex>
+
+      <Heading mx="1rem" size="xl">
+        Resources
+      </Heading>
       <Grid templateColumns={{ xs: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }}>
         <ResourceCard
           title="🚜 Yield Farming"
           sectionContent={farmingSection}
         />
-        <ResourceCard title="🧰 Utilities" sectionContent={utilitySection} />
+        <ResourceCard title="⚒️ Utilities" sectionContent={utilitySection} />
 
         <ResourceCard
           title="📈 Decentralized Trading"

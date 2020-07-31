@@ -141,4 +141,8 @@ export default async function main(App) {
   // CRV REWARDS
   _print('======== CRV REWARDS ========')
   _print(`    Not distributed yet\n`)
+
+  return {
+    apr: toFixed(YFIWeeklyROI * 52, 4),
+  }
 }

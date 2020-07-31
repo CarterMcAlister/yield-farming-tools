@@ -145,4 +145,8 @@ export default async function main(App) {
   const BALWeeklyROI = (BALPerToken * BALPrice * 100) / BPTPrice
   _print(`Weekly ROI in USD : ${toFixed(BALWeeklyROI, 4)}%`)
   _print(`APR (unstable)    : ${toFixed(BALWeeklyROI * 52, 4)}% \n`)
+
+  return {
+    apr: toFixed(BALWeeklyROI * 52, 4),
+  }
 }

@@ -137,4 +137,8 @@ export default async function main(App) {
     (rewardPerToken * SNXPrice * 100) / Univ1SethEthPricePerToken
   _print(`Weekly ROI        : ${toFixed(SNXWeeklyROI, 4)}%`)
   _print(`APR (Unstable)    : ${toFixed(SNXWeeklyROI * 52, 4)}%`)
+
+  return {
+    apr: toFixed(SNXWeeklyROI * 52, 4),
+  }
 }
