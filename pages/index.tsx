@@ -27,6 +27,9 @@ export const getStaticProps = async () => {
   const sectionData = await graphcms.request(
     `
     {
+      informationSection: infoLinks(where: {section: info}) {
+        ${linkSectionContents}
+      }
       toolSection: infoLinks(where: {section: tools}) {
         ${linkSectionContents}
       }
@@ -52,6 +55,7 @@ export const getStaticProps = async () => {
 }
 
 export default function Home({
+  informationSection,
   toolSection,
   tradingSection,
   walletSection,
@@ -72,9 +76,9 @@ export default function Home({
           <Box display={{ xs: 'block', md: 'inline' }}>🧑‍🌾 </Box>
           Yield Farming Tools
         </Heading>
-        <Text pl={{ xs: 0, md: 12 }} fontSize="md" color="gray.600">
+        {/* <Text pl={{ xs: 0, md: 12 }} fontSize="md" color="gray.600">
           Starter guide and strategies coming soon.
-        </Text>
+        </Text> */}
       </Card>
 
       <Flex direction={{ xs: 'column', lg: 'row' }} pb="1rem">
@@ -82,6 +86,10 @@ export default function Home({
           <PoolSection />
         </Box>
         <Box flexGrow={1}>
+          <Text color="gray.600" fontWeight="bold" pt="1rem" pl="20px">
+            Information
+          </Text>
+          <ResourceCard pt={0} title="" sectionContent={informationSection} />
           <Text color="gray.600" fontWeight="bold" pt="1rem" pl="20px">
             Tools
           </Text>

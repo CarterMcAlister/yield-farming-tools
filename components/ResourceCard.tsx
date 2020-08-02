@@ -33,7 +33,7 @@ export const ResourceCard = ({ title, sectionContent, ...props }) => (
         <ResourceItem
           name={name}
           url={link}
-          description={description.text}
+          description={description?.text || ''}
           isForBeginners={forBeginners}
           key={id}
         />

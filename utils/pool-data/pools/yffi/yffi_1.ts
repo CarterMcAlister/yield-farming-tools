@@ -117,7 +117,7 @@ export default async function main(App) {
         link: 'https://www.curve.fi/iearn/deposit',
       },
       {
-        title: 'Staking Pool',
+        title: 'Staking',
         link: 'https://www.yffi.finance/#/stake',
       },
       {

@@ -148,7 +148,7 @@ export default async function main(App) {
           'https://pools.balancer.exchange/#/pool/0xFe793bC3D1Ef8d38934896980254e81d0c5F6239',
       },
       {
-        title: 'Staking Pool',
+        title: 'Staking',
         link: 'https://www.yffi.finance/#/stake',
       },
       {
