@@ -8,17 +8,7 @@ import {
   toFixed,
 } from '../../../utils'
 
-const _print = console.log
-
-type data = {
-  roi: number
-  tokenRewards: Array<string>
-}
-
 export default async function main(App) {
-  _print(`Initialized ${App.YOUR_ADDRESS}`)
-  _print('Reading smart contracts...')
-
   const CURVE_BTC_POOL = new ethers.Contract(
     Constant.CURVE_BTC_POOL_ADDR,
     Constant.CURVE_BTC_POOL_ABI as any,
@@ -82,8 +72,6 @@ export default async function main(App) {
   const weekly_reward = await get_synth_weekly_rewards(SYNTH_CRV_POOL)
   const rewardPerToken = weekly_reward / totalStakedCrvRenWSBTCAmount
 
-  _print('Finished reading smart contracts... Looking up prices... \n')
-
   // CoinGecko price lookup
   const prices = await lookUpPrices([
     'havven',
@@ -110,74 +98,8 @@ export default async function main(App) {
 
   const BALPrice = prices.balancer.usd
 
-  _print('========== PRICES ==========')
-  _print(`1 SNX = $${SNXprice}`)
-  _print(`1 REN = $${RENprice}\n`)
-  _print(
-    `1 BPT (79.82% SNX, 20.17% REN) = [${SNXperBPT} SNX, ${RENperBPT} REN]`
-  )
-  _print(`      = $${BPTPrice}\n`)
-
-  _print(`1 renBTC = $${renBTCPrice}`)
-  _print(`1 wBTC = $${wBTCPrice}`)
-  _print(`1 sBTC = $${SBTCPrice}\n`)
-
-  _print('========= STAKING ==========')
-  _print(
-    `There are total   : ${totalCrvRenWSBTCSupply} crvRenWSBTC given out by Curve.`
-  )
-  _print(
-    `There are total   : ${totalStakedCrvRenWSBTCAmount} crvRenWSBTC staked in Synthetix's pool.`
-  )
-  _print(
-    `                  = ${toDollar(
-      totalStakedCrvRenWSBTCAmount * crvRenWSBTCPricePerToken
-    )}\n`
-  )
-  _print(
-    `You are staking   : ${stakedCRVAmount} crvRenWSBTC (${toFixed(
-      (100 * stakedCRVAmount) / totalStakedCrvRenWSBTCAmount,
-      3
-    )}% of the pool)`
-  )
-  _print(
-    `                  ≈ ${toDollar(
-      crvRenWSBTCPricePerToken * stakedCRVAmount
-    )} (Averaged)\n`
-  )
-
-  _print('====== SNX/REN REWARDS =====')
-  _print(`Claimable Rewards : ${earnedBPT} BPT`)
-  _print(
-    `                  = [${earnedBPT * SNXperBPT} SNX + ${
-      earnedBPT * RENperBPT
-    } REN]`
-  )
-  _print(`                  = ${toDollar(earnedBPT * BPTPrice)}\n`)
-
-  _print(
-    `Weekly estimate   : ${
-      rewardPerToken * stakedCRVAmount
-    } BPT (out of total ${weekly_reward} BPT)`
-  )
-  _print(
-    `                  = ${toDollar(
-      rewardPerToken * stakedCRVAmount * BPTPrice
-    )}`
-  )
   const SNXWeeklyROI =
     (rewardPerToken * BPTPrice * 100) / crvRenWSBTCPricePerToken
-  _print(`Weekly ROI        : ${toFixed(SNXWeeklyROI, 4)}%`)
-  _print(`APR (Unstable)    : ${toFixed(SNXWeeklyROI * 52, 4)}%\n`)
-
-  // BAL REWARDS
-  _print('======== BAL REWARDS ========')
-  _print(
-    "WARNING: This estimate is based on last week's reward and current pool liquidity amount."
-  )
-  _print(
-    '       : **It will be MUCH higher than what you actually get at the end of this week.** \n'
-  )
 
   const totalBALAmount = await getLatestTotalBALAmount(
     Constant.SYNTH_crvRenWSBTC_STAKING_POOL_ADDR
@@ -186,19 +108,8 @@ export default async function main(App) {
   const yourBALEarnings = BALPerToken * rewardPerToken * stakedCRVAmount
   const crvRenWSBTCPerDollar = 1 / crvRenWSBTCPricePerToken
 
-  _print(
-    `Weekly estimate   : ${toFixed(yourBALEarnings, 4)} BAL = ${toDollar(
-      yourBALEarnings * BALPrice
-    )} (out of total ${toFixed(totalBALAmount, 4)} BAL)`
-  )
   const BALWeeklyROI =
     BALPerToken * BALPrice * 100 * (rewardPerToken * crvRenWSBTCPerDollar)
-  _print(`Weekly ROI in USD : ${toFixed(BALWeeklyROI, 4)}%`)
-  _print(`APR (Unstable)    : ${toFixed(BALWeeklyROI * 52, 4)}%\n`)
-
-  // CRV REWARDS
-  _print('======== CRV REWARDS ========')
-  _print(`    Not distributed yet`)
 
   return {
     apr: toFixed(BALWeeklyROI * 52 + SNXWeeklyROI * 52, 4),

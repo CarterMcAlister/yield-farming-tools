@@ -13,7 +13,6 @@ import {
   Y_TOKEN_ADDR,
 } from '../../../constants'
 import {
-  forHumans,
   getPeriodFinishForReward,
   get_synth_weekly_rewards,
   lookUpPrices,
@@ -21,15 +20,7 @@ import {
   toFixed,
 } from '../../../utils'
 
-const _print = console.log
-const _print_bold = console.log
-const _print_link = console.log
-const _print_href = console.log
-
 export default async function main(App) {
-  _print(`Initialized ${App.YOUR_ADDRESS}`)
-  _print('Reading smart contracts...')
-
   const YFFI_POOL_3 = new ethers.Contract(
     YFFI_POOL_3_ADDR,
     YFFI_REWARD_CONTRACT_ABI,
@@ -83,8 +74,6 @@ export default async function main(App) {
   // Find out underlying assets of Y
   const YVirtualPrice = (await CURVE_Y_POOL.get_virtual_price()) / 1e18
 
-  _print('Finished reading smart contracts... Looking up prices... \n')
-
   // Look up prices
   const prices = await lookUpPrices(['dai'])
   const DAIPrice = prices.dai.usd
@@ -106,99 +95,7 @@ export default async function main(App) {
 
   const BPTPrice = YFFIPerBPT * YFFIPrice + YPerBPT * YVirtualPrice
 
-  // Get Time Until reward Starts
-  const timeUntil = startTime - Date.now() / 1000
-
-  // Finished. Start printing
-
-  _print('========== PRICES ==========')
-  _print(
-    `1 YFFI  = ${toDollar(YFFIPrice)} or ${toDollar(YFFIPrice2)} in yCRV pool.`
-  )
-  _print(`1 yCRV  = ${toDollar(YVirtualPrice)}`)
-  _print(`1 BPT   = [${YFFIPerBPT} YFFI, ${YPerBPT} yCRV]`)
-  _print(
-    `        = ${toDollar(YFFIPerBPT * YFFIPrice + YPerBPT * YVirtualPrice)}\n`
-  )
-
-  _print('========== STAKING =========')
-  _print(
-    `There are total   : ${totalBPTAmount} BPT issued by YFFI-yCRV Balancer Pool.`
-  )
-  _print(
-    `There are total   : ${totalStakedBPTAmount} BPT staked in BPT staking pool 3. `
-  )
-  _print(`                  = ${toDollar(totalStakedBPTAmount * BPTPrice)}\n`)
-  _print(
-    `You are staking   : ${stakedBPTAmount} BPT (${toFixed(
-      (stakedBPTAmount * 100) / totalStakedBPTAmount,
-      3
-    )}% of the pool)`
-  )
-  _print(
-    `                  = [${YFFIPerBPT * stakedBPTAmount} YFFI, ${
-      YPerBPT * stakedBPTAmount
-    } yCRV]`
-  )
-  _print(
-    `                  = ${toDollar(
-      YFFIPerBPT * stakedBPTAmount * YFFIPrice +
-        YPerBPT * stakedBPTAmount * YVirtualPrice
-    )}\n`
-  )
-
-  // YFI REWARDS
-  if (timeUntil > 0) {
-    _print_bold(`Starts in ${forHumans(timeUntil)}`)
-  }
-
-  _print(`\n======== YFFI REWARDS ========`)
-  _print(
-    `Claimable Rewards : ${toFixed(earnedYFFI, 4)} YFFI = ${toDollar(
-      earnedYFFI * YFFIPrice
-    )}`
-  )
-  const weeklyEstimate = rewardPerToken * stakedBPTAmount
-
-  _print(
-    `Hourly estimate   : ${toFixed(
-      weeklyEstimate / (24 * 7),
-      2
-    )} YFFI = ${toDollar(
-      (weeklyEstimate / (24 * 7)) * YFFIPrice
-    )} (out of total ${toFixed(weekly_reward / (7 * 24), 2)} YFFI)`
-  )
-  _print(
-    `Daily estimate    : ${toFixed(weeklyEstimate / 7, 2)} YFFI = ${toDollar(
-      (weeklyEstimate * YFFIPrice) / 7
-    )} (out of total ${toFixed(weekly_reward / 7, 2)} YFFI)`
-  )
-  _print(
-    `Weekly estimate   : ${toFixed(weeklyEstimate, 2)} YFFI = ${toDollar(
-      weeklyEstimate * YFFIPrice
-    )} (out of total ${weekly_reward} YFFI)`
-  )
   const YFFIWeeklyROI = (rewardPerToken * YFFIPrice * 100) / BPTPrice
-
-  _print(`\nHourly ROI in USD : ${toFixed(YFFIWeeklyROI / 7 / 24, 4)}%`)
-  _print(`Daily ROI in USD  : ${toFixed(YFFIWeeklyROI / 7, 4)}%`)
-  _print(`Weekly ROI in USD : ${toFixed(YFFIWeeklyROI, 4)}%`)
-  _print(`APY (unstable)    : ${toFixed(YFFIWeeklyROI * 52, 4)}% \n`)
-
-  const timeTilHalving = nextHalving - Date.now() / 1000
-
-  _print(`Next halving      : in ${forHumans(timeTilHalving)} \n`)
-
-  // BAL REWARDS
-  _print('\n======= BAL REWARDS ? =======')
-  _print(`    Not whitelisted yet?`)
-  _print(
-    `    Check http://www.predictions.exchange/balancer/ for latest update \n`
-  )
-
-  // CRV REWARDS
-  _print('======== CRV REWARDS ========')
-  _print(`    Not distributed yet\n`)
 
   return {
     apr: toFixed(YFFIWeeklyROI * 52, 4),

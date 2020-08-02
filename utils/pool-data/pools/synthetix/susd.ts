@@ -7,12 +7,7 @@ import {
   toFixed,
 } from '../../../utils'
 
-const _print = console.log
-
 export default async function main(App) {
-  _print(`Initialized ${App.YOUR_ADDRESS}`)
-  _print('Reading smart contracts...')
-
   const CURVE_SUSD_POOL = new ethers.Contract(
     Constant.CURVE_SUSD_POOL_ADDR,
     Constant.CURVE_SUSD_POOL_ABI as any,
@@ -63,8 +58,6 @@ export default async function main(App) {
   )
   const rewardPerToken = weekly_reward / totalStakedCrvPlain3andSUSDAmount
 
-  _print('Finished reading smart contracts... Looking up prices... \n')
-
   // CoinGecko price lookup
   const prices: any = await lookUpPrices([
     'havven',
@@ -73,7 +66,6 @@ export default async function main(App) {
     'tether',
     'nusd',
   ])
-  console.log('getsUsd -> prices', prices)
 
   const SNXPrice = prices.havven.usd
   const DAIPrice = prices.dai.usd
@@ -89,59 +81,8 @@ export default async function main(App) {
     2
   )
 
-  _print('========== PRICES ==========')
-  _print(`1 SNX  = $${SNXPrice}\n`)
-
-  _print(`1 DAI  = $${DAIPrice}`)
-  _print(`1 USDC = $${USDCPrice}`)
-  _print(`1 USDT = $${USDTPrice}`)
-  _print(`1 sUSD = $${sUSDPrice}\n`)
-
-  _print('========= STAKING ==========')
-  _print(
-    `There are total   : ${totalCrvPlain3andSUSDSupply} crvPlain3andSUSD given out by Curve.`
-  )
-  _print(
-    `There are total   : ${totalStakedCrvPlain3andSUSDAmount} crvPlain3andSUSD staked in Synthetix's pool.`
-  )
-  _print(
-    `                  = ${toDollar(
-      totalStakedCrvPlain3andSUSDAmount * crvPlain3andSUSDPricePerToken
-    )} \n`
-  )
-  _print(
-    `You are staking   : ${stakedCRVAmount} crvPlain3andSUSD (${toFixed(
-      stakingPoolPercentage,
-      5
-    )}% of the pool)`
-  )
-  _print(
-    `                  ≈ ${toDollar(
-      crvPlain3andSUSDPricePerToken * stakedCRVAmount
-    )} (Averaged)\n`
-  )
-
-  _print('======== SNX REWARDS =======')
-  _print(`Claimable Rewards : ${earnedSNX} SNX`)
-  _print(`                  = ${toDollar(earnedSNX * SNXPrice)}\n`)
-
-  _print(
-    `Weekly estimate   : ${
-      rewardPerToken * stakedCRVAmount
-    } SNX (out of total ${weekly_reward} SNX)`
-  )
-  _print(
-    `                  = ${toDollar(
-      rewardPerToken * stakedCRVAmount * SNXPrice
-    )}`
-  )
   const SNXWeeklyROI =
     (rewardPerToken * SNXPrice * 100) / crvPlain3andSUSDPricePerToken
-  _print(`Weekly ROI in USD : ${toFixed(SNXWeeklyROI, 4)}%`)
-  _print(`APR (unstable)    : ${toFixed(SNXWeeklyROI * 52, 4)}% \n`)
-
-  _print('======== CRV REWARDS ========')
-  _print(`    Not distributed yet`)
 
   return {
     apr: toFixed(SNXWeeklyROI * 52, 4),
