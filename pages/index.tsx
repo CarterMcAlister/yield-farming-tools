@@ -54,6 +54,17 @@ export const getStaticProps = async () => {
   }
 }
 
+const randomIndex = (min, max) =>
+  Math.floor(Math.random() * (Math.floor(max) - Math.ceil(min) + 1))
+
+const tagLines = [
+  'Have you tended to your crops today?',
+  `You know, I'm something of a farmer myself`,
+  `Don't forget to rotate your crops`,
+  `It ain't much, but it's honest work`,
+  'The first rule of Yield Farming is: You do not talk about Yield Farming',
+]
+
 export default function Home({
   informationSection,
   toolSection,
@@ -76,9 +87,9 @@ export default function Home({
           <Box display={{ xs: 'block', md: 'inline' }}>🧑‍🌾 </Box>
           Yield Farming Tools
         </Heading>
-        {/* <Text pl={{ xs: 0, md: 12 }} fontSize="md" color="gray.600">
-          Starter guide and strategies coming soon.
-        </Text> */}
+        <Text pl={{ xs: 0, md: 12 }} fontSize="md" color="gray.600">
+          {tagLines[randomIndex(0, tagLines.length - 1)]}
+        </Text>
       </Card>
 
       <Flex direction={{ xs: 'column', lg: 'row' }} pb="1rem">
