@@ -1,4 +1,4 @@
-import { Box, CSSReset, theme, ThemeProvider } from '@chakra-ui/core'
+import { Box, Flex, CSSReset, theme, ThemeProvider } from '@chakra-ui/core'
 import { css, Global } from '@emotion/core'
 import 'focus-visible/dist/focus-visible'
 
@@ -13,7 +13,9 @@ const Wrapper = ({ children, ...props }) => (
   <ThemeProvider theme={theme}>
     <CSSReset />
     <Global styles={GlobalStyles} />
-    <Box {...props}>{children}</Box>
+    <Flex justifyContent="center">
+      <Box {...props}>{children}</Box>
+    </Flex>
   </ThemeProvider>
 )
 

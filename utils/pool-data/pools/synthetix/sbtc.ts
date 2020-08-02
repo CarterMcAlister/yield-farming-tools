@@ -202,5 +202,68 @@ export default async function main(App) {
 
   return {
     apr: toFixed(BALWeeklyROI * 52 + SNXWeeklyROI * 52, 4),
+    prices: [
+      { label: 'SNX', value: toDollar(SNXprice) },
+      { label: 'REN', value: toDollar(RENprice) },
+      { label: 'renBTC', value: toDollar(renBTCPrice) },
+      { label: 'wBTC', value: toDollar(wBTCPrice) },
+      { label: 'sBTC', value: toDollar(SBTCPrice) },
+      { label: 'BPT', value: toDollar(BPTPrice) },
+    ],
+    staking: [
+      {
+        label: 'Pool Total',
+        value: toDollar(
+          totalStakedCrvRenWSBTCAmount * crvRenWSBTCPricePerToken
+        ),
+      },
+      {
+        label: 'Your Total',
+        value: toDollar(crvRenWSBTCPricePerToken * stakedCRVAmount),
+      },
+    ],
+    rewards: [
+      {
+        label: `${toFixed(earnedBPT * SNXperBPT, 2)} SNX`,
+        value: toDollar(earnedBPT * SNXperBPT * SNXprice),
+      },
+      {
+        label: `${toFixed(earnedBPT * RENperBPT, 2)} REN`,
+        value: toDollar(earnedBPT * RENperBPT * RENprice),
+      },
+    ],
+    ROIs: [
+      {
+        label: 'Hourly',
+        value: `${toFixed(SNXWeeklyROI / 7 / 24, 4)}%`,
+      },
+      {
+        label: 'Daily',
+        value: `${toFixed(SNXWeeklyROI / 7, 4)}%`,
+      },
+      {
+        label: 'Weekly',
+        value: `${toFixed(SNXWeeklyROI, 4)}%`,
+      },
+    ],
+    links: [
+      {
+        title: 'Info',
+        link: 'https://blog.synthetix.io/btc-yield-farming-pool/',
+      },
+      {
+        title: 'Curve Pool',
+        link: 'https://www.curve.fi/sbtc/deposit',
+      },
+      {
+        title: 'Stake',
+        link: 'https://mintr.synthetix.io/',
+      },
+      {
+        title: 'Unwrap',
+        link:
+          'https://pools.balancer.exchange/#/pool/0x330416C863f2acCE7aF9C9314B422d24c672534a',
+      },
+    ],
   }
 }

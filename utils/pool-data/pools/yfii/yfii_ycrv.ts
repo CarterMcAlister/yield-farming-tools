@@ -120,5 +120,62 @@ export default async function main(App) {
 
   return {
     apr: toFixed(YFIWeeklyROI * 52, 4),
+    prices: [
+      { label: 'YFII', value: toDollar(YFIIPrice) },
+      {
+        label: 'yCRV',
+        value: toDollar(YVirtualPrice),
+      },
+    ],
+    staking: [
+      {
+        label: 'Pool Total',
+        value: toDollar(totalStakedYAmount * YVirtualPrice),
+      },
+      {
+        label: 'Your Total',
+        value: toDollar(stakedYAmount * YVirtualPrice),
+      },
+    ],
+    rewards: [
+      {
+        label: `${toFixed(earnedYFI, 4)} YFII`,
+        value: toDollar(earnedYFI * YFIIPrice),
+      },
+    ],
+    ROIs: [
+      {
+        label: 'Hourly',
+        value: `${toFixed(YFIWeeklyROI / 7 / 24, 4)}%`,
+      },
+      {
+        label: 'Daily',
+        value: `${toFixed(YFIWeeklyROI / 7, 4)}%`,
+      },
+      {
+        label: 'Weekly',
+        value: `${toFixed(YFIWeeklyROI, 4)}%`,
+      },
+    ],
+    links: [
+      {
+        title: 'Instructions',
+        link:
+          'https://yfii.s3-ap-northeast-1.amazonaws.com/YFII_Innovative_DeFi_Yield_Farming_Token.pdf',
+      },
+      {
+        title: 'Curve Pool',
+        link: 'https://www.curve.fi/iearn/deposit',
+      },
+      {
+        title: 'Staking',
+        link: 'https://www.yfii.finance/#/stake',
+      },
+      {
+        title: 'Token',
+        link:
+          'https://etherscan.io/address/0xa1d0E215a23d7030842FC67cE582a6aFa3CCaB83',
+      },
+    ],
   }
 }

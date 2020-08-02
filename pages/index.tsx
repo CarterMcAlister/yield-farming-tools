@@ -62,10 +62,10 @@ export default function Home({
   useEffect(() => {
     init('UA-156207639-2')
     trackPageViewed()
-    // getPoolData()
   }, [])
+
   return (
-    <Wrapper>
+    <Wrapper maxW="1200px">
       <SEO />
       <Card>
         <Heading as="h1" size="xl">

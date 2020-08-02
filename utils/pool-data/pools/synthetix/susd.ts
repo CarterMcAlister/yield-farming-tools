@@ -145,5 +145,57 @@ export default async function main(App) {
 
   return {
     apr: toFixed(SNXWeeklyROI * 52, 4),
+    prices: [
+      { label: 'SNX', value: toDollar(SNXPrice) },
+      { label: 'DAI', value: toDollar(DAIPrice) },
+      { label: 'USDT', value: toDollar(USDTPrice) },
+      { label: 'sUSD', value: toDollar(sUSDPrice) },
+    ],
+    staking: [
+      {
+        label: 'Pool Total',
+        value: toDollar(
+          totalStakedCrvPlain3andSUSDAmount * crvPlain3andSUSDPricePerToken
+        ),
+      },
+      {
+        label: 'Your Total',
+        value: toDollar(crvPlain3andSUSDPricePerToken * stakedCRVAmount),
+      },
+    ],
+    rewards: [
+      {
+        label: `${toFixed(earnedSNX, 2)} SNX`,
+        value: toDollar(earnedSNX * SNXPrice),
+      },
+    ],
+    ROIs: [
+      {
+        label: 'Hourly',
+        value: `${toFixed(SNXWeeklyROI / 7 / 24, 4)}%`,
+      },
+      {
+        label: 'Daily',
+        value: `${toFixed(SNXWeeklyROI / 7, 4)}%`,
+      },
+      {
+        label: 'Weekly',
+        value: `${toFixed(SNXWeeklyROI, 4)}%`,
+      },
+    ],
+    links: [
+      {
+        title: 'Info',
+        link: 'https://blog.synthetix.io/new-curve-pool-launch/',
+      },
+      {
+        title: 'Curve Pool',
+        link: 'https://beta.curve.fi/susdv2/',
+      },
+      {
+        title: 'Stake',
+        link: 'https://mintr.synthetix.io',
+      },
+    ],
   }
 }

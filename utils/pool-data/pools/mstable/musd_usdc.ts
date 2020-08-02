@@ -92,9 +92,9 @@ export default async function main(App) {
       MTARewardPerBPT * yourBPTAmount * MTAPrice
     )} (out of total ${weekly_reward} MTA)`
   )
-  const YFIWeeklyROI = (MTARewardPerBPT * MTAPrice * 100) / BPTPrice
-  _print(`Weekly ROI in USD : ${toFixed(YFIWeeklyROI, 4)}%`)
-  _print(`APY (unstable)    : ${toFixed(YFIWeeklyROI * 52, 4)}% \n`)
+  const WeeklyROI = (MTARewardPerBPT * MTAPrice * 100) / BPTPrice
+  _print(`Weekly ROI in USD : ${toFixed(WeeklyROI, 4)}%`)
+  _print(`APY (unstable)    : ${toFixed(WeeklyROI * 52, 4)}% \n`)
 
   // BAL REWARDS
   _print('======== BAL REWARDS ========')
@@ -104,6 +104,46 @@ export default async function main(App) {
   )
 
   return {
-    apr: toFixed(YFIWeeklyROI * 52, 4),
+    apr: toFixed(WeeklyROI * 52, 4),
+    prices: [
+      { label: 'MTA', value: toDollar(MTAPrice) },
+      { label: 'mUSD', value: toDollar(MUSDPrice) },
+    ],
+    staking: [
+      {
+        label: 'Pool Total',
+        value: toDollar(totalBPTAmount * BPTPrice),
+      },
+      {
+        label: 'Your Total',
+        value: toDollar(yourBPTAmount * BPTPrice),
+      },
+    ],
+    rewards: [],
+    ROIs: [
+      {
+        label: 'Hourly',
+        value: `${toFixed(WeeklyROI / 7 / 24, 4)}%`,
+      },
+      {
+        label: 'Daily',
+        value: `${toFixed(WeeklyROI / 7, 4)}%`,
+      },
+      {
+        label: 'Weekly',
+        value: `${toFixed(WeeklyROI, 4)}%`,
+      },
+    ],
+    links: [
+      {
+        title: 'Info',
+        link: 'https://medium.com/mstable/a-recap-of-mta-rewards-9729356a66dd',
+      },
+      {
+        title: 'Balancer Pool',
+        link:
+          'https://pools.balancer.exchange/#/pool/0x72Cd8f4504941Bf8c5a21d1Fd83A96499FD71d2C',
+      },
+    ],
   }
 }

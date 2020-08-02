@@ -135,5 +135,66 @@ export default async function main(App) {
 
   return {
     apr: toFixed(YFIWeeklyROI * 52, 4),
+    prices: [
+      { label: 'YFFI', value: toDollar(YFIIPrice) },
+      {
+        label: 'BPT',
+        value: toDollar(YFIPerBPT * YFIIPrice + DAIPerBPT * DAIPrice),
+      },
+    ],
+    staking: [
+      {
+        label: 'Pool Total',
+        value: toDollar(totalStakedBPTAmount * BPTPrice),
+      },
+      {
+        label: 'Your Total',
+        value: toDollar(
+          YFIPerBPT * stakedBPTAmount * YFIIPrice +
+            DAIPerBPT * stakedBPTAmount * DAIPrice
+        ),
+      },
+    ],
+    rewards: [
+      {
+        label: `${toFixed(earnedYFI, 4)} YFI`,
+        value: toDollar(earnedYFI * YFIIPrice),
+      },
+    ],
+    ROIs: [
+      {
+        label: 'Hourly',
+        value: `${toFixed(YFIWeeklyROI / 7 / 24, 4)}%`,
+      },
+      {
+        label: 'Daily',
+        value: `${toFixed(YFIWeeklyROI / 7, 4)}%`,
+      },
+      {
+        label: 'Weekly',
+        value: `${toFixed(YFIWeeklyROI, 4)}%`,
+      },
+    ],
+    links: [
+      {
+        title: 'Instructions',
+        link:
+          'https://yfii.s3-ap-northeast-1.amazonaws.com/YFII_Innovative_DeFi_Yield_Farming_Token.pdf',
+      },
+      {
+        title: 'Balancer Pool',
+        link:
+          'https://pools.balancer.exchange/#/pool/0x16cAC1403377978644e78769Daa49d8f6B6CF565',
+      },
+      {
+        title: 'Staking Pool',
+        link: 'https://www.yfii.finance/#/stake',
+      },
+      {
+        title: 'Token',
+        link:
+          'https://etherscan.io/address/0xa1d0E215a23d7030842FC67cE582a6aFa3CCaB83',
+      },
+    ],
   }
 }

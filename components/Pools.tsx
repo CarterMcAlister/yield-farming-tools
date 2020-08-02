@@ -1,22 +1,23 @@
-import { useEffect, useState } from 'react'
 import {
+  Alert,
+  AlertIcon,
+  AlertTitle,
   Badge,
   Box,
   Button,
   Collapse,
-  Text,
+  Divider,
   Flex,
-  IconButton,
   Heading,
+  IconButton,
+  Link,
   SimpleGrid,
-  Spinner,
-  Alert,
-  AlertIcon,
-  AlertTitle,
-  AlertDescription,
+  Skeleton,
+  Text,
 } from '@chakra-ui/core'
-import getPoolData from '../utils/pool-data'
+import { useEffect, useState } from 'react'
 import { Card } from '../components/Card'
+import getPoolData from '../utils/pool-data'
 import { initEthers } from '../utils/utils'
 
 type PoolData = {
@@ -163,10 +164,6 @@ export const PoolSection = (props) => {
 
   return ethApp ? (
     <Box pt={4}>
-      {/* <Heading mx="1rem" pb={5}>
-        Pools
-      </Heading> */}
-
       <Box>
         <Flex justifyContent="space-between" mx="1rem">
           <Text
@@ -229,18 +226,34 @@ const PoolItem = ({ poolItemData, app }) => {
   const [show, setShow] = useState(false)
   const [apr, setApr] = useState(null)
 
+  const [priceList, setPriceList] = useState([])
+  const [stakingList, setStakingList] = useState([])
+  const [rewardList, setRewardList] = useState([])
+  const [roiList, setRoiList] = useState([])
+  const [linkList, setLinkList] = useState([])
+
   useEffect(() => {
     ;(async () => {
       if (app) {
         const poolData = await getPoolData(app)
         setApr(poolData.apr)
+        setPriceList(poolData.prices)
+        setStakingList(poolData.staking)
+        setRewardList(poolData.rewards)
+        setRoiList(poolData.ROIs)
+        setLinkList(poolData.links || [])
       }
     })()
   }, [app])
 
-  return (
+  return !apr || parseFloat(apr) != 0 ? (
     <Card boxShadow="sm" mx={0}>
-      <Flex justifyContent="space-between" alignItems="center">
+      <Flex
+        justifyContent="space-between"
+        alignItems="center"
+        onClick={() => setShow(!show)}
+        cursor="pointer"
+      >
         <Text d={{ xs: 'none', md: 'block' }} w="25%">
           {provider}
         </Text>
@@ -252,9 +265,10 @@ const PoolItem = ({ poolItemData, app }) => {
             </Badge>
           ))}
         </Box>
-        <Text w="25%">{apr ? `${apr}%` : <Spinner />}</Text>
+        <Text w="25%">
+          {apr ? `${apr}%` : <Skeleton height="20px" maxW={20} />}
+        </Text>
         <IconButton
-          visibility="hidden"
           backgroundColor="white"
           fontSize={20}
           onClick={() => setShow(!show)}
@@ -266,10 +280,55 @@ const PoolItem = ({ poolItemData, app }) => {
         </IconButton>
       </Flex>
       <Collapse mt={4} isOpen={show}>
-        {/* Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus
-        terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer
-        labore wes anderson cred nesciunt sapiente ea proident. */}
+        <Divider mb={4} />
+        <SimpleGrid minChildWidth="212px" spacing={4}>
+          <LinkList links={linkList} />
+          <DetailItem title="Prices" data={priceList} />
+          <DetailItem title="ROI" data={roiList} />
+          <DetailItem title="Staking" data={stakingList} />
+          {rewardList.length > 0 && (
+            <DetailItem title="Claimable Rewards" data={rewardList} />
+          )}
+        </SimpleGrid>
       </Collapse>
     </Card>
-  )
+  ) : null
 }
+
+const LinkList = ({ links }) => (
+  <Box>
+    <Heading as="h4" size="sm" color="gray.600" pb={2}>
+      Links
+    </Heading>
+    {links.map(({ title, link }) => (
+      <Link href={link} d="block" isExternal>
+        {title}
+      </Link>
+    ))}
+  </Box>
+)
+
+const DetailItem = ({ title, data }) =>
+  data ? (
+    <Box>
+      <Heading as="h4" size="sm" color="gray.600" pb={2}>
+        {title}
+      </Heading>
+      <Flex>
+        <Box pr={5}>
+          {data.map(({ label }) => (
+            <Text fontWeight="bold" pb=".1rem">
+              {label}
+            </Text>
+          ))}
+        </Box>
+        <Box>
+          {data.map(({ value }) => (
+            <Text pb=".1rem">{value}</Text>
+          ))}
+        </Box>
+      </Flex>
+    </Box>
+  ) : (
+    <Box />
+  )

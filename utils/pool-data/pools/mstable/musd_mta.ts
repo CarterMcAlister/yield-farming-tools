@@ -104,7 +104,49 @@ export default async function main(App) {
     `Check http://www.predictions.exchange/balancer/ for accurate %`,
     'https://www.predictions.exchange/balancer/'
   )
+
   return {
     apr: toFixed(YFIWeeklyROI * 52, 4),
+    prices: [
+      { label: 'MTA', value: toDollar(MTAPrice) },
+      { label: 'mUSD', value: toDollar(MUSDPrice) },
+      { label: 'BPT', value: toDollar(BPTPrice) },
+    ],
+    staking: [
+      {
+        label: 'Pool Total',
+        value: toDollar(totalBPTAmount * BPTPrice),
+      },
+      {
+        label: 'Your Total',
+        value: toDollar(yourBPTAmount * BPTPrice),
+      },
+    ],
+    rewards: [],
+    ROIs: [
+      {
+        label: 'Hourly',
+        value: `${toFixed(YFIWeeklyROI / 7 / 24, 4)}%`,
+      },
+      {
+        label: 'Daily',
+        value: `${toFixed(YFIWeeklyROI / 7, 4)}%`,
+      },
+      {
+        label: 'Weekly',
+        value: `${toFixed(YFIWeeklyROI, 4)}%`,
+      },
+    ],
+    links: [
+      {
+        title: 'Info',
+        link: 'https://medium.com/mstable/a-recap-of-mta-rewards-9729356a66dd',
+      },
+      {
+        title: 'Balancer Pool',
+        link:
+          'https://pools.balancer.exchange/#/pool/0x003a70265a3662342010823bEA15Dc84C6f7eD54',
+      },
+    ],
   }
 }

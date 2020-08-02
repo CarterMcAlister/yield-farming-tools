@@ -86,5 +86,53 @@ export default async function main(App) {
 
   return {
     apr: toFixed(SNXWeeklyROI * 52, 4),
+    prices: [
+      { label: 'SNX', value: toDollar(SNXPrice) },
+      { label: 'iBTC', value: toDollar(iBTCPrice) },
+    ],
+    staking: [
+      {
+        label: 'Pool Total',
+        value: toDollar(totalStakedIBTCAmount * iBTCPrice),
+      },
+      {
+        label: 'Your Total',
+        value: toDollar(yourStakedIBTCAmount * iBTCPrice),
+      },
+    ],
+    rewards: [
+      {
+        label: `${toFixed(earnedSNX, 2)} SNX`,
+        value: toDollar(earnedSNX * SNXPrice),
+      },
+    ],
+    ROIs: [
+      {
+        label: 'Hourly',
+        value: `${toFixed(SNXWeeklyROI / 7 / 24, 4)}%`,
+      },
+      {
+        label: 'Daily',
+        value: `${toFixed(SNXWeeklyROI / 7, 4)}%`,
+      },
+      {
+        label: 'Weekly',
+        value: `${toFixed(SNXWeeklyROI, 4)}%`,
+      },
+    ],
+    links: [
+      {
+        title: 'Info',
+        link: 'https://blog.synthetix.io/ieth-migration-and-ibtc-launch',
+      },
+      {
+        title: 'Stake',
+        link: 'https://mintr.synthetix.io/',
+      },
+      {
+        title: 'Token',
+        link: 'https://synthetix.exchange/trade/iBTC-sUSD',
+      },
+    ],
   }
 }
