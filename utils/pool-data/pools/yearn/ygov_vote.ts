@@ -4,8 +4,8 @@ import {
   YFI_YCRV_BPT_TOKEN_ADDR,
   YGOV_BPT_2_STAKING_POOL_ABI,
   YGOV_BPT_2_STAKING_POOL_ADDR,
-} from '../../constants'
-import { forHumans, getBlockTime, toFixed } from '../../utils'
+} from '../../../constants'
+import { forHumans, getBlockTime, toFixed } from '../../../utils'
 const _print = console.log
 
 export default async function main(App) {

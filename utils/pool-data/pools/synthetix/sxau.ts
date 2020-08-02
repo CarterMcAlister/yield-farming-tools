@@ -7,8 +7,8 @@ import {
   UNISWAP_SXAU_USDC_POOL_ABI,
   UNISWAP_SXAU_USDC_POOL_ADDR,
   USDC_ADDRESS,
-} from '../../constants'
-import { get_synth_weekly_rewards, lookUpPrices, toFixed } from '../../utils'
+} from '../../../constants'
+import { get_synth_weekly_rewards, lookUpPrices, toFixed } from '../../../utils'
 const _print = console.log
 
 export default async function main(App) {

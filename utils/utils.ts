@@ -280,3 +280,9 @@ export const forHumans = function (seconds) {
 }
 
 export const toDollar = formatter.format
+
+export const getPeriodFinishForReward = async function (
+  reward_contract_instance
+) {
+  return await reward_contract_instance.periodFinish()
+}

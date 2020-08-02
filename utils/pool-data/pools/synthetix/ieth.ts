@@ -4,13 +4,13 @@ import {
   iETH_TOKEN_ADDR,
   SYNTH_iETH_STAKING_POOL_ABI,
   SYNTH_iETH_STAKING_POOL_ADDR,
-} from '../../constants'
+} from '../../../constants'
 import {
   get_synth_weekly_rewards,
   lookUpPrices,
   toDollar,
   toFixed,
-} from '../../utils'
+} from '../../../utils'
 
 const _print = console.log
 

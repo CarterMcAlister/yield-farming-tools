@@ -9,8 +9,8 @@ import {
   YGOV_BPT_2_STAKING_POOL_ABI,
   YGOV_BPT_2_STAKING_POOL_ADDR,
   Y_TOKEN_ADDR,
-} from '../../constants'
-import { get_synth_weekly_rewards, lookUpPrices, toFixed } from '../../utils'
+} from '../../../constants'
+import { get_synth_weekly_rewards, lookUpPrices, toFixed } from '../../../utils'
 const _print = console.log
 
 export default async function main(App) {

@@ -1,5 +1,5 @@
 import { ethers } from 'ethers'
-import * as Constant from '../../constants'
+import * as Constant from '../../../constants'
 import {
   forHumans,
   getBlockTime,
@@ -7,7 +7,7 @@ import {
   lookUpPrices,
   toDollar,
   toFixed,
-} from '../../utils'
+} from '../../../utils'
 
 const _print = console.log
 const _print_bold = console.log

@@ -7,13 +7,13 @@ import {
   YFII_DAI_BPT_TOKEN_ADDR,
   YFII_TOKEN_ADDR,
   YGOV_BPT_STAKING_POOL_ABI,
-} from '../../constants'
+} from '../../../constants'
 import {
   get_synth_weekly_rewards,
   lookUpPrices,
   toDollar,
   toFixed,
-} from '../../utils'
+} from '../../../utils'
 const _print = console.log
 
 export default async function main(App) {

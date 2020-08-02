@@ -3,14 +3,14 @@ import {
   lookUpPrices,
   toFixed,
   toDollar,
-} from '../../utils'
+} from '../../../utils'
 import { ethers } from 'ethers'
 import {
   SYNTH_iBTC_STAKING_POOL_ADDR,
   SYNTH_iBTC_STAKING_POOL_ABI,
   iBTC_TOKEN_ADDR,
   ERC20_ABI,
-} from '../../constants'
+} from '../../../constants'
 
 const _print = console.log
 export default async function main(App) {

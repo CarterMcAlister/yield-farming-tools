@@ -8,13 +8,13 @@ import {
   SYNTH_USDC_SNX_BPT_STAKING_POOL_ABI,
   SYNTH_USDC_SNX_BPT_STAKING_POOL_ADDR,
   USDC_ADDRESS,
-} from '../../constants'
+} from '../../../constants'
 import {
   getLatestTotalBALAmount,
   get_synth_weekly_rewards,
   lookUpPrices,
   toFixed,
-} from '../../utils'
+} from '../../../utils'
 const _print = console.log
 
 export default async function main(App) {

@@ -5,8 +5,8 @@ import {
   USDC_ADDRESS,
   YUSDSEP20_TOKEN_ADDR,
   YUSD_USDC_BPT_TOKEN_ADDR,
-} from '../../constants'
-import { lookUpPrices, toDollar, toFixed } from '../../utils'
+} from '../../../constants'
+import { lookUpPrices, toDollar, toFixed } from '../../../utils'
 const _print = console.log
 
 export default async function main(App) {

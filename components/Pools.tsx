@@ -71,13 +71,13 @@ const poolDataList: Array<PoolData> = [
   //   poolRewards: ['YFI', 'BAL'],
   //   getPoolData: getPoolData.ygov_balancer,
   // },
-  {
-    provider: 'yearn.finance',
-    name: 'Balancer YFI-yCRV',
-    poolItems: [''],
-    poolRewards: ['YFI', 'CRV', 'BAL', 'yCRV'],
-    getPoolData: getPoolData.ygov_ycrv_balancer,
-  },
+  // {
+  //   provider: 'yearn.finance',
+  //   name: 'Balancer YFI-yCRV',
+  //   poolItems: [''],
+  //   poolRewards: ['YFI', 'CRV', 'BAL', 'yCRV'],
+  //   getPoolData: getPoolData.ygov_ycrv_balancer,
+  // },
   {
     provider: 'mStable',
     name: 'Balancer mUSD-USDC',
@@ -119,6 +119,27 @@ const poolDataList: Array<PoolData> = [
     poolItems: [''],
     poolRewards: ['YFII', 'BAL'],
     getPoolData: getPoolData.yfii_dai,
+  },
+  {
+    provider: 'yffi.finance',
+    name: 'Curve yCRV',
+    poolItems: [''],
+    poolRewards: ['YFFI', 'CRV'],
+    getPoolData: getPoolData.yffi,
+  },
+  {
+    provider: 'yffi.finance',
+    name: 'Balancer YFFI-DAI',
+    poolItems: [''],
+    poolRewards: ['YFFI', 'BAL'],
+    getPoolData: getPoolData.yffi_dai,
+  },
+  {
+    provider: 'yffi.finance',
+    name: 'Balancer YFFI-yCRV',
+    poolItems: [''],
+    poolRewards: ['YFFI', 'CRV', 'BAL'],
+    getPoolData: getPoolData.yffi_ycrv,
   },
 ]
 

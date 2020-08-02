@@ -1,11 +1,11 @@
 import { ethers } from 'ethers'
-import * as Constant from '../../constants'
+import * as Constant from '../../../constants'
 import {
   get_synth_weekly_rewards,
   lookUpPrices,
   toDollar,
   toFixed,
-} from '../../utils'
+} from '../../../utils'
 
 const _print = console.log
 
