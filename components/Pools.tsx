@@ -142,6 +142,20 @@ const poolDataList: Array<PoolData> = [
     poolRewards: ['YFFI', 'CRV', 'BAL'],
     getPoolData: getPoolData.yffi_ycrv,
   },
+  {
+    provider: 'dForce',
+    name: 'Uniswap GOLDx-USDx',
+    poolItems: [''],
+    poolRewards: ['DF'],
+    getPoolData: getPoolData.goldx_usdx,
+  },
+  {
+    provider: 'dForce',
+    name: 'Uniswap DF-USDx',
+    poolItems: [''],
+    poolRewards: ['DF'],
+    getPoolData: getPoolData.df_usdx,
+  },
 ]
 
 export const PoolSection = (props) => {

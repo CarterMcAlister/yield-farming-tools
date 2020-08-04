@@ -46,10 +46,12 @@ export default async function main(App) {
   // Uniswap V2 sXAU-usdc Pool
   const totalUniv2SXAUUSDCTokenSupply =
     (await UNISWAPV2_SXAU_USDC_POOL.totalSupply()) / 1e18
+
   const totalStakedUniv2SXAUUSDCTokenAmount =
     (await UNISWAPV2_SXAU_USDC_POOL.balanceOf(
       SYNTH_UNIV2_SXAU_STAKING_POOL_ADDR
     )) / 1e18
+
   const stakingPoolPercentage =
     (100 * yourStakedUniv2Amount) / totalStakedUniv2SXAUUSDCTokenAmount
 

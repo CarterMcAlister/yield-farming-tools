@@ -19,6 +19,8 @@ import yffi_dai from './pools/yffi/yffi_2'
 import yffi_ycrv from './pools/yffi/yffi_3'
 import yfii_dai from './pools/yfii/yfii_dai'
 import yfii_ycrv from './pools/yfii/yfii_ycrv'
+import df_usdx from './pools/dforce/df-usdx'
+import goldx_usdx from './pools/dforce/goldx-usdx'
 
 export default {
   ibtc,
@@ -42,4 +44,6 @@ export default {
   yffi,
   yffi_ycrv,
   yffi_dai,
+  df_usdx,
+  goldx_usdx,
 }
