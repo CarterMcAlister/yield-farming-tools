@@ -95,10 +95,24 @@ const poolDataList: Array<PoolData> = [
   },
   {
     provider: 'mStable',
-    name: 'Balancer mUSD-MTA',
+    name: 'mUSD-MTA 80-20',
     poolItems: [''],
     poolRewards: ['MTA', 'BAL'],
     getPoolData: getPoolData.musd_mta,
+  },
+  {
+    provider: 'mStable',
+    name: 'mUSD-MTA 95-5',
+    poolItems: [''],
+    poolRewards: ['MTA', 'BAL'],
+    getPoolData: getPoolData.musd_mta_2,
+  },
+  {
+    provider: 'mStable',
+    name: 'Balancer MTA-wETH',
+    poolItems: [''],
+    poolRewards: ['MTA', 'BAL'],
+    getPoolData: getPoolData.mta_weth,
   },
   {
     provider: 'UMA Project',
