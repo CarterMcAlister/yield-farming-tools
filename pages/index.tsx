@@ -59,10 +59,9 @@ const randomIndex = (min, max) =>
 
 const tagLines = [
   'Have you tended to your crops today?',
-  `You know, I'm something of a farmer myself`,
   `Don't forget to rotate your crops`,
   `It ain't much, but it's honest work`,
-  'The first rule of Yield Farming is: You do not talk about Yield Farming',
+  'Tools and resources to help you maximize your harvest',
 ]
 
 export default function Home({
