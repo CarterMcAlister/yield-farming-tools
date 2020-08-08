@@ -1,17 +1,19 @@
+import { ethers } from 'ethers'
+import {
+  BALANCER_POOL_ABI,
+  ERC20_ABI,
+  MSTABLE_REWARDS_POOL_ABI,
+  MTA_TOKEN_ADDR,
+  MUSD_MTA_BPT_TOKEN_ADDR,
+  MUSD_MTA_BPT_TOKEN_STAKING_ADDR,
+  MUSD_TOKEN_ADDR,
+} from '../../../constants'
 import {
   get_synth_weekly_rewards,
   lookUpPrices,
-  toFixed,
   toDollar,
+  toFixed,
 } from '../../../utils'
-import { ethers } from 'ethers'
-import {
-  MUSD_MTA_BPT_TOKEN_ADDR,
-  BALANCER_POOL_ABI,
-  ERC20_ABI,
-  MTA_TOKEN_ADDR,
-  MUSD_TOKEN_ADDR,
-} from '../../../constants'
 
 export default async function main(App) {
   const MUSD_MTA_BALANCER_POOL = new ethers.Contract(
@@ -25,9 +27,19 @@ export default async function main(App) {
     App.provider
   )
 
+  const BPT_STAKING_POOL = new ethers.Contract(
+    MUSD_MTA_BPT_TOKEN_STAKING_ADDR,
+    MSTABLE_REWARDS_POOL_ABI,
+    App.provider
+  )
+  const totalStakedBPTAmount =
+    (await MUSD_MTA_BPT_TOKEN_CONTRACT.balanceOf(
+      MUSD_MTA_BPT_TOKEN_STAKING_ADDR
+    )) / 1e18
+
   const totalBPTAmount = (await MUSD_MTA_BALANCER_POOL.totalSupply()) / 1e18
   const yourBPTAmount =
-    (await MUSD_MTA_BPT_TOKEN_CONTRACT.balanceOf(App.YOUR_ADDRESS)) / 1e18
+    (await BPT_STAKING_POOL.balanceOf(App.YOUR_ADDRESS)) / 1e18
 
   const totalMTAAmount =
     (await MUSD_MTA_BALANCER_POOL.getBalance(MTA_TOKEN_ADDR)) / 1e18
@@ -38,8 +50,8 @@ export default async function main(App) {
   const MUSDPerBPT = totalMUSDAmount / totalBPTAmount
 
   // Find out reward rate
-  const weekly_reward = 50000
-  const MTARewardPerBPT = weekly_reward / (totalBPTAmount - 100)
+  const weekly_reward = await get_synth_weekly_rewards(BPT_STAKING_POOL)
+  const MTARewardPerBPT = weekly_reward / totalStakedBPTAmount
 
   // Look up prices
   const prices = await lookUpPrices(['musd', 'meta'])
@@ -85,12 +97,17 @@ export default async function main(App) {
     links: [
       {
         title: 'Info',
-        link: 'https://medium.com/mstable/a-recap-of-mta-rewards-9729356a66dd',
+        link:
+          'https://medium.com/mstable/introducing-mstable-earn-6ac5f4e7560e',
       },
       {
         title: 'Balancer Pool',
         link:
-          'https://pools.balancer.exchange/#/pool/0x003a70265a3662342010823bEA15Dc84C6f7eD54',
+          'https://pools.balancer.exchange/#/pool/0xa5DA8Cc7167070B62FdCB332EF097A55A68d8824',
+      },
+      {
+        title: 'Stake',
+        link: 'https://app.mstable.org/earn',
       },
     ],
   }

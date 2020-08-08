@@ -2,65 +2,68 @@ import { ethers } from 'ethers'
 import {
   BALANCER_POOL_ABI,
   ERC20_ABI,
-  MUSD_TOKEN_ADDR,
-  MUSD_USDC_BPT_TOKEN_ADDR,
-  USDC_ADDRESS,
-  MUSD_USDC_BPT_TOKEN_STAKING_ADDR,
   MSTABLE_REWARDS_POOL_ABI,
+  MTA_TOKEN_ADDR,
+  MTA_WETH_UNI_TOKEN_ADDR,
+  MTA_WETH_UNI_TOKEN_STAKING_ADDR,
+  WETH_TOKEN_ADDR,
 } from '../../../constants'
 import {
+  get_synth_weekly_rewards,
   lookUpPrices,
   toDollar,
   toFixed,
-  get_synth_weekly_rewards,
 } from '../../../utils'
 
 export default async function main(App) {
-  const MUSD_USDC_BALANCER_POOL = new ethers.Contract(
-    MUSD_USDC_BPT_TOKEN_ADDR,
+  const MUSD_WETH_UNISWAP_POOL = new ethers.Contract(
+    MTA_WETH_UNI_TOKEN_ADDR,
     BALANCER_POOL_ABI,
     App.provider
   )
-  const MUSD_USDC_BPT_TOKEN_CONTRACT = new ethers.Contract(
-    MUSD_USDC_BPT_TOKEN_ADDR,
+  const MUSD_WETH_UNI_TOKEN_CONTRACT = new ethers.Contract(
+    MTA_WETH_UNI_TOKEN_ADDR,
     ERC20_ABI,
     App.provider
   )
+  const WETH_TOKEN = new ethers.Contract(
+    WETH_TOKEN_ADDR,
+    ERC20_ABI,
+    App.provider
+  )
+  const MTA_TOKEN = new ethers.Contract(MTA_TOKEN_ADDR, ERC20_ABI, App.provider)
   const BPT_STAKING_POOL = new ethers.Contract(
-    MUSD_USDC_BPT_TOKEN_STAKING_ADDR,
+    MTA_WETH_UNI_TOKEN_STAKING_ADDR,
     MSTABLE_REWARDS_POOL_ABI,
     App.provider
   )
-  const totalStakedBPTAmount =
-    (await MUSD_USDC_BPT_TOKEN_CONTRACT.balanceOf(
-      MUSD_USDC_BPT_TOKEN_STAKING_ADDR
-    )) / 1e18
 
-  const totalBPTAmount = (await MUSD_USDC_BALANCER_POOL.totalSupply()) / 1e18
+  const totalBPTAmount = (await MUSD_WETH_UNISWAP_POOL.totalSupply()) / 1e18
+  const totalStakedBPTAmount =
+    (await MUSD_WETH_UNI_TOKEN_CONTRACT.balanceOf(
+      MTA_WETH_UNI_TOKEN_STAKING_ADDR
+    )) / 1e18
   const yourBPTAmount =
     (await BPT_STAKING_POOL.balanceOf(App.YOUR_ADDRESS)) / 1e18
 
-  const totalUSDCAmount =
-    (await MUSD_USDC_BALANCER_POOL.getBalance(USDC_ADDRESS)) / 1e6
-  const totalMUSDAmount =
-    (await MUSD_USDC_BALANCER_POOL.getBalance(MUSD_TOKEN_ADDR)) / 1e18
+  const totalWETHAmount =
+    (await WETH_TOKEN.balanceOf(MTA_WETH_UNI_TOKEN_ADDR)) / 1e18
+  const totalMTAAmount =
+    (await MTA_TOKEN.balanceOf(MTA_WETH_UNI_TOKEN_ADDR)) / 1e18
 
-  const USDCPerBPT = totalUSDCAmount / totalBPTAmount
-  const MUSDPerBPT = totalMUSDAmount / totalBPTAmount
+  const WETHPerBPT = totalWETHAmount / totalBPTAmount
+  const MTAPerBPT = totalMTAAmount / totalBPTAmount
 
   // Find out reward rate
   const weekly_reward = await get_synth_weekly_rewards(BPT_STAKING_POOL)
   const MTARewardPerBPT = weekly_reward / totalStakedBPTAmount
 
   // Look up prices
-  const prices = await lookUpPrices(['musd', 'meta', 'usd-coin'])
+  const prices = await lookUpPrices(['meta', 'weth'])
   const MTAPrice = prices['meta'].usd
-  const MUSDPrice = prices['musd'].usd
-  const USDCPrice = prices['usd-coin'].usd
+  const WETHPrice = prices['weth'].usd
 
-  const BPTPrice = USDCPerBPT * USDCPrice + MUSDPerBPT * MUSDPrice
-
-  // Finished. Start printing
+  const BPTPrice = WETHPerBPT * WETHPrice + MTAPerBPT * MTAPrice
 
   const weeklyRoi = (MTARewardPerBPT * MTAPrice * 100) / BPTPrice
 
@@ -68,7 +71,8 @@ export default async function main(App) {
     apr: toFixed(weeklyRoi * 52, 4),
     prices: [
       { label: 'MTA', value: toDollar(MTAPrice) },
-      { label: 'mUSD', value: toDollar(MUSDPrice) },
+      { label: 'wEth', value: toDollar(WETHPrice) },
+      { label: 'BPT', value: toDollar(BPTPrice) },
     ],
     staking: [
       {
@@ -104,7 +108,7 @@ export default async function main(App) {
       {
         title: 'Balancer Pool',
         link:
-          'https://pools.balancer.exchange/#/pool/0x72Cd8f4504941Bf8c5a21d1Fd83A96499FD71d2C',
+          'https://pools.balancer.exchange/#/pool/0x0d0d65e7a7db277d3e0f5e1676325e75f3340455',
       },
       {
         title: 'Stake',

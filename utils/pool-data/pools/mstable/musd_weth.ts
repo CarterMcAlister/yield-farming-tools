@@ -11,6 +11,8 @@ import {
   ERC20_ABI,
   WETH_TOKEN_ADDR,
   MUSD_TOKEN_ADDR,
+  MUSD_WETH_BPT_TOKEN_STAKING_ADDR,
+  MSTABLE_REWARDS_POOL_ABI,
 } from '../../../constants'
 
 export default async function main(App) {
@@ -24,10 +26,19 @@ export default async function main(App) {
     ERC20_ABI,
     App.provider
   )
+  const BPT_STAKING_POOL = new ethers.Contract(
+    MUSD_WETH_BPT_TOKEN_STAKING_ADDR,
+    MSTABLE_REWARDS_POOL_ABI,
+    App.provider
+  )
 
   const totalBPTAmount = (await MUSD_WETH_BALANCER_POOL.totalSupply()) / 1e18
+  const totalStakedBPTAmount =
+    (await MUSD_WETH_BPT_TOKEN_CONTRACT.balanceOf(
+      MUSD_WETH_BPT_TOKEN_STAKING_ADDR
+    )) / 1e18
   const yourBPTAmount =
-    (await MUSD_WETH_BPT_TOKEN_CONTRACT.balanceOf(App.YOUR_ADDRESS)) / 1e18
+    (await BPT_STAKING_POOL.balanceOf(App.YOUR_ADDRESS)) / 1e18
 
   const totalWETHAmount =
     (await MUSD_WETH_BALANCER_POOL.getBalance(WETH_TOKEN_ADDR)) / 1e18
@@ -38,8 +49,8 @@ export default async function main(App) {
   const MUSDPerBPT = totalMUSDAmount / totalBPTAmount
 
   // Find out reward rate
-  const weekly_reward = 50000
-  const MTARewardPerBPT = weekly_reward / totalBPTAmount
+  const weekly_reward = await get_synth_weekly_rewards(BPT_STAKING_POOL)
+  const MTARewardPerBPT = weekly_reward / totalStakedBPTAmount
 
   // Look up prices
   const prices = await lookUpPrices(['musd', 'meta', 'weth'])
@@ -51,10 +62,10 @@ export default async function main(App) {
 
   // Finished. Start printing
 
-  const WeeklyROI = (MTARewardPerBPT * MTAPrice * 100) / BPTPrice
+  const weeklyRoi = (MTARewardPerBPT * MTAPrice * 100) / BPTPrice
 
   return {
-    apr: toFixed(WeeklyROI * 52, 4),
+    apr: toFixed(weeklyRoi * 52, 4),
     prices: [
       { label: 'MTA', value: toDollar(MTAPrice) },
       { label: 'mUSD', value: toDollar(MUSDPrice) },
@@ -74,26 +85,31 @@ export default async function main(App) {
     ROIs: [
       {
         label: 'Hourly',
-        value: `${toFixed(WeeklyROI / 7 / 24, 4)}%`,
+        value: `${toFixed(weeklyRoi / 7 / 24, 4)}%`,
       },
       {
         label: 'Daily',
-        value: `${toFixed(WeeklyROI / 7, 4)}%`,
+        value: `${toFixed(weeklyRoi / 7, 4)}%`,
       },
       {
         label: 'Weekly',
-        value: `${toFixed(WeeklyROI, 4)}%`,
+        value: `${toFixed(weeklyRoi, 4)}%`,
       },
     ],
     links: [
       {
         title: 'Info',
-        link: 'https://medium.com/mstable/a-recap-of-mta-rewards-9729356a66dd',
+        link:
+          'https://medium.com/mstable/introducing-mstable-earn-6ac5f4e7560e',
       },
       {
         title: 'Balancer Pool',
         link:
           'https://pools.balancer.exchange/#/pool/0xe036CCE08cf4E23D33bC6B18e53Caf532AFa8513',
+      },
+      {
+        title: 'Stake',
+        link: 'https://app.mstable.org/earn',
       },
     ],
   }

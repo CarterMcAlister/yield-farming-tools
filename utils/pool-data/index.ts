@@ -1,6 +1,8 @@
 import musd_mta from './pools/mstable/musd_mta'
 import musd_usdc from './pools/mstable/musd_usdc'
 import musd_weth from './pools/mstable/musd_weth'
+import musd_mta_2 from './pools/mstable/musd_mta_2'
+import mta_weth from './pools/mstable/mta_weth'
 import ibtc from './pools/synthetix/ibtc'
 import ieth from './pools/synthetix/ieth'
 import sbtc from './pools/synthetix/sbtc'
@@ -28,6 +30,8 @@ export default {
   musd_mta,
   musd_usdc,
   musd_weth,
+  musd_mta_2,
+  mta_weth,
   snx_usdc,
   sbtc,
   seth,
