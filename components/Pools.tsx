@@ -20,6 +20,8 @@ import {
   SimpleGrid,
   Skeleton,
   Text,
+  ButtonProps,
+  MenuButtonProps,
 } from '@chakra-ui/core'
 import { useEffect, useState } from 'react'
 import { Card } from '../components/Card'
@@ -38,6 +40,11 @@ enum Filters {
   ShowLowApr,
   OnlyMyPools,
 }
+
+const TextMenuButton: React.FC<MenuButtonProps & ButtonProps> = ({
+  children,
+  ...props
+}) => <MenuButton {...props}>{children}</MenuButton>
 
 export const PoolSection = () => {
   const [ethApp, setEthApp] = useState(null)
@@ -138,7 +145,7 @@ export const PoolSection = () => {
             APR
           </Text>
           <Menu closeOnSelect={false}>
-            <MenuButton
+            <TextMenuButton
               as={Button}
               variant="unstyled"
               maxH="24px"
@@ -148,7 +155,7 @@ export const PoolSection = () => {
               mr={11}
             >
               <Box d={{ xs: 'none', md: 'inline' }}>Filter</Box>
-            </MenuButton>
+            </TextMenuButton>
             <MenuList>
               <MenuOptionGroup
                 value={sortOrder}
