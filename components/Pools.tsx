@@ -76,11 +76,11 @@ export const PoolSection = () => {
 
     if (filters.includes(Filters.OnlyMyPools)) {
       pools = pools.filter(
-        (item) => parseFloat(item?.poolData?.staking[1]?.value) > 0
+        (item) => parseFloat(item?.poolData?.staking[1]?.value || '0') > 0
       )
     }
     if (!filters.includes(Filters.ShowLowApr)) {
-      pools = pools.filter((item) => parseFloat(item?.poolData?.apr) > 2)
+      pools = pools.filter((item) => parseFloat(item?.poolData?.apr || '0') > 2)
     }
 
     if (sortOrder === SortOrder.Highest || sortOrder === SortOrder.Lowest) {
