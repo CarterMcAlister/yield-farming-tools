@@ -8623,7 +8623,6 @@ export const ERC20_ABI = [
   },
 ]
 export const BLOCK_TIME = 13.4581790123457
-export const e18 = BigInt('1000000000000000000')
 
 export const BAL_DISTRIBUTION_WEEK = 3
 
