@@ -76,7 +76,10 @@ export const PoolSection = () => {
 
     if (filters.includes(Filters.OnlyMyPools)) {
       pools = pools.filter(
-        (item) => parseFloat(item?.poolData?.staking[1]?.value || '0') > 0
+        (item) =>
+          parseFloat(
+            item?.poolData?.staking[1]?.value?.replace('$', '') || '0'
+          ) > 0
       )
     }
     if (!filters.includes(Filters.ShowLowApr)) {
