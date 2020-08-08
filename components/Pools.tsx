@@ -64,8 +64,6 @@ export const PoolSection = () => {
     }
   }
 
-  const sortByProvider = (a, b) => a.provider - b.provider
-
   const updateVisiblePools = () => {
     let pools = poolDataList
 
@@ -130,7 +128,7 @@ export const PoolSection = () => {
           >
             Provider
           </Text>
-          <Text ml="16px" w="25%" color="gray.600" fontWeight="bold">
+          <Text ml="8px" w="25%" color="gray.600" fontWeight="bold">
             Pool
           </Text>
           <Text w="25%" color="gray.600" fontWeight="bold">

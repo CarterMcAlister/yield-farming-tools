@@ -108,7 +108,7 @@ const poolDataList: Array<PoolData> = [
   },
   {
     provider: 'yfii.finance',
-    name: 'Curve yCRV 1',
+    name: 'Curve-yCRV',
     poolData: {},
     poolRewards: ['YFII', 'CRV'],
     getPoolData: getPoolData.yfii_ycrv,
