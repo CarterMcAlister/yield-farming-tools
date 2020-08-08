@@ -13,9 +13,6 @@ declare global {
 export async function initEthers() {
   const App: any = {}
 
-  const ETHEREUM_NODE_URL =
-    'aHR0cHM6Ly9tYWlubmV0LmluZnVyYS5pby92My9mN2Q1YjkwMzY3MzY0YmFkYWNhZDI5Njg5OWYyMTMxYQ=='
-
   let isMetaMaskInstalled = true
 
   // Modern dapp browsers...
@@ -38,7 +35,7 @@ export async function initEthers() {
   }
   // If no injected web3 instance is detected, fall back to backup node
   else {
-    App.provider = new ethers.providers.JsonRpcProvider(atob(ETHEREUM_NODE_URL))
+    App.provider = new ethers.providers.InfuraProvider('homestead')
     isMetaMaskInstalled = false
     sleep(10)
   }
@@ -51,7 +48,7 @@ export async function initEthers() {
       if (localStorage.hasOwnProperty('addr')) {
         App.YOUR_ADDRESS = localStorage.getItem('addr')
       } else {
-        App.YOUR_ADDRESS = window.prompt('Enter your eth address.')
+        App.YOUR_ADDRESS = '0x0000000000000000000000000000000000000000'
       }
     } else {
       let accounts = await App.provider.listAccounts()
@@ -94,12 +91,6 @@ export const toFixed = function (num, fixed) {
   }
 }
 
-const start = function (f) {
-  f().catch((e) => {
-    console.error(e)
-  })
-}
-
 const sleep = function (milliseconds) {
   const date = Date.now()
   let currentDate = null
@@ -130,26 +121,6 @@ export const getBlockTime = function () {
       .catch((request) => {
         resolve(Constants.BLOCK_TIME)
       })
-    // $.ajax({
-    //   url: 'https://etherchain.org/api/basic_stats',
-    //   type: 'GET',
-    //   success: function (data, text) {
-    //     if (data['currentStats'] && data['currentStats']['block_time']) {
-    //       resolve(data['currentStats']['block_time'])
-    //       return
-    //     }
-
-    //
-    //
-    //     resolve(BLOCK_TIME)
-    //   },
-    //   error: function (request, status, error) {
-    //
-    //
-    //
-    //     resolve(BLOCK_TIME)
-    //   },
-    // })
   })
 }
 
