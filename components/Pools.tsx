@@ -31,6 +31,7 @@ enum SortOrder {
   Highest,
   Newest,
   Oldest,
+  Provider,
 }
 
 enum Filters {
@@ -63,6 +64,8 @@ export const PoolSection = () => {
     }
   }
 
+  const sortByProvider = (a, b) => a.provider - b.provider
+
   const updateVisiblePools = () => {
     let pools = poolDataList
 
@@ -79,6 +82,8 @@ export const PoolSection = () => {
       pools.sort(sortByApr)
     } else if (sortOrder === SortOrder.Newest) {
       pools.reverse()
+    } else if (sortOrder === SortOrder.Provider) {
+      pools.sort((a, b) => a.provider.localeCompare(b.provider))
     }
 
     setVisiblePools([...pools])
@@ -165,6 +170,9 @@ export const PoolSection = () => {
                 </MenuItemOption>
                 <MenuItemOption value={SortOrder.Oldest}>
                   Oldest First
+                </MenuItemOption>
+                <MenuItemOption value={SortOrder.Provider}>
+                  By Provider
                 </MenuItemOption>
               </MenuOptionGroup>
               <MenuDivider />
