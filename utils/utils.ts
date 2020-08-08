@@ -9,7 +9,6 @@ declare global {
     web3: any
   }
 }
-const _print = console.log
 
 export async function initEthers() {
   const App: any = {}
@@ -41,9 +40,6 @@ export async function initEthers() {
   else {
     App.provider = new ethers.providers.JsonRpcProvider(atob(ETHEREUM_NODE_URL))
     isMetaMaskInstalled = false
-    _print(
-      "You don't have MetaMask installed! Falling back to backup node...\n (will likely to fail. Please install MetaMask extension).\n"
-    )
     sleep(10)
   }
 
@@ -100,9 +96,7 @@ export const toFixed = function (num, fixed) {
 
 const start = function (f) {
   f().catch((e) => {
-    _print(e)
     console.error(e)
-    _print('Oops something went wrong. Try refreshing the page.')
   })
 }
 
@@ -119,12 +113,10 @@ export const lookUpPrices = async function (id_array) {
   const prices = await axios.get(
     `https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd`
   )
-  console.log('prices', prices.data)
   return prices.data
 }
 
 export const getBlockTime = function () {
-  _print('Fetching current block time...')
   return new Promise((resolve, reject) => {
     fetch('https://etherchain.org/api/basic_stats', { method: 'GET' })
       .then((data) => {
@@ -133,14 +125,9 @@ export const getBlockTime = function () {
           return
         }
 
-        _print(`Etherchain basic stats is invalid. ${data}`)
-        _print('Using backup data...')
         resolve(Constants.BLOCK_TIME)
       })
       .catch((request) => {
-        _print('Could not get etherchain basic stats.')
-        _print(request.responseText)
-        _print('Using backup data...')
         resolve(Constants.BLOCK_TIME)
       })
     // $.ajax({
@@ -152,14 +139,14 @@ export const getBlockTime = function () {
     //       return
     //     }
 
-    //     _print(`Etherchain basic stats is invalid. ${data}`)
-    //     _print('Using backup data...')
+    //
+    //
     //     resolve(BLOCK_TIME)
     //   },
     //   error: function (request, status, error) {
-    //     _print('Could not get etherchain basic stats.')
-    //     _print(request.responseText)
-    //     _print('Using backup data...')
+    //
+    //
+    //
     //     resolve(BLOCK_TIME)
     //   },
     // })
