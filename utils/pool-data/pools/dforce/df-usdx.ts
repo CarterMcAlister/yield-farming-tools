@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { ethers } from 'ethers'
 import { DF_USDX_UNISWAP_POOL_ABI } from '../../../constants'
 import { lookUpPrices, toDollar, toFixed } from '../../../utils'
@@ -26,14 +27,16 @@ export default async function main(App) {
 
   const rewardsPerPoolShare = DFORCE_WEEKLY_REWARDS / totalPoolAmount
 
+  const roi = await axios.get('https://testapi.dforce.network/api/getRoi/')
+  const yearlyRoi = roi.data.DF * 100
+  const weeklyRoi = yearlyRoi / 52
+
   // Prices
   const prices = await lookUpPrices(['usdx-stablecoin', 'dforce-token'])
   const USDXPrice = prices['usdx-stablecoin'].usd
   const dForcePrice = prices['dforce-token'].usd
 
   const poolSharePrice = USDXPerTotal * USDXPrice + DFORCEPerTotal * dForcePrice
-
-  const weeklyRoi = (rewardsPerPoolShare * dForcePrice * 100) / poolSharePrice
 
   return {
     apr: toFixed(weeklyRoi * 52, 4),

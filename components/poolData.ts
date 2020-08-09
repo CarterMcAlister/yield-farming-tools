@@ -141,19 +141,26 @@ const poolDataList: Array<PoolData> = [
     poolRewards: ['YFFI', 'CRV', 'BAL'],
     getPoolData: getPoolData.yffi_ycrv,
   },
-  //   {
-  //     provider: 'dForce',
-  //     name: 'Uniswap GOLDx-USDx',
-  //     poolData: {},
-  //     poolRewards: ['DF'],
-  //     getPoolData: getPoolData.goldx_usdx,
-  //   },
+  {
+    provider: 'dForce',
+    name: 'Uniswap GOLDx-USDx',
+    poolData: {},
+    poolRewards: ['DF'],
+    getPoolData: getPoolData.goldx_usdx,
+  },
   {
     provider: 'dForce',
     name: 'Uniswap DF-USDx',
     poolData: {},
     poolRewards: ['DF'],
     getPoolData: getPoolData.df_usdx,
+  },
+  {
+    provider: 'dForce',
+    name: 'dUSDT/dUSDC/dDAI',
+    poolData: {},
+    poolRewards: ['DF'],
+    getPoolData: getPoolData.dUSDT_dUSDC_dDAI,
   },
 ]
 

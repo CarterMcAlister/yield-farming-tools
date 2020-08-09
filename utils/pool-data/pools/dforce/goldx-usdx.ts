@@ -1,6 +1,7 @@
 import { ethers } from 'ethers'
 import { GOLDX_USDX_UNISWAP_POOL_ABI } from '../../../constants'
 import { lookUpPrices, toDollar, toFixed } from '../../../utils'
+import axios from 'axios'
 
 export default async function main(App) {
   const DFORCE_TOKEN_ADDR = '0x431ad2ff6a9c365805ebad47ee021148d6f7dbe0'
@@ -27,6 +28,10 @@ export default async function main(App) {
 
   const rewardsPerPoolShare = DFORCE_WEEKLY_REWARDS / totalPoolAmount
 
+  const roi = await axios.get('https://testapi.dforce.network/api/getRoi/')
+  const yearlyRoi = roi.data.Glodx * 100
+  const weeklyRoi = yearlyRoi / 52
+
   // Prices
   const prices = await lookUpPrices([
     'usdx-stablecoin',
@@ -34,30 +39,17 @@ export default async function main(App) {
     'dforce-token',
   ])
   const USDXPrice = prices['usdx-stablecoin'].usd
-  const GOLDXPrice = prices['dforce-goldx'].usd
   const DFORCEPrice = prices['dforce-token'].usd
 
-  const poolSharePrice = USDXPerTotal * USDXPrice + GOLDXPerTotal * GOLDXPrice
-
-  const weeklyRoi = (rewardsPerPoolShare * DFORCEPrice * 100) / poolSharePrice
+  // const poolSharePrice = USDXPerTotal * USDXPrice + GOLDXPerTotal * GOLDXPrice
 
   return {
     apr: toFixed(weeklyRoi * 52, 4),
     prices: [
       { label: 'USDX', value: toDollar(USDXPrice) },
-      { label: 'GOLDX', value: toDollar(GOLDXPrice) },
       { label: 'DF', value: toDollar(DFORCEPrice) },
     ],
-    staking: [
-      {
-        label: 'Pool Total',
-        value: toDollar(totalPoolAmount * poolSharePrice),
-      },
-      {
-        label: 'Your Total',
-        value: toDollar(yourPoolAmount * poolSharePrice),
-      },
-    ],
+    staking: [],
     rewards: [
       {
         label: `${toFixed(rewardsPerPoolShare * yourPoolAmount, 2)} DF`,
