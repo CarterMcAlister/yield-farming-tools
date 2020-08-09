@@ -1,7 +1,7 @@
-import { ethers } from 'ethers'
-import * as Constants from './constants'
-import { balRewards } from './bal-rewards-constants'
 import axios from 'axios'
+import { ethers } from 'ethers'
+import { balRewards } from './bal-rewards-constants'
+import * as Constants from './constants'
 
 declare global {
   interface Window {
@@ -10,10 +10,10 @@ declare global {
   }
 }
 
-export async function initEthers() {
+export async function connectToWallet() {
   const App: any = {}
 
-  let isMetaMaskInstalled = true
+  console.log('connect')
 
   // Modern dapp browsers...
   if (window.ethereum) {
@@ -24,6 +24,7 @@ export async function initEthers() {
     } catch (error) {
       // User denied account access...
       console.error('User denied account access')
+      throw 'User denied account access'
     }
     App.provider = new ethers.providers.Web3Provider(window.ethereum)
   }
@@ -33,26 +34,38 @@ export async function initEthers() {
       window.web3.currentProvider
     )
   }
-  // If no injected web3 instance is detected, fall back to backup node
+  // No injected web3 instance
   else {
-    App.provider = new ethers.providers.InfuraProvider('homestead')
-    isMetaMaskInstalled = false
-    sleep(10)
+    throw 'No metamask instance found'
   }
 
-  App.YOUR_ADDRESS = getUrlParameter('addr')
+  if (!App.YOUR_ADDRESS) {
+    const accounts = await App.provider.listAccounts()
+    App.YOUR_ADDRESS = accounts[0]
+  }
+
+  if (!App.YOUR_ADDRESS || !ethers.utils.isAddress(App.YOUR_ADDRESS)) {
+    throw 'Could not initialize your address. Make sure your address is checksum valid.'
+  }
+
+  localStorage.setItem('addr', App.YOUR_ADDRESS)
+  return App
+}
+
+export async function initInfura(address?: string) {
+  const App: any = {}
+
+  App.provider = new ethers.providers.InfuraProvider('homestead')
+  sleep(10)
+
+  App.YOUR_ADDRESS = address || getUrlParameter('addr')
 
   // Cloud not load URL parameter
   if (!App.YOUR_ADDRESS) {
-    if (!isMetaMaskInstalled) {
-      if (localStorage.hasOwnProperty('addr')) {
-        App.YOUR_ADDRESS = localStorage.getItem('addr')
-      } else {
-        App.YOUR_ADDRESS = '0x0000000000000000000000000000000000000000'
-      }
+    if (localStorage.hasOwnProperty('addr')) {
+      App.YOUR_ADDRESS = localStorage.getItem('addr')
     } else {
-      let accounts = await App.provider.listAccounts()
-      App.YOUR_ADDRESS = accounts[0]
+      App.YOUR_ADDRESS = Constants.PLACEHOLDER_ADDRESS
     }
   }
 

@@ -1,10 +1,8 @@
 import {
-  Alert,
-  AlertIcon,
-  AlertTitle,
   Badge,
   Box,
   Button,
+  ButtonProps,
   Collapse,
   Divider,
   Flex,
@@ -13,6 +11,7 @@ import {
   Link,
   Menu,
   MenuButton,
+  MenuButtonProps,
   MenuDivider,
   MenuItemOption,
   MenuList,
@@ -20,12 +19,9 @@ import {
   SimpleGrid,
   Skeleton,
   Text,
-  ButtonProps,
-  MenuButtonProps,
 } from '@chakra-ui/core'
 import { useEffect, useState } from 'react'
 import { Card } from '../components/Card'
-import { initEthers } from '../utils/utils'
 import poolDataList from './poolData'
 
 enum SortOrder {
@@ -46,22 +42,10 @@ const TextMenuButton: React.FC<MenuButtonProps & ButtonProps> = ({
   ...props
 }) => <MenuButton {...props}>{children}</MenuButton>
 
-export const PoolSection = () => {
-  const [ethApp, setEthApp] = useState(null)
-  const [appError, setAppError] = useState(false)
+export const PoolSection: React.FC<{ ethApp: any }> = ({ ethApp }) => {
   const [visiblePools, setVisiblePools] = useState([])
   const [sortOrder, setSortOrder] = useState(SortOrder.Highest)
   const [filters, setFilters] = useState([])
-
-  const connectToWallet = async () => {
-    try {
-      const app = await initEthers()
-      setEthApp(app)
-    } catch (e) {
-      console.error(e)
-      setAppError(true)
-    }
-  }
 
   const sortByApr = (a, b) => {
     if (sortOrder === SortOrder.Highest) {
@@ -119,13 +103,7 @@ export const PoolSection = () => {
     updateVisiblePools()
   }, [sortOrder, filters])
 
-  useEffect(() => {
-    ;(async () => {
-      await connectToWallet()
-    })()
-  }, [])
-
-  return ethApp ? (
+  return (
     <Box pt={4}>
       <Box>
         <Flex justifyContent="space-between" mx="1rem">
@@ -215,27 +193,6 @@ export const PoolSection = () => {
         </Box>
       </Box>
     </Box>
-  ) : (
-    <Card
-      maxW={{ xs: '100%', lg: 400 }}
-      display="flex"
-      flexDirection="column"
-      justifyContent="center"
-      alignItems="center"
-    >
-      {appError && (
-        <Alert status="error" maxW={400} mb={3}>
-          <AlertIcon />
-          <AlertTitle mr={2}>Web3 compatible browser required!</AlertTitle>
-        </Alert>
-      )}
-      <Text fontWeight="bold" pb={3}>
-        Connect your wallet to view pools
-      </Text>
-      <Button onClick={connectToWallet} variantColor="teal">
-        Connect Wallet
-      </Button>
-    </Card>
   )
 }
 

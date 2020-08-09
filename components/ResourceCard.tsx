@@ -1,4 +1,4 @@
-import { Text, Heading, List, ListItem, Link, Tooltip } from '@chakra-ui/core'
+import { Heading, Link, List, ListItem, Text, Tooltip } from '@chakra-ui/core'
 import { Card } from './Card'
 
 const ResourceItem = ({ name, url, description, isForBeginners = false }) => (

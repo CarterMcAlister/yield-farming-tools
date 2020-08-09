@@ -1,4 +1,4 @@
-import { Box, Flex, CSSReset, theme, ThemeProvider } from '@chakra-ui/core'
+import { Box, CSSReset, Flex, theme, ThemeProvider } from '@chakra-ui/core'
 import { css, Global } from '@emotion/core'
 import 'focus-visible/dist/focus-visible'
 

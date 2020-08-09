@@ -1,12 +1,33 @@
-import { Box, Flex, Grid, Heading, Text } from '@chakra-ui/core'
+import {
+  Box,
+  Button,
+  Flex,
+  Grid,
+  Heading,
+  IconButton,
+  Image,
+  Input,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalOverlay,
+  Text,
+  useDisclosure,
+  useToast,
+} from '@chakra-ui/core'
 import { GraphQLClient } from 'graphql-request'
 import Head from 'next/head'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Card } from '../components/Card'
 import { PoolSection } from '../components/Pools'
 import { ResourceCard } from '../components/ResourceCard'
 import Wrapper from '../components/Wrapper'
 import { useAnalytics } from '../hooks/useAnalytics'
+import { PLACEHOLDER_ADDRESS } from '../utils/constants'
+import { connectToWallet, initInfura } from '../utils/utils'
+import ethLogo from './resources/eth-logo.svg'
+import metamaskLogo from './resources/metamask-fox.svg'
 
 export const getStaticProps = async () => {
   const graphcms = new GraphQLClient(
@@ -72,7 +93,9 @@ export default function Home({
   farmingSection,
   utilitySection,
 }) {
+  const [ethApp, setEthApp] = useState(null)
   const { init, trackPageViewed } = useAnalytics()
+
   useEffect(() => {
     init('UA-156207639-2')
     trackPageViewed()
@@ -81,19 +104,11 @@ export default function Home({
   return (
     <Wrapper maxW="1200px">
       <SEO />
-      <Card>
-        <Heading as="h1" size="xl">
-          <Box display={{ xs: 'block', md: 'inline' }}>🧑‍🌾 </Box>
-          Yield Farming Tools
-        </Heading>
-        <Text pl={{ xs: 0, md: 12 }} fontSize="md" color="gray.600">
-          {tagLines[randomIndex(0, tagLines.length - 1)]}
-        </Text>
-      </Card>
+      <TopNav ethApp={ethApp} setEthApp={setEthApp} />
 
       <Flex direction={{ xs: 'column', lg: 'row' }} pb="1rem">
         <Box width={{ xs: '100%', lg: '70%' }}>
-          <PoolSection />
+          <PoolSection ethApp={ethApp} />
         </Box>
         <Box flexGrow={1}>
           <Text color="gray.600" fontWeight="bold" pt="1rem" pl="20px">
@@ -125,6 +140,175 @@ export default function Home({
         <ResourceCard title="🔒 Wallets" sectionContent={walletSection} />
       </Grid>
     </Wrapper>
+  )
+}
+
+const TopNav = ({ ethApp, setEthApp }) => {
+  const toast = useToast()
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const [ethAddress, setEthAddress] = useState('')
+
+  const initApp = async () => {
+    try {
+      const app = await initInfura()
+      setEthApp(app)
+    } catch (e) {
+      console.error(e)
+      toast({
+        title: 'An error occurred.',
+        description: e,
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      })
+    }
+  }
+
+  const connectWallet = async (address?: string) => {
+    try {
+      let app
+      if (address) {
+        app = await initInfura(address)
+      } else {
+        app = await connectToWallet()
+      }
+      console.log(app)
+      setEthApp(app)
+      toast({
+        title: 'Address connected successfully',
+        status: 'success',
+        duration: 4000,
+        isClosable: true,
+      })
+      onClose()
+      setEthAddress('')
+    } catch (e) {
+      console.error(e)
+      toast({
+        title: 'An error occurred.',
+        description: e,
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      })
+    }
+  }
+
+  useEffect(() => {
+    ;(async () => {
+      await initApp()
+    })()
+  }, [])
+
+  return (
+    <>
+      <Flex as={Card} justifyContent="space-between" alignItems="center">
+        <Box>
+          <Heading as="h1" size="xl">
+            <Box display={{ xs: 'block', md: 'inline' }}>🧑‍🌾 </Box>
+            Yield Farming Tools
+          </Heading>
+          <Text pl={{ xs: 0, md: 12 }} fontSize="md" color="gray.600">
+            {tagLines[randomIndex(0, tagLines.length - 1)]}
+          </Text>
+          <Button
+            onClick={onOpen}
+            display={{ xs: 'block', sm: 'none' }}
+            variantColor="teal"
+            mt={3}
+          >
+            {ethApp && ethApp?.YOUR_ADDRESS != PLACEHOLDER_ADDRESS
+              ? 'Wallet Connected'
+              : 'Connect Wallet'}
+          </Button>
+        </Box>
+        <Button
+          onClick={onOpen}
+          display={{ xs: 'none', sm: 'block' }}
+          variantColor="teal"
+        >
+          {ethApp && ethApp?.YOUR_ADDRESS != PLACEHOLDER_ADDRESS
+            ? 'Wallet Connected'
+            : 'Connect Wallet'}
+        </Button>
+      </Flex>
+      <Modal isOpen={isOpen} onClose={onClose} size="xl">
+        <ModalOverlay />
+        <ModalContent>
+          <ModalCloseButton />
+          <ModalBody py={10}>
+            <Heading
+              as="h3"
+              size="md"
+              fontWeight="medium"
+              textAlign="center"
+              pb="15px"
+            >
+              Connect your Ethereum wallet to Yield Farming Tools
+            </Heading>
+            <Flex
+              as={Card}
+              justifyContent={{ xs: 'center', md: 'space-between' }}
+              alignItems="center"
+              height={100}
+              overflow="hidden"
+            >
+              <Image
+                display={{ xs: 'none', md: 'block' }}
+                src={metamaskLogo}
+                alt="MetaMask Logo"
+                height={200}
+                mt="-6px"
+                ml="-15px"
+              />
+              <Button
+                onClick={() => connectWallet()}
+                background="#F6851B"
+                color="#FFF"
+                _hover={{ bg: '#e2761B' }}
+                _active={{ bg: '#CD6116' }}
+              >
+                Connect to Web3 Wallet
+              </Button>
+            </Flex>
+
+            <Flex
+              as={Card}
+              justifyContent={{ xs: 'center', md: 'space-between' }}
+              alignItems="center"
+              height={100}
+              overflow="hidden"
+            >
+              <Image
+                display={{ xs: 'none', md: 'block' }}
+                src={ethLogo}
+                alt="Ethereum Logo"
+                height={200}
+                mt="-6px"
+                ml="23px"
+              />
+              <Flex>
+                <Input
+                  placeholder="Your Ethereum address"
+                  width="auto"
+                  value={ethAddress}
+                  onChange={(e) => setEthAddress(e.target.value)}
+                />
+                <IconButton
+                  onClick={() => connectWallet(ethAddress)}
+                  aria-label="Add address"
+                  background="#4099FF"
+                  color="#FFF"
+                  icon="check"
+                  _hover={{ bg: '#337ACC' }}
+                  _active={{ bg: '#2C6BB2' }}
+                />
+              </Flex>
+            </Flex>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+    </>
   )
 }
 
