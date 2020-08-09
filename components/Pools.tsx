@@ -243,7 +243,9 @@ const PoolItem = ({ poolItemData }) => {
           <LinkList links={poolData.links || []} />
           <DetailItem title="Prices" data={poolData.prices} />
           <DetailItem title="ROI" data={poolData.ROIs} />
-          <DetailItem title="Staking" data={poolData.staking} />
+          {poolData.staking?.length > 0 && (
+            <DetailItem title="Staking" data={poolData.staking} />
+          )}
           {poolData.rewards?.length > 0 && (
             <DetailItem title="Claimable Rewards" data={poolData.rewards} />
           )}
