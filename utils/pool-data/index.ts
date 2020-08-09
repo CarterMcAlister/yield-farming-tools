@@ -24,6 +24,7 @@ import yfii_ycrv from './pools/yfii/yfii_ycrv'
 import df_usdx from './pools/dforce/df-usdx'
 import goldx_usdx from './pools/dforce/goldx-usdx'
 import dUSDT_dUSDC_dDAI from './pools/dforce/dUSDT-dUSDC-dDAI'
+import omen_pnk from './pools/omen/omen-pnk'
 
 export default {
   ibtc,
@@ -52,4 +53,5 @@ export default {
   df_usdx,
   goldx_usdx,
   dUSDT_dUSDC_dDAI,
+  omen_pnk,
 }

@@ -11,7 +11,6 @@ export default async function main(App) {
     parseFloat(poolValues.data.dUSDC.net_value) +
     parseFloat(poolValues.data.dUSDT.net_value)
 
-  console.log('poolValue', poolValue)
   const roi = await axios.get('https://testapi.dforce.network/api/getRoi/')
   const yearlyRoi =
     ((roi.data.dDAI + roi.data.dUSDC + roi.data.dUSDT) / 3) * 100
@@ -19,7 +18,6 @@ export default async function main(App) {
 
   // Prices
   const prices = await lookUpPrices(['tether', 'usd-coin', 'dai'])
-  console.log(prices)
   const USDTPrice = prices['tether'].usd
   const USDCPrice = prices['usd-coin'].usd
   const DAIPrice = prices['dai'].usd

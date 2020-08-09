@@ -21,7 +21,6 @@ export default async function main(App) {
   const poolReserves = await GOLDX_USDX_UNISWAP_POOL.getReserves()
   const poolGOLDXAmount = poolReserves[0] / 1e18
   const poolUSDXAmount = poolReserves[1] / 1e18
-  console.log(totalPoolAmount, poolReserves, poolGOLDXAmount, poolUSDXAmount)
 
   const USDXPerTotal = poolUSDXAmount / totalPoolAmount
   const GOLDXPerTotal = poolGOLDXAmount / totalPoolAmount

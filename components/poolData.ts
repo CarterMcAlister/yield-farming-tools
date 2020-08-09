@@ -162,6 +162,13 @@ const poolDataList: Array<PoolData> = [
     poolRewards: ['DF'],
     getPoolData: getPoolData.dUSDT_dUSDC_dDAI,
   },
+  {
+    provider: 'Omen',
+    name: 'Omen Kleros',
+    poolData: {},
+    poolRewards: ['PNK'],
+    getPoolData: getPoolData.omen_pnk,
+  },
 ]
 
 export default poolDataList
