@@ -1,7 +1,7 @@
 import { ethers } from 'ethers';
 import {
     BALANCER_POOL_ABI,
-    ERC20_ABI
+    ERC20_ABI, YAM_TOKEN_ABI
 } from '../../../constants';
 import { get_synth_weekly_rewards, lookUpPrices, toDollar, toFixed } from '../../../utils';
 
@@ -27,13 +27,15 @@ export default async function main(App) {
 
     const Y_TOKEN = new ethers.Contract(Y_TOKEN_ADDR, ERC20_ABI, App.provider);
 
-    const YAM_TOKEN = new ethers.Contract(YAM_TOKEN_ADDR, ERC20_ABI, App.provider);
+    const YAM_TOKEN = new ethers.Contract(YAM_TOKEN_ADDR, YAM_TOKEN_ABI, App.provider);
+
+    const yamScale = await YAM_TOKEN.yamsScalingFactor() / 1e18; 
 
     const totalYCRVInUniswapPair = await Y_TOKEN.balanceOf(YAM_YCRV_UNI_TOKEN_ADDR) / 1e18;
     const totalYAMInUniswapPair = await YAM_TOKEN.balanceOf(YAM_YCRV_UNI_TOKEN_ADDR) / 1e18;
 
     const stakedYAmount = await REWARD_POOL.balanceOf(App.YOUR_ADDRESS) / 1e18;
-    const earnedYFFI = await REWARD_POOL.earned(App.YOUR_ADDRESS) / 1e18;
+    const earnedYFFI = yamScale * await REWARD_POOL.earned(App.YOUR_ADDRESS) / 1e18;
     const totalSupplyOfStakingToken = await STAKING_TOKEN.totalSupply() / 1e18;
     const totalStakedYAmount = await STAKING_TOKEN.balanceOf(rewardPoolAddr) / 1e18;
 
