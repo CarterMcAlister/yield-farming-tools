@@ -40,7 +40,7 @@ export default async function main(App) {
     const totalStakedYAmount = await STAKING_TOKEN.balanceOf(rewardPoolAddr) / 1e18;
 
     // Find out reward rate
-    const weekly_reward = await get_synth_weekly_rewards(REWARD_POOL);
+    const weekly_reward = (await get_synth_weekly_rewards(REWARD_POOL)) * await YAM_TOKEN.yamsScalingFactor() / 1e18;
 
     const startTime = await REWARD_POOL.starttime();
     const timeUntil = startTime - (Date.now() / 1000);
@@ -55,7 +55,6 @@ export default async function main(App) {
     const prices = await lookUpPrices(["yam"]);
     const stakingTokenPrice = (totalYAMInUniswapPair * prices["yam"].usd + totalYCRVInUniswapPair * YVirtualPrice) / totalSupplyOfStakingToken;
 
-    // const rewardTokenPrice = (await YFFI_DAI_BALANCER_POOL.getSpotPrice(LINK_TOKEN_ADDR, rewardTokenAddr) / 1e18) * stakingTokenPrice;
     const rewardTokenPrice = prices["yam"].usd;
     const YFIWeeklyROI = (rewardPerToken * rewardTokenPrice) * 100 / (stakingTokenPrice);
 
