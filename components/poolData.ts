@@ -169,6 +169,62 @@ const poolDataList: Array<PoolData> = [
     poolRewards: ['PNK'],
     getPoolData: getPoolData.omen_pnk,
   },
+  {
+    provider: 'yam.finance',
+    name: 'Yam YFI',
+    poolData: {},
+    poolRewards: ['YAM'],
+    getPoolData: getPoolData.yam_yfi,
+  },
+  {
+    provider: 'yam.finance',
+    name: 'Yam COMP',
+    poolData: {},
+    poolRewards: ['YAM'],
+    getPoolData: getPoolData.yam_comp,
+  },
+  {
+    provider: 'yam.finance',
+    name: 'Yam LEND',
+    poolData: {},
+    poolRewards: ['YAM'],
+    getPoolData: getPoolData.yam_lend,
+  },
+  {
+    provider: 'yam.finance',
+    name: 'Yam LINK',
+    poolData: {},
+    poolRewards: ['YAM'],
+    getPoolData: getPoolData.yam_link,
+  },
+  {
+    provider: 'yam.finance',
+    name: 'Yam MKR',
+    poolData: {},
+    poolRewards: ['YAM'],
+    getPoolData: getPoolData.yam_mkr,
+  },
+  {
+    provider: 'yam.finance',
+    name: 'Yam SNX',
+    poolData: {},
+    poolRewards: ['YAM'],
+    getPoolData: getPoolData.yam_snx,
+  },
+  {
+    provider: 'yam.finance',
+    name: 'Yam wETH',
+    poolData: {},
+    poolRewards: ['YAM'],
+    getPoolData: getPoolData.yam_weth,
+  },
+  {
+    provider: 'yam.finance',
+    name: 'Yam AMPL',
+    poolData: {},
+    poolRewards: ['YAM'],
+    getPoolData: getPoolData.yam_ampl,
+  },
 ]
 
 export default poolDataList

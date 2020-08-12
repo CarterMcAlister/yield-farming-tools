@@ -25,6 +25,14 @@ import df_usdx from './pools/dforce/df-usdx'
 import goldx_usdx from './pools/dforce/goldx-usdx'
 import dUSDT_dUSDC_dDAI from './pools/dforce/dUSDT-dUSDC-dDAI'
 import omen_pnk from './pools/omen/omen-pnk'
+import yam_ampl from './pools/yam/yam_ampl'
+import yam_comp from './pools/yam/yam_comp'
+import yam_lend from './pools/yam/yam_lend'
+import yam_link from './pools/yam/yam_link'
+import yam_mkr from './pools/yam/yam_mkr'
+import yam_snx from './pools/yam/yam_snx'
+import yam_weth from './pools/yam/yam_weth'
+import yam_yfi from './pools/yam/yam_yfi'
 
 export default {
   ibtc,
@@ -54,4 +62,12 @@ export default {
   goldx_usdx,
   dUSDT_dUSDC_dDAI,
   omen_pnk,
+  yam_ampl,
+  yam_comp,
+  yam_lend,
+  yam_link,
+  yam_mkr,
+  yam_snx,
+  yam_weth,
+  yam_yfi,
 }
