@@ -225,6 +225,13 @@ const poolDataList: Array<PoolData> = [
     poolRewards: ['YAM'],
     getPoolData: getPoolData.yam_ampl,
   },
+  {
+    provider: 'yam.finance',
+    name: 'YAM/yCRV',
+    poolData: {},
+    poolRewards: ['YAM'],
+    getPoolData: getPoolData.yam_ycrv,
+  },
 ]
 
 export default poolDataList
