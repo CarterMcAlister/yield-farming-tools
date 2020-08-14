@@ -34,6 +34,7 @@ import yam_snx from './pools/yam/yam_snx'
 import yam_weth from './pools/yam/yam_weth'
 import yam_yfi from './pools/yam/yam_yfi'
 import yam_ycrv from './pools/yam/yam_ycrv'
+import b_scrv from './pools/based/b_scrv'
 
 export default {
   ibtc,
@@ -71,5 +72,6 @@ export default {
   yam_snx,
   yam_weth,
   yam_yfi,
-  yam_ycrv
+  yam_ycrv,
+  b_scrv,
 }

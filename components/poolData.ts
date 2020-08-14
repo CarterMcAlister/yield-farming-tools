@@ -225,12 +225,19 @@ const poolDataList: Array<PoolData> = [
     poolRewards: ['YAM'],
     getPoolData: getPoolData.yam_ampl,
   },
+  // {
+  //   provider: 'yam.finance',
+  //   name: 'YAM/yCRV',
+  //   poolData: {},
+  //   poolRewards: ['YAM'],
+  //   getPoolData: getPoolData.yam_ycrv,
+  // },
   {
-    provider: 'yam.finance',
-    name: 'YAM/yCRV',
+    provider: 'Based',
+    name: 'sCRV',
     poolData: {},
-    poolRewards: ['YAM'],
-    getPoolData: getPoolData.yam_ycrv,
+    poolRewards: ['BASED'],
+    getPoolData: getPoolData.b_scrv,
   },
 ]
 
