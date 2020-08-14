@@ -11,12 +11,8 @@ import {
   Y_TOKEN_ADDR,
 } from '../../../constants'
 import { get_synth_weekly_rewards, lookUpPrices, toFixed } from '../../../utils'
-const _print = console.log
 
 export default async function main(App) {
-  _print(`Initialized ${App.YOUR_ADDRESS}`)
-  _print('Reading smart contracts...')
-
   const YGOV_2_BPT_POOL = new ethers.Contract(
     YGOV_BPT_2_STAKING_POOL_ADDR,
     YGOV_BPT_2_STAKING_POOL_ABI,
@@ -65,82 +61,13 @@ export default async function main(App) {
   // Find out underlying assets of Y
   const YVirtualPrice = (await CURVE_Y_POOL.get_virtual_price()) / 1e18
 
-  _print('Finished reading smart contracts... Looking up prices... \n')
-
   // Look up prices
   const prices = await lookUpPrices(['yearn-finance'])
   const YFIPrice = prices['yearn-finance'].usd
 
   const BPTPrice = YFIPerBPT * YFIPrice + YPerBPT * YVirtualPrice
 
-  // Finished. Start printing
-
-  _print('========== PRICES ==========')
-  _print(`1 YFI  = $${YFIPrice}`)
-  _print(`1 yCRV = $${YVirtualPrice}`)
-  _print(`1 BPT  = [${YFIPerBPT} YFI, ${YPerBPT} yCRV]`)
-  _print(`       = $${YFIPerBPT * YFIPrice + YPerBPT * YVirtualPrice}\n`)
-
-  _print('========== STAKING =========')
-  _print(
-    `There are total   : ${totalBPTAmount} BPT issued by YFI-yCRV Balancer Pool.`
-  )
-  _print(
-    `There are total   : ${totalStakedBPTAmount} BPT staked in Ygov's BPT staking pool. `
-  )
-  _print(
-    `                  = $${toFixed(totalStakedBPTAmount * BPTPrice, 2)}\n`
-  )
-  _print(
-    `You are staking   : ${stakedBPTAmount} BPT (${toFixed(
-      (stakedBPTAmount * 100) / totalStakedBPTAmount,
-      3
-    )}% of the pool)`
-  )
-  _print(
-    `                  = [${YFIPerBPT * stakedBPTAmount} YFI, ${
-      YPerBPT * stakedBPTAmount
-    } yCRV]`
-  )
-  _print(
-    `                  = $${toFixed(
-      YFIPerBPT * stakedBPTAmount * YFIPrice +
-        YPerBPT * stakedBPTAmount * YVirtualPrice,
-      2
-    )}\n`
-  )
-
-  // YFI REWARDS
-  _print('======== YFI REWARDS ========')
-  _print(
-    `Claimable Rewards : ${toFixed(earnedYFI, 4)} YFI = $${toFixed(
-      earnedYFI * YFIPrice,
-      2
-    )}`
-  )
-  _print(
-    `Weekly estimate   : ${toFixed(
-      rewardPerToken * stakedBPTAmount,
-      2
-    )} YFI = $${toFixed(
-      rewardPerToken * stakedBPTAmount * YFIPrice,
-      2
-    )} (out of total ${weekly_reward} YFI)`
-  )
   const YFIWeeklyROI = (rewardPerToken * YFIPrice * 100) / BPTPrice
-  _print(`Weekly ROI in USD : ${toFixed(YFIWeeklyROI, 4)}%`)
-  _print(`APY (unstable)    : ${toFixed(YFIWeeklyROI * 52, 4)}% \n`)
-
-  // BAL REWARDS
-  _print('======= BAL REWARDS ? =======')
-  _print(`    Not whitelisted yet?`)
-  _print(
-    `    Check http://www.predictions.exchange/balancer/ for latest update \n`
-  )
-
-  // CRV REWARDS
-  _print('======== CRV REWARDS ========')
-  _print(`    Not distributed yet\n`)
 
   return {
     apr: toFixed(YFIWeeklyROI * 52, 4),

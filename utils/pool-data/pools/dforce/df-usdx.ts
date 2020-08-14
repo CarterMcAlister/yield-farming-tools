@@ -39,6 +39,9 @@ export default async function main(App) {
   const poolSharePrice = USDXPerTotal * USDXPrice + DFORCEPerTotal * dForcePrice
 
   return {
+    provider: 'dForce',
+    name: 'Uniswap DF-USDx',
+    poolRewards: ['DF'],
     apr: toFixed(weeklyRoi * 52, 4),
     prices: [
       { label: 'USDX', value: toDollar(USDXPrice) },

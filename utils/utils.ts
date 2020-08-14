@@ -13,8 +13,6 @@ declare global {
 export async function connectToWallet() {
   const App: any = {}
 
-  console.log('connect')
-
   // Modern dapp browsers...
   if (window.ethereum) {
     App.web3Provider = window.ethereum

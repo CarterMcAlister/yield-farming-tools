@@ -68,6 +68,9 @@ export default async function main(App) {
   const weeklyRoi = (MTARewardPerBPT * MTAPrice * 100) / BPTPrice
 
   return {
+    provider: 'mStable',
+    name: 'Balancer MTA-wETH',
+    poolRewards: ['MTA', 'BAL'],
     apr: toFixed(weeklyRoi * 52, 4),
     prices: [
       { label: 'MTA', value: toDollar(MTAPrice) },

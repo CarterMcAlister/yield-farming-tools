@@ -6,12 +6,8 @@ import {
   YGOV_BPT_2_STAKING_POOL_ADDR,
 } from '../../../constants'
 import { forHumans, getBlockTime, toFixed } from '../../../utils'
-const _print = console.log
 
 export default async function main(App) {
-  _print(`Initialized ${App.YOUR_ADDRESS}`)
-  _print('Reading smart contracts...')
-
   const YGOV_VOTING_POOL = new ethers.Contract(
     YGOV_BPT_2_STAKING_POOL_ADDR,
     YGOV_BPT_2_STAKING_POOL_ABI,
@@ -39,8 +35,6 @@ export default async function main(App) {
 
   // PROPOSALS
   let wasVotingPeriodOver = true
-
-  _print(``)
 
   for (let i = 0; i < proposalCount; i++) {
     const proposedBy = proposals[i][1]
@@ -80,8 +74,6 @@ export default async function main(App) {
     )
     isQuorumMet = quorumPercentage > 33
 
-    let _print_status = _print
-
     status = ''
     if (isVotingPeriodOver) {
       if (!isQuorumMet) {
@@ -99,54 +91,14 @@ export default async function main(App) {
       status = '⌛ ON GOING'
     }
 
-    if (wasVotingPeriodOver && !isVotingPeriodOver) {
-      _print(`\n=============================================================`)
-      _print(`==================== ON GOING PROPOSALS =====================`)
-      _print(
-        `=============================================================\n\n`
-      )
-    }
-
-    _print(`====== PROPOSAL #${i} ======`)
-
-    _print_status(`Status              : ${status}\n`)
-
-    let _print_quorum = _print
-    let _print_for = _print
-    let _print_against = _print
-
     if (isVotingPeriodOver) {
       if (isQuorumMet) {
         if (forVotes > againstVotes) {
-          _print_for = _print
         } else if (againstVotes > forVotes) {
-          _print_against = _print
         }
       } else {
-        _print_quorum = _print
       }
     }
-
-    _print(`Proposed by         : ${proposedBy}`)
-    _print_for(
-      `Total for votes     : ${toFixed(forVotes, 4)} (${toFixed(
-        (forVotes * 100) / totalVotes,
-        2
-      )}%)`
-    )
-    _print_against(
-      `Total against votes : ${toFixed(againstVotes, 4)} (${toFixed(
-        (againstVotes * 100) / totalVotes,
-        2
-      )}%)`
-    )
-    _print_quorum(
-      `Quorum              : ${quorumPercentage}% ${
-        parseFloat(quorumPercentage) > 33 ? '✔' : '𐄂'
-      }`
-    )
-    _print(`Start block         : ${startBlock}`)
-    _print(`End block           : ${endBlock} (${readableTimeUntilEndBlock})\n`)
 
     wasVotingPeriodOver = isVotingPeriodOver
   }

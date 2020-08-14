@@ -13,7 +13,6 @@ import {
   Y_TOKEN_ADDR,
 } from '../../../constants'
 import {
-  getPeriodFinishForReward,
   get_synth_weekly_rewards,
   lookUpPrices,
   toDollar,
@@ -50,8 +49,6 @@ export default async function main(App) {
   const stakedBPTAmount = (await YFFI_POOL_3.balanceOf(App.YOUR_ADDRESS)) / 1e18
   const earnedYFFI_raw = await YFFI_POOL_3.earned(App.YOUR_ADDRESS)
 
-  const startTime = await YFFI_POOL_3.starttime()
-
   const earnedYFFI = earnedYFFI_raw / 1e18
   const totalBPTAmount = (await YFFI_YCRV_BALANCER_POOL.totalSupply()) / 1e18
   const totalStakedBPTAmount =
@@ -68,7 +65,6 @@ export default async function main(App) {
 
   // Find out reward rate
   const weekly_reward = await get_synth_weekly_rewards(YFFI_POOL_3)
-  const nextHalving = await getPeriodFinishForReward(YFFI_POOL_3)
   const rewardPerToken = weekly_reward / totalStakedBPTAmount
 
   // Find out underlying assets of Y
@@ -85,19 +81,15 @@ export default async function main(App) {
     )) /
       1e18) *
     DAIPrice
-  const YFFIPrice2 =
-    ((await YFFI_YCRV_BALANCER_POOL.getSpotPrice(
-      Y_TOKEN_ADDR,
-      YFFI_TOKEN_ADDR
-    )) /
-      1e18) *
-    YVirtualPrice
 
   const BPTPrice = YFFIPerBPT * YFFIPrice + YPerBPT * YVirtualPrice
 
   const YFFIWeeklyROI = (rewardPerToken * YFFIPrice * 100) / BPTPrice
 
   return {
+    provider: 'yffi.finance',
+    name: 'Balancer YFFI-yCRV',
+    poolRewards: ['YFFI', 'CRV', 'BAL'],
     apr: toFixed(YFFIWeeklyROI * 52, 4),
     prices: [
       { label: 'YFFI', value: toDollar(YFFIPrice) },

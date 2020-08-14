@@ -172,7 +172,7 @@ const TopNav = ({ ethApp, setEthApp }) => {
       } else {
         app = await connectToWallet()
       }
-      console.log(app)
+
       setEthApp(app)
       toast({
         title: 'Address connected successfully',

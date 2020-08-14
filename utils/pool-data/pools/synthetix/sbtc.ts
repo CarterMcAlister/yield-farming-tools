@@ -112,6 +112,9 @@ export default async function main(App) {
     BALPerToken * BALPrice * 100 * (rewardPerToken * crvRenWSBTCPerDollar)
 
   return {
+    provider: 'Synthetix & Ren',
+    name: 'Curve sBTC',
+    poolRewards: ['SNX', 'CRV', 'REN', 'BAL'],
     apr: toFixed(BALWeeklyROI * 52 + SNXWeeklyROI * 52, 4),
     prices: [
       { label: 'SNX', value: toDollar(SNXprice) },

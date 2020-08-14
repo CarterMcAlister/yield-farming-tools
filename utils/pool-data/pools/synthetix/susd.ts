@@ -85,6 +85,9 @@ export default async function main(App) {
     (rewardPerToken * SNXPrice * 100) / crvPlain3andSUSDPricePerToken
 
   return {
+    provider: 'Synthetix',
+    name: 'Curve sUSD',
+    poolRewards: ['SNX', 'CRV'],
     apr: toFixed(SNXWeeklyROI * 52, 4),
     prices: [
       { label: 'SNX', value: toDollar(SNXPrice) },

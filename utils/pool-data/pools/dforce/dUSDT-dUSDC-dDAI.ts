@@ -1,6 +1,5 @@
 import axios from 'axios'
 import { lookUpPrices, toDollar, toFixed } from '../../../utils'
-import { Console } from 'console'
 
 export default async function main(App) {
   const poolValues = await axios.get(
@@ -23,6 +22,9 @@ export default async function main(App) {
   const DAIPrice = prices['dai'].usd
 
   return {
+    provider: 'dForce',
+    name: 'dUSDT/dUSDC/dDAI',
+    poolRewards: ['DF'],
     apr: toFixed(weeklyRoi * 52, 4),
     prices: [
       { label: 'USDT', value: toDollar(USDTPrice) },

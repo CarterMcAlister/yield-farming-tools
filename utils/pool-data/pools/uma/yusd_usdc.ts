@@ -53,6 +53,9 @@ export default async function main(App) {
   const UMAWeeklyROI = (UMARewardPerBPT * UMAPrice * 100) / BPTPrice
 
   return {
+    provider: 'UMA Project',
+    name: 'Balancer yUSD-USDC',
+    poolRewards: ['UMA', 'BAL'],
     apr: toFixed(UMAWeeklyROI * 52, 4),
     prices: [
       { label: 'UMA', value: toDollar(UMAPrice) },

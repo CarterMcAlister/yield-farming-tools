@@ -164,6 +164,9 @@ export default async function main(App) {
       const weeklyRoi = yearRoi / 52
 
       return {
+        provider: 'Omen',
+        name: 'Omen Kleros',
+        poolRewards: ['PNK'],
         apr: toFixed(weeklyRoi * 52, 4),
         prices: [{ label: 'PNK', value: toDollar(pnkUSDValue) }],
         staking: [

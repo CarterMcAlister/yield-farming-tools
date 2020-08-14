@@ -22,7 +22,7 @@ import {
 } from '@chakra-ui/core'
 import { useEffect, useState } from 'react'
 import { Card } from '../components/Card'
-import poolDataList from './poolData'
+import { pools } from '../utils/pool-data'
 
 enum SortOrder {
   Lowest,
@@ -42,6 +42,8 @@ const TextMenuButton: React.FC<MenuButtonProps & ButtonProps> = ({
   ...props
 }) => <MenuButton {...props}>{children}</MenuButton>
 
+const poolData = []
+
 export const PoolSection: React.FC<{ ethApp: any }> = ({ ethApp }) => {
   const [visiblePools, setVisiblePools] = useState([])
   const [sortOrder, setSortOrder] = useState(SortOrder.Highest)
@@ -49,25 +51,26 @@ export const PoolSection: React.FC<{ ethApp: any }> = ({ ethApp }) => {
 
   const sortByApr = (a, b) => {
     if (sortOrder === SortOrder.Highest) {
-      return parseFloat(b.poolData.apr) - parseFloat(a.poolData.apr)
+      return parseFloat(b.apr) - parseFloat(a.apr)
     } else {
-      return parseFloat(a.poolData.apr) - parseFloat(b.poolData.apr)
+      return parseFloat(a.apr) - parseFloat(b.apr)
     }
   }
 
   const updateVisiblePools = () => {
-    let pools = poolDataList
+    let pools = poolData
 
-    if (filters.includes(Filters.OnlyMyPools)) {
-      pools = pools.filter(
-        (item) =>
-          parseFloat(
-            item?.poolData?.staking[1]?.value?.replace('$', '') || '0'
-          ) > 0
-      )
+    if (pools.length < 1) {
+      return
     }
+    if (filters.includes(Filters.OnlyMyPools)) {
+      pools = pools.filter((item) => {
+        return parseFloat(item?.staking[1]?.value?.replace('$', '') || '0') > 0
+      })
+    }
+
     if (!filters.includes(Filters.ShowLowApr)) {
-      pools = pools.filter((item) => parseFloat(item?.poolData?.apr || '0') > 2)
+      pools = pools.filter((item) => parseFloat(item?.apr || '0') > 2)
     }
 
     if (sortOrder === SortOrder.Highest || sortOrder === SortOrder.Lowest) {
@@ -84,11 +87,10 @@ export const PoolSection: React.FC<{ ethApp: any }> = ({ ethApp }) => {
   const getPoolInfo = async () => {
     if (ethApp) {
       await Promise.all(
-        poolDataList.map((poolItem) =>
-          poolItem
-            .getPoolData(ethApp)
-            .then((data) => (poolItem.poolData = data))
-            .catch((e) => (poolItem.poolData.apr = '0'))
+        Object.values(pools).map((getPoolData) =>
+          (getPoolData(ethApp) as any)
+            .then((data) => poolData.push(data))
+            .catch((e) => console.error(e))
         )
       )
       updateVisiblePools()
@@ -134,6 +136,7 @@ export const PoolSection: React.FC<{ ethApp: any }> = ({ ethApp }) => {
               color="gray.600"
               fontWeight="bold"
               mr={11}
+              isDisabled={visiblePools.length < 1}
             >
               <Box d={{ xs: 'none', md: 'inline' }}>Filter</Box>
             </TextMenuButton>
@@ -151,12 +154,12 @@ export const PoolSection: React.FC<{ ethApp: any }> = ({ ethApp }) => {
                 <MenuItemOption value={SortOrder.Lowest}>
                   Lowest APR
                 </MenuItemOption>
-                <MenuItemOption value={SortOrder.Newest}>
+                {/* <MenuItemOption value={SortOrder.Newest}>
                   Newest First
                 </MenuItemOption>
                 <MenuItemOption value={SortOrder.Oldest}>
                   Oldest First
-                </MenuItemOption>
+                </MenuItemOption> */}
                 <MenuItemOption value={SortOrder.Provider}>
                   By Provider
                 </MenuItemOption>
@@ -197,7 +200,7 @@ export const PoolSection: React.FC<{ ethApp: any }> = ({ ethApp }) => {
 }
 
 const PoolItem = ({ poolItemData }) => {
-  const { provider, name, poolData, poolRewards } = poolItemData
+  const { provider, name, poolRewards } = poolItemData
   const [show, setShow] = useState(false)
 
   return (
@@ -220,8 +223,8 @@ const PoolItem = ({ poolItemData }) => {
           ))}
         </Box>
         <Text w="25%">
-          {poolData.apr ? (
-            `${poolData.apr}%`
+          {poolItemData.apr ? (
+            `${poolItemData.apr}%`
           ) : (
             <Skeleton height="20px" maxW={20} />
           )}
@@ -240,14 +243,14 @@ const PoolItem = ({ poolItemData }) => {
       <Collapse mt={4} isOpen={show}>
         <Divider mb={4} />
         <SimpleGrid minChildWidth="212px" spacing={4}>
-          <LinkList links={poolData.links || []} />
-          <DetailItem title="Prices" data={poolData.prices} />
-          <DetailItem title="ROI" data={poolData.ROIs} />
-          {poolData.staking?.length > 0 && (
-            <DetailItem title="Staking" data={poolData.staking} />
+          <LinkList links={poolItemData.links || []} />
+          <DetailItem title="Prices" data={poolItemData.prices} />
+          <DetailItem title="ROI" data={poolItemData.ROIs} />
+          {poolItemData.staking?.length > 0 && (
+            <DetailItem title="Staking" data={poolItemData.staking} />
           )}
-          {poolData.rewards?.length > 0 && (
-            <DetailItem title="Claimable Rewards" data={poolData.rewards} />
+          {poolItemData.rewards?.length > 0 && (
+            <DetailItem title="Claimable Rewards" data={poolItemData.rewards} />
           )}
         </SimpleGrid>
       </Collapse>

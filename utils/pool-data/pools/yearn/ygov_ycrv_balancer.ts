@@ -5,19 +5,10 @@ import {
   getBlockTime,
   get_synth_weekly_rewards,
   lookUpPrices,
-  toDollar,
   toFixed,
 } from '../../../utils'
 
-const _print = console.log
-const _print_bold = console.log
-const _print_link = console.log
-const _print_href = console.log
-
 export default async function main(App) {
-  _print(`Initialized ${App.YOUR_ADDRESS}`)
-  _print('Reading smart contracts...')
-
   const YGOV_2_BPT_POOL = new ethers.Contract(
     Constant.YGOV_BPT_2_STAKING_POOL_ADDR,
     Constant.YGOV_BPT_2_STAKING_POOL_ABI,
@@ -75,13 +66,11 @@ export default async function main(App) {
   const isBPTLocked = voteLockBlock > currentBlock
 
   let BPTLockedMessage = 'NO'
-  let _print_BPTLocked = _print
   if (isBPTLocked) {
     let timeUntilFree = forHumans(
       (voteLockBlock - currentBlock) * currentBlockTime
     )
     BPTLockedMessage = 'YES - locked for approx. ' + timeUntilFree
-    _print_BPTLocked = _print_bold
   }
 
   // ycrv rewards
@@ -108,116 +97,15 @@ export default async function main(App) {
   // Find out underlying assets of Y
   const YVirtualPrice = (await CURVE_Y_POOL.get_virtual_price()) / 1e18
 
-  _print('Finished reading smart contracts... Looking up prices... \n')
-
   // Look up prices
   const prices = await lookUpPrices(['yearn-finance'])
   const YFIPrice = prices['yearn-finance'].usd
 
   const BPTPrice = YFIPerBPT * YFIPrice + YPerBPT * YVirtualPrice
 
-  // Finished. Start printing
-
-  _print('========== PRICES ==========')
-  _print(`1 YFI  = ${toDollar(YFIPrice)}`)
-  _print(`1 yCRV = ${toDollar(YVirtualPrice)}`)
-  _print(`1 BPT  = [${YFIPerBPT} YFI, ${YPerBPT} yCRV]`)
-  _print(
-    `       = ${toDollar(YFIPerBPT * YFIPrice + YPerBPT * YVirtualPrice)}\n`
-  )
-
-  _print('========== STAKING =========')
-  _print(
-    `There are total   : ${totalBPTAmount} BPT issued by YFI-yCRV Balancer Pool.`
-  )
-  _print(
-    `There are total   : ${totalStakedBPTAmount} BPT staked in Ygov's BPT staking pool. `
-  )
-  _print(`                  = ${toDollar(totalStakedBPTAmount * BPTPrice)}\n`)
-  _print(
-    `You are staking   : ${stakedBPTAmount} BPT (${toFixed(
-      (stakedBPTAmount * 100) / totalStakedBPTAmount,
-      3
-    )}% of the pool)`
-  )
-  _print(
-    `                  = [${YFIPerBPT * stakedBPTAmount} YFI, ${
-      YPerBPT * stakedBPTAmount
-    } yCRV]`
-  )
-  _print(
-    `                  = ${toDollar(
-      YFIPerBPT * stakedBPTAmount * YFIPrice +
-        YPerBPT * stakedBPTAmount * YVirtualPrice
-    )}\n`
-  )
-  _print_BPTLocked(`Is BPT locked?    : ${BPTLockedMessage}\n`)
-
-  // YFI REWARDS
-  _print('======== YFI REWARDS ========')
-  _print(
-    `Claimable Rewards : ${toFixed(earnedYFI, 4)} YFI = ${toDollar(
-      earnedYFI * YFIPrice
-    )}`
-  )
-  _print(
-    `Weekly estimate   : ${toFixed(
-      rewardPerToken * stakedBPTAmount,
-      2
-    )} YFI = ${toDollar(
-      rewardPerToken * stakedBPTAmount * YFIPrice
-    )} (out of total ${weekly_reward} YFI)`
-  )
   const YFIWeeklyROI = (rewardPerToken * YFIPrice * 100) / BPTPrice
-  _print(`Weekly ROI in USD : ${toFixed(YFIWeeklyROI, 4)}%`)
-  _print(`APY (unstable)    : ${toFixed(YFIWeeklyROI * 52, 4)}% \n`)
 
-  // BAL REWARDS
-  _print('======= BAL REWARDS ? =======')
-  _print(`    Not whitelisted yet?`)
-  _print(
-    `    Check http://www.predictions.exchange/balancer/ for latest update \n`
-  )
-
-  // CRV REWARDS
-  _print('======== CRV REWARDS ========')
-  _print(`    Not distributed yet\n`)
-
-  // CRV REWARDS
-  _print('======== ycrv REWARDS ========')
-  _print_href('Official UI', 'https://ygov.finance/')
-  _print_bold('\nRequirements :')
-  _print_bold(`    1. You must have voted in proposals.`)
-  _print_bold(`    2. You must have at least 1000 BPT staked in this pool.`)
-
-  _print(
-    `There are total   : ${totalStakedYFIAmount} YFI staked in Ygov's BPT staking pool. `
-  )
-  _print(`                  = ${toDollar(totalStakedYFIAmount * YFIPrice)}\n`)
-  _print(
-    `You are staking   : ${stakedYFIAmount} YFI (${toFixed(
-      (stakedYFIAmount * 100) / totalStakedYFIAmount,
-      3
-    )}% of the pool)`
-  )
-  _print(`                  = ${toDollar(stakedYFIAmount * YFIPrice)}\n`)
-
-  _print(
-    `Claimable Rewards : ${toFixed(earnedYCRV, 4)} yCRV = ${toDollar(
-      earnedYCRV * YVirtualPrice
-    )}`
-  )
-  _print(
-    `Weekly estimate   : ${toFixed(
-      yCRVRewardPerToken * stakedYFIAmount,
-      2
-    )} yCRV = ${toDollar(
-      yCRVRewardPerToken * stakedYFIAmount * YVirtualPrice
-    )} (out of total ${weekly_yCRV_reward} yCRV)`
-  )
   const YCRVWeeklyROI = (yCRVRewardPerToken * YVirtualPrice * 100) / YFIPrice
-  _print(`Weekly ROI in USD : ${toFixed(YCRVWeeklyROI, 4)}%`)
-  _print(`APY (unstable)    : ${toFixed(YCRVWeeklyROI * 52, 4)}% \n`)
 
   const approveYFIAndStake = async function () {
     const signer = App.provider.getSigner()
@@ -238,8 +126,6 @@ export default async function main(App) {
       App.YOUR_ADDRESS,
       Constant.YFI_STAKING_POOL_ADDR
     )
-
-    console.log(allowedYFI)
 
     let allow = Promise.resolve()
 
@@ -281,11 +167,6 @@ export default async function main(App) {
     })
   }
 
-  _print_link(`Claim ${toFixed(earnedYFI, 4)} YFI and stake`, claimYFIAndStake)
-  _print_link(
-    `Stake ${toFixed(currentYFI / 1e18, 4)} YFI in your wallet`,
-    approveYFIAndStake
-  )
   return {
     apr: toFixed(YFIWeeklyROI * 52 + YCRVWeeklyROI * 52, 4),
   }

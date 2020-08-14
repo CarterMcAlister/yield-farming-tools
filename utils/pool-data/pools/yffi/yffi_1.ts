@@ -12,7 +12,6 @@ import {
   Y_TOKEN_ADDR,
 } from '../../../constants'
 import {
-  getPeriodFinishForReward,
   get_synth_weekly_rewards,
   lookUpPrices,
   toDollar,
@@ -40,14 +39,10 @@ export default async function main(App) {
   const stakedYAmount =
     (await Y_STAKING_POOL.balanceOf(App.YOUR_ADDRESS)) / 1e18
   const earnedYFFI = (await Y_STAKING_POOL.earned(App.YOUR_ADDRESS)) / 1e18
-  const totalSupplyY = (await Y_TOKEN.totalSupply()) / 1e18
   const totalStakedYAmount = (await Y_TOKEN.balanceOf(YFFI_POOL_1_ADDR)) / 1e18
 
   // Find out reward rate
   const weekly_reward = await get_synth_weekly_rewards(Y_STAKING_POOL)
-  const nextHalving = await getPeriodFinishForReward(Y_STAKING_POOL)
-
-  // const weekly_reward = 0;
 
   const rewardPerToken = weekly_reward / totalStakedYAmount
 
@@ -67,11 +62,12 @@ export default async function main(App) {
       1e18) *
     DAIPrice
 
-  const YFFIWeeklyEstimate = rewardPerToken * stakedYAmount
-
   const YFIWeeklyROI = (rewardPerToken * YFFIPrice * 100) / YVirtualPrice
 
   return {
+    provider: 'yfii.finance',
+    name: 'Curve-yCRV',
+    poolRewards: ['YFII', 'CRV'],
     apr: toFixed(YFIWeeklyROI * 52, 4),
     prices: [
       { label: 'YFFI', value: toDollar(YFFIPrice) },

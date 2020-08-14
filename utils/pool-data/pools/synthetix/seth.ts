@@ -8,12 +8,8 @@ import {
   UNISWAP_SETH_ETH_POOL_ADDR,
 } from '../../../constants'
 import { get_synth_weekly_rewards, lookUpPrices, toFixed } from '../../../utils'
-const _print = console.log
 
 export default async function main(App) {
-  _print(`Initialized ${App.YOUR_ADDRESS}`)
-  _print('Reading smart contracts...')
-
   const SYNTH_UNIV1_SETH_STAKING_POOL = new ethers.Contract(
     SYNTH_UNIV1_SETH_STAKING_POOL_ADDR,
     SYNTH_UNIV1_SETH_STAKING_POOL_ABI,
@@ -60,8 +56,6 @@ export default async function main(App) {
   )
   const rewardPerToken = weekly_reward / totalStakedUniv1SethEthTokenAmount
 
-  _print('Finished reading smart contracts... Looking up prices... \n')
-
   // CoinGecko price lookup
   const prices = await lookUpPrices(['havven', 'ethereum', 'seth'])
 
@@ -74,70 +68,8 @@ export default async function main(App) {
     2
   )
 
-  _print('========== PRICES ==========')
-  _print(`1 SNX            = $${SNXPrice}\n`)
-
-  _print(`1 sETH           = $${sETHPrice}`)
-  _print(`1 ETH            = $${ETHPrice}`)
-  _print(
-    `1 UNI-V1 (sETH)  = [${toFixed(sETHPerToken, 4)} sETH, ${toFixed(
-      ETHPerToken,
-      4
-    )} ETH]`
-  )
-  _print(
-    `                 = $${toFixed(
-      sETHPerToken * sETHPrice + ETHPerToken * ETHPrice,
-      2
-    )} \n`
-  )
-
-  _print('========= STAKING ==========')
-  _print(
-    `There are total   : ${totalUniv1SethEthTokenSupply} UNI-V1 (sETH) given out by Uniswap.`
-  )
-  _print(
-    `There are total   : ${totalStakedUniv1SethEthTokenAmount} UNI-V1 (sETH) staked in Synthetix's pool. \n`
-  )
-  _print(
-    `You are staking   : ${yourStakedUniv1Amount} UNI-V1 (sETH) (${toFixed(
-      stakingPoolPercentage,
-      5
-    )}% of the pool)`
-  )
-  _print(
-    `                  = [${toFixed(
-      yourStakedUniv1Amount * sETHPerToken,
-      4
-    )} sETH, ${toFixed(yourStakedUniv1Amount * ETHPerToken, 4)} ETH]`
-  )
-  _print(
-    `                  = $${toFixed(
-      Univ1SethEthPricePerToken * yourStakedUniv1Amount,
-      2
-    )}\n`
-  )
-
-  _print('======== SNX REWARDS =======')
-  _print(`Claimable Rewards : ${earnedSNX} SNX`)
-  _print(`                  = $${toFixed(earnedSNX * SNXPrice, 2)}\n`)
-
-  _print(
-    `Weekly estimate   : ${
-      rewardPerToken * yourStakedUniv1Amount
-    } SNX (out of total ${weekly_reward} SNX)`
-  )
-  _print(
-    `                  = $${toFixed(
-      rewardPerToken * yourStakedUniv1Amount * SNXPrice,
-      2
-    )}`
-  )
   const SNXWeeklyROI =
     (rewardPerToken * SNXPrice * 100) / Univ1SethEthPricePerToken
-  _print(`Weekly ROI        : ${toFixed(SNXWeeklyROI, 4)}%`)
-  _print(`APR (Unstable)    : ${toFixed(SNXWeeklyROI * 52, 4)}%`)
-
   return {
     apr: toFixed(SNXWeeklyROI * 52, 4),
   }

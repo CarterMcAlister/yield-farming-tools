@@ -1,8 +1,8 @@
 import { ethers } from 'ethers'
 import {
+  CURVE_SUSD_POOL_ABI,
   ERC20_ABI,
   YFFI_REWARD_CONTRACT_ABI,
-  CURVE_SUSD_POOL_ABI,
 } from '../../../constants'
 import {
   get_synth_weekly_rewards,
@@ -63,6 +63,9 @@ export default async function main(App) {
     (rewardPerToken * rewardTokenPrice * 100) / stakingTokenPrice
 
   return {
+    provider: 'Based',
+    name: 'sCRV',
+    poolRewards: ['BASED'],
     apr: toFixed(YFIWeeklyROI * 52, 4),
     prices: [
       { label: 'BASED', value: toDollar(rewardTokenPrice) },

@@ -7,13 +7,9 @@ import {
   Y_STAKING_POOL_ADDR,
   Y_TOKEN_ADDR,
 } from '../../../constants'
-import { lookUpPrices, toDollar, toFixed } from '../../../utils'
-const _print = console.log
+import { lookUpPrices, toFixed } from '../../../utils'
 
 export default async function main(App) {
-  _print(`Initialized ${App.YOUR_ADDRESS}`)
-  _print('Reading smart contracts...')
-
   const Y_STAKING_POOL = new ethers.Contract(
     Y_STAKING_POOL_ADDR,
     Y_STAKING_POOL_ABI,
@@ -42,59 +38,12 @@ export default async function main(App) {
   // Find out underlying assets of Y
   const YVirtualPrice = (await CURVE_Y_POOL.get_virtual_price()) / 1e18
 
-  _print('Finished reading smart contracts... Looking up prices... \n')
-
   // Look up prices
   const prices = await lookUpPrices(['yearn-finance'])
   const YFIPrice = prices['yearn-finance'].usd
 
-  // Finished. Start printing
-
-  _print('========== PRICES ==========')
-  _print(`1 YFI  = $${YFIPrice}`)
-  _print(`1 yCRV = $${YVirtualPrice}`)
-
-  _print('========== STAKING =========')
-  _print(`There are total   : ${totalSupplyY} yCRV issued by Y Curve Pool.`)
-  _print(
-    `There are total   : ${totalStakedYAmount} yCRV staked in ygov's yCRV staking pool.`
-  )
-  _print(
-    `                  = ${toDollar(totalStakedYAmount * YVirtualPrice)}\n`
-  )
-  _print(
-    `You are staking   : ${stakedYAmount} yCRV (${toFixed(
-      (stakedYAmount * 100) / totalStakedYAmount,
-      3
-    )}% of the pool)`
-  )
-  _print(`                  = ${toDollar(stakedYAmount * YVirtualPrice)}\n`)
-
-  // YFI REWARDS
-  _print(
-    '======== YFI REWARDS ========  (Temporarily paused until further emission model is voted by the community)'
-  )
-  _print(
-    `Claimable Rewards : ${toFixed(earnedYFI, 4)} YFI = $${toFixed(
-      earnedYFI * YFIPrice,
-      2
-    )}`
-  )
-  _print(
-    `Weekly estimate   : ${toFixed(
-      rewardPerToken * stakedYAmount,
-      2
-    )} YFI = ${toDollar(
-      rewardPerToken * stakedYAmount * YFIPrice
-    )} (out of total ${weekly_reward} YFI)`
-  )
   const YFIWeeklyROI = (rewardPerToken * YFIPrice * 100) / YVirtualPrice
-  _print(`Weekly ROI in USD : ${toFixed(YFIWeeklyROI, 4)}%`)
-  _print(`APY (unstable)    : ${toFixed(YFIWeeklyROI * 52, 4)}% \n`)
 
-  // CRV REWARDS
-  _print('======== CRV REWARDS ========')
-  _print(`    Not distributed yet`)
   return {
     apr: toFixed(YFIWeeklyROI * 52, 4),
   }

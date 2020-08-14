@@ -39,7 +39,6 @@ export default async function main(App) {
   const stakedYAmount =
     (await Y_STAKING_POOL.balanceOf(App.YOUR_ADDRESS)) / 1e18
   const earnedYFI = (await Y_STAKING_POOL.earned(App.YOUR_ADDRESS)) / 1e18
-  const totalSupplyY = (await Y_TOKEN.totalSupply()) / 1e18
   const totalStakedYAmount =
     (await Y_TOKEN.balanceOf(YFII_STAKING_POOL_ADDR)) / 1e18
 
@@ -68,6 +67,9 @@ export default async function main(App) {
   const YFIWeeklyROI = (rewardPerToken * YFIIPrice * 100) / YVirtualPrice
 
   return {
+    provider: 'yfii.finance',
+    name: 'Curve yCRV',
+    poolRewards: ['YFII', 'CRV'],
     apr: toFixed(YFIWeeklyROI * 52, 4),
     prices: [
       { label: 'YFII', value: toDollar(YFIIPrice) },

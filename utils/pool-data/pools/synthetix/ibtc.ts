@@ -41,8 +41,10 @@ export default async function main(App) {
   const iBTCPrice = prices.ibtc.usd
 
   const SNXWeeklyROI = (rewardPerToken * SNXPrice * 100) / iBTCPrice
-
   return {
+    provider: 'Synthetix',
+    name: 'Synthetix iBTC',
+    poolRewards: ['SNX'],
     apr: toFixed(SNXWeeklyROI * 52, 4),
     prices: [
       { label: 'SNX', value: toDollar(SNXPrice) },

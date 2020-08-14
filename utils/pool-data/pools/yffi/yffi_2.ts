@@ -10,10 +10,8 @@ import {
   YFFI_TOKEN_ADDR,
   YFFI_YCRV_BPT_TOKEN_ADDR,
   YGOV_BPT_STAKING_POOL_ABI,
-  Y_TOKEN_ADDR,
 } from '../../../constants'
 import {
-  forHumans,
   getPeriodFinishForReward,
   get_synth_weekly_rewards,
   lookUpPrices,
@@ -78,23 +76,15 @@ export default async function main(App) {
     )) /
       1e18) *
     DAIPrice
-  const YFFIPrice2 =
-    ((await YFFI_YCRV_BALANCER_POOL.getSpotPrice(
-      Y_TOKEN_ADDR,
-      YFFI_TOKEN_ADDR
-    )) /
-      1e18) *
-    YVirtualPrice
 
   const BPTPrice = YFFIPerBPT * YFFIPrice + DAIPerBPT * DAIPrice
 
-  const YFFIWeeklyEstimate = rewardPerToken * stakedBPTAmount
-
   const YFFIWeeklyROI = (rewardPerToken * YFFIPrice * 100) / BPTPrice
 
-  const timeTilHalving = nextHalving - Date.now() / 1000
-
   return {
+    provider: 'yffi.finance',
+    name: 'Balancer YFFI-DAI',
+    poolRewards: ['YFFI', 'BAL'],
     apr: toFixed(YFFIWeeklyROI * 52, 4),
     prices: [
       { label: 'YFFI', value: toDollar(YFFIPrice) },

@@ -63,6 +63,9 @@ export default async function main(App) {
   const YFIWeeklyROI = (MTARewardPerBPT * MTAPrice * 100) / BPTPrice
 
   return {
+    provider: 'mStable',
+    name: 'mUSD-MTA 80-20',
+    poolRewards: ['MTA', 'BAL'],
     apr: toFixed(YFIWeeklyROI * 52, 4),
     prices: [
       { label: 'MTA', value: toDollar(MTAPrice) },

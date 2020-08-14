@@ -67,6 +67,9 @@ export default async function main(App) {
   const YFIWeeklyROI = (rewardPerToken * YFIIPrice * 100) / BPTPrice
 
   return {
+    provider: 'yfii.finance',
+    name: 'Balancer YFII-DAI',
+    poolRewards: ['YFII', 'BAL'],
     apr: toFixed(YFIWeeklyROI * 52, 4),
     prices: [
       { label: 'YFFI', value: toDollar(YFIIPrice) },
