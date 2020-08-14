@@ -72,6 +72,6 @@ export const pools = {
   yam_snx,
   yam_weth,
   yam_yfi,
-  // yam_ycrv,
+  yam_ycrv,
   b_scrv,
 }
