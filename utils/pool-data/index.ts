@@ -35,6 +35,10 @@ import yam_weth from './pools/yam/yam_weth'
 import yam_yfi from './pools/yam/yam_yfi'
 import yam_ycrv from './pools/yam/yam_ycrv'
 import b_scrv from './pools/based/b_scrv'
+import yfl_0 from './pools/yflink/pool_0'
+import yfl_1 from './pools/yflink/pool_1'
+import yfl_2 from './pools/yflink/pool_2'
+import yfl_3 from './pools/yflink/pool_3'
 
 export const pools = {
   ibtc,
@@ -74,4 +78,8 @@ export const pools = {
   yam_yfi,
   yam_ycrv,
   b_scrv,
+  yfl_0,
+  yfl_1,
+  yfl_2,
+  yfl_3,
 }
