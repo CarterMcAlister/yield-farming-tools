@@ -1,5 +1,6 @@
 import axios from 'axios'
-import { lookUpPrices, toDollar, toFixed } from '../../../utils'
+import { priceLookupService } from '../../../price-lookup-service'
+import { toDollar, toFixed } from '../../../utils'
 
 export default async function main(App) {
   const poolValues = await axios.get(
@@ -15,11 +16,11 @@ export default async function main(App) {
     ((roi.data.dDAI + roi.data.dUSDC + roi.data.dUSDT) / 3) * 100
   const weeklyRoi = yearlyRoi / 52
 
-  // Prices
-  const prices = await lookUpPrices(['tether', 'usd-coin', 'dai'])
-  const USDTPrice = prices['tether'].usd
-  const USDCPrice = prices['usd-coin'].usd
-  const DAIPrice = prices['dai'].usd
+  const {
+    tether: USDTPrice,
+    'usd-coin': USDCPrice,
+    dai: DAIPrice,
+  } = await priceLookupService.getPrices(['tether', 'usd-coin', 'dai'])
 
   return {
     provider: 'dForce',

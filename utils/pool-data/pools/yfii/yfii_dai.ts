@@ -8,12 +8,8 @@ import {
   YFII_TOKEN_ADDR,
   YGOV_BPT_STAKING_POOL_ABI,
 } from '../../../constants'
-import {
-  get_synth_weekly_rewards,
-  lookUpPrices,
-  toDollar,
-  toFixed,
-} from '../../../utils'
+import { priceLookupService } from '../../../price-lookup-service'
+import { get_synth_weekly_rewards, toDollar, toFixed } from '../../../utils'
 
 export default async function main(App) {
   const YGOV_BPT_POOL = new ethers.Contract(
@@ -52,15 +48,10 @@ export default async function main(App) {
   const rewardPerToken = weekly_reward / totalStakedBPTAmount
 
   // Look up prices
-  const prices = await lookUpPrices(['dai'])
-  const DAIPrice = prices['dai'].usd
-  const YFIIPrice =
-    ((await YFI_DAI_BALANCER_POOL.getSpotPrice(
-      DAI_TOKEN_ADDR,
-      YFII_TOKEN_ADDR
-    )) /
-      1e18) *
-    DAIPrice
+  const {
+    'yfii-finance': YFIIPrice,
+    dai: DAIPrice,
+  } = await priceLookupService.getPrices(['yfii-finance', 'dai'])
 
   const BPTPrice = YFIPerBPT * YFIIPrice + DAIPerBPT * DAIPrice
 

@@ -17,6 +17,7 @@ import {
   toDollar,
   toFixed,
 } from '../../../utils'
+import { priceLookupService } from '../../../price-lookup-service'
 
 export default async function main(App) {
   const Y_STAKING_POOL = new ethers.Contract(
@@ -24,17 +25,8 @@ export default async function main(App) {
     Y_STAKING_POOL_ABI,
     App.provider
   )
-  const CURVE_Y_POOL = new ethers.Contract(
-    CURVE_Y_POOL_ADDR,
-    CURVE_Y_POOL_ABI as any,
-    App.provider
-  )
+
   const Y_TOKEN = new ethers.Contract(YCRV_TOKEN_ADDR, ERC20_ABI, App.provider)
-  const YFFI_DAI_BALANCER_POOL = new ethers.Contract(
-    YFFI_DAI_BPT_TOKEN_ADDR,
-    BALANCER_POOL_ABI,
-    App.provider
-  )
 
   const stakedYAmount =
     (await Y_STAKING_POOL.balanceOf(App.YOUR_ADDRESS)) / 1e18
@@ -46,21 +38,13 @@ export default async function main(App) {
 
   const rewardPerToken = weekly_reward / totalStakedYAmount
 
-  // Find out underlying assets of Y
-  const YVirtualPrice = (await CURVE_Y_POOL.get_virtual_price()) / 1e18
-
-  // Look up prices
-  // const prices = await lookUpPrices(["yearn-finance"]);
-  // const YFIPrice = prices["yearn-finance"].usd;
-  const prices = await lookUpPrices(['dai'])
-  const DAIPrice = prices['dai'].usd
-  const YFFIPrice =
-    ((await YFFI_DAI_BALANCER_POOL.getSpotPrice(
-      DAI_TOKEN_ADDR,
-      YFFI_TOKEN_ADDR
-    )) /
-      1e18) *
-    DAIPrice
+  const {
+    'yffi-finance': YFFIPrice,
+    'curve-fi-ydai-yusdc-yusdt-ytusd': YVirtualPrice,
+  } = await priceLookupService.getPrices([
+    'yffi-finance',
+    'curve-fi-ydai-yusdc-yusdt-ytusd',
+  ])
 
   const YFIWeeklyROI = (rewardPerToken * YFFIPrice * 100) / YVirtualPrice
 

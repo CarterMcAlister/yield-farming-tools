@@ -1,14 +1,15 @@
 import { ethers } from 'ethers'
 import {
-  ERC20_ABI,
-  YAM_TOKEN_ABI,
-  AMPL_WETH_UNI_TOKEN_ADDR,
-  UNISWAP_V2_PAIR_ABI,
-  YAM_TOKEN_ADDR,
   AMPL_TOKEN_ADDR,
+  AMPL_WETH_UNI_TOKEN_ADDR,
+  ERC20_ABI,
+  UNISWAP_V2_PAIR_ABI,
   WETH_TOKEN_ADDR,
+  YAM_TOKEN_ABI,
+  YAM_TOKEN_ADDR,
   Y_STAKING_POOL_ABI,
 } from '../../../constants'
+import { priceLookupService } from '../../../price-lookup-service'
 import {
   get_synth_weekly_rewards,
   lookUpPrices,
@@ -60,17 +61,10 @@ export default async function main(App) {
     (yamScale * (await Y_STAKING_POOL.earned(App.YOUR_ADDRESS))) / 1e18
   const totalStakedYAmount = (await Y_TOKEN.balanceOf(rewardPoolAddr)) / 1e18
 
-  // Find out reward rate
   const weekly_reward =
     (await get_synth_weekly_rewards(Y_STAKING_POOL)) * yamScale
 
-  // const weekly_reward = 0;
-
   const rewardPerToken = weekly_reward / totalStakedYAmount
-
-  // Find out underlying assets of Y
-  // const YVirtualPrice = await CURVE_Y_POOL.get_virtual_price() / 1e18;
-  const unstakedY = (await Y_TOKEN.balanceOf(App.YOUR_ADDRESS)) / 1e18
 
   const ethAmount =
     (await WETH_TOKEN.balanceOf(AMPL_WETH_UNI_TOKEN_ADDR)) / 1e18
@@ -78,17 +72,16 @@ export default async function main(App) {
     (await AMPL_TOKEN.balanceOf(AMPL_WETH_UNI_TOKEN_ADDR)) / 1e9
   const totalUNIV2Amount = (await AMPL_WETH_UNI_TOKEN.totalSupply()) / 1e18
 
-  // Look up prices
-  // const prices = await lookUpPrices(["yearn-finance"]);
-  // const YFIPrice = prices["yearn-finance"].usd;
   const prices = await lookUpPrices(['ethereum', 'ampleforth', 'yam'])
+  const {
+    ethereum: ethPrice,
+    ampleforth: ampPrice,
+    yam: yamPrice,
+  } = await priceLookupService.getPrices(['ethereum', 'ampleforth', 'yam'])
   const stakingTokenPrice =
-    (prices['ethereum'].usd * ethAmount +
-      prices['ampleforth'].usd * amplAmount) /
-    totalUNIV2Amount
+    (ethPrice * ethAmount + ampPrice * amplAmount) / totalUNIV2Amount
 
-  // const rewardTokenPrice = (await YFFI_DAI_BALANCER_POOL.getSpotPrice(LINK_TOKEN_ADDR, rewardTokenAddr) / 1e18) * stakingTokenPrice;
-  const rewardTokenPrice = prices['yam'].usd
+  const rewardTokenPrice = yamPrice
 
   const YFIWeeklyROI =
     (rewardPerToken * rewardTokenPrice * 100) / stakingTokenPrice

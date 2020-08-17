@@ -6,12 +6,8 @@ import {
   YAM_TOKEN_ADDR,
   Y_STAKING_POOL_ABI,
 } from '../../../constants'
-import {
-  get_synth_weekly_rewards,
-  lookUpPrices,
-  toDollar,
-  toFixed,
-} from '../../../utils'
+import { priceLookupService } from '../../../price-lookup-service'
+import { get_synth_weekly_rewards, toDollar, toFixed } from '../../../utils'
 
 export default async function main(App) {
   const stakingToken = WETH_TOKEN_ADDR
@@ -42,24 +38,18 @@ export default async function main(App) {
     (yamScale * (await Y_STAKING_POOL.earned(App.YOUR_ADDRESS))) / 1e18
   const totalStakedYAmount = (await Y_TOKEN.balanceOf(rewardPoolAddr)) / 1e18
 
-  // Find out reward rate
   const weekly_reward =
     ((await get_synth_weekly_rewards(Y_STAKING_POOL)) *
       (await YAM_TOKEN.yamsScalingFactor())) /
     1e18
 
-  // const weekly_reward = 0;
-
   const rewardPerToken = weekly_reward / totalStakedYAmount
 
-  // Look up prices
-  // const prices = await lookUpPrices(["yearn-finance"]);
-  // const YFIPrice = prices["yearn-finance"].usd;
-  const prices = await lookUpPrices(['ethereum', 'yam'])
-  const stakingTokenPrice = prices['ethereum'].usd
+  const {
+    ethereum: stakingTokenPrice,
+    yam: rewardTokenPrice,
+  } = await priceLookupService.getPrices(['ethereum', 'yam'])
 
-  // const rewardTokenPrice = (await YFFI_DAI_BALANCER_POOL.getSpotPrice(LINK_TOKEN_ADDR, rewardTokenAddr) / 1e18) * stakingTokenPrice;
-  const rewardTokenPrice = prices['yam'].usd
   const YFIWeeklyROI =
     (rewardPerToken * rewardTokenPrice * 100) / stakingTokenPrice
 

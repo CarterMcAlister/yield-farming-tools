@@ -1,19 +1,12 @@
 import { ethers } from 'ethers'
 import {
-  BALANCER_POOL_ABI,
   ERC20_ABI,
   LINK_TOKEN_ADDR,
-  YFL_LINK_BPT_TOKEN_ADDR,
   YFL_POOL_0_ADDR,
-  YFL_TOKEN_ADDR,
   Y_STAKING_POOL_ABI,
 } from '../../../constants'
-import {
-  get_synth_weekly_rewards,
-  lookUpPrices,
-  toDollar,
-  toFixed,
-} from '../../../utils'
+import { priceLookupService } from '../../../price-lookup-service'
+import { get_synth_weekly_rewards, toDollar, toFixed } from '../../../utils'
 
 export default async function main(App) {
   const rewardTokenTicker = 'YFL'
@@ -29,11 +22,6 @@ export default async function main(App) {
     ERC20_ABI,
     App.provider
   )
-  const YFL_LINK_BALANCER_POOL = new ethers.Contract(
-    YFL_LINK_BPT_TOKEN_ADDR,
-    BALANCER_POOL_ABI,
-    App.provider
-  )
 
   const stakedAmount =
     (await LINK_STAKING_POOL.balanceOf(App.YOUR_ADDRESS)) / 1e18
@@ -44,16 +32,10 @@ export default async function main(App) {
   const weeklyReward = await get_synth_weekly_rewards(LINK_STAKING_POOL)
   const rewardPerToken = weeklyReward / totalStakedAmount
 
-  // Look up prices
-  const prices = await lookUpPrices(['chainlink'])
-  const stakingTokenPrice = prices['chainlink'].usd
-  const rewardTokenPrice =
-    ((await YFL_LINK_BALANCER_POOL.getSpotPrice(
-      LINK_TOKEN_ADDR,
-      YFL_TOKEN_ADDR
-    )) /
-      1e18) *
-    stakingTokenPrice
+  const {
+    chainlink: stakingTokenPrice,
+    yflink: rewardTokenPrice,
+  } = await priceLookupService.getPrices(['chainlink', 'yflink'])
 
   const weeklyROI =
     (rewardPerToken * rewardTokenPrice * 100) / stakingTokenPrice

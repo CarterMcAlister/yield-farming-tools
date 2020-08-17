@@ -1,11 +1,10 @@
 import axios from 'axios'
 import { ethers } from 'ethers'
 import { DF_USDX_UNISWAP_POOL_ABI } from '../../../constants'
-import { lookUpPrices, toDollar, toFixed } from '../../../utils'
+import { priceLookupService } from '../../../price-lookup-service'
+import { toDollar, toFixed } from '../../../utils'
 
 export default async function main(App) {
-  const DFORCE_TOKEN_ADDR = '0x431ad2ff6a9c365805ebad47ee021148d6f7dbe0'
-  const USDX_TOKEN_ADDR = '0xeb269732ab75a6fd61ea60b06fe994cd32a83549'
   const DFORCE_WEEKLY_REWARDS = 255000
 
   const DF_USDX_UNISWAP_POOL = new ethers.Contract(
@@ -32,9 +31,10 @@ export default async function main(App) {
   const weeklyRoi = yearlyRoi / 52
 
   // Prices
-  const prices = await lookUpPrices(['usdx-stablecoin', 'dforce-token'])
-  const USDXPrice = prices['usdx-stablecoin'].usd
-  const dForcePrice = prices['dforce-token'].usd
+  const {
+    'usdx-stablecoin': USDXPrice,
+    'dforce-token': dForcePrice,
+  } = await priceLookupService.getPrices(['usdx-stablecoin', 'dforce-token'])
 
   const poolSharePrice = USDXPerTotal * USDXPrice + DFORCEPerTotal * dForcePrice
 

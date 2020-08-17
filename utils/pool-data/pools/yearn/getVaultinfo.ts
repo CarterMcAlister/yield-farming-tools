@@ -10,7 +10,8 @@ import {
   YEARN_VAULT_CONTROLLER_ABI,
   YEARN_VAULT_CONTROLLER_ADDR,
 } from '../../../constants'
-import { getBlockTime, lookUpPrices, toDollar, toFixed } from '../../../utils'
+import { priceLookupService } from '../../../price-lookup-service'
+import { getBlockTime, toDollar, toFixed } from '../../../utils'
 
 type Token = {
   ticker: string
@@ -58,9 +59,10 @@ class YearnVault {
 
   public async getVaultData(token: Token, App) {
     await this.init(App)
-    const priceObj = await lookUpPrices([token.coingeckoId])
+    const {
+      [token.coingeckoId]: tokenPrice,
+    } = await priceLookupService.getPrices([token.coingeckoId])
     const tokenTicker = token.ticker
-    const tokenPrice = priceObj[token.coingeckoId].usd
     const tokenAddr = token.tokenAddr
 
     const vaultAddress = await this.YEARN_VAULT_CONTROLLER.vaults(tokenAddr)
@@ -160,9 +162,10 @@ class YearnVault {
 
   public async getDelegatedVaultData(token: Token, App) {
     await this.init(App)
-    const priceObj = await lookUpPrices([token.coingeckoId])
+    const {
+      [token.coingeckoId]: tokenPrice,
+    } = await priceLookupService.getPrices([token.coingeckoId])
     const tokenTicker = token.ticker
-    const tokenPrice = priceObj[token.coingeckoId].usd
     const delegatedVaultAddr = token.tokenAddr
 
     const delegatedVaultContract = new ethers.Contract(

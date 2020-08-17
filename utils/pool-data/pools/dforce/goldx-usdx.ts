@@ -1,11 +1,10 @@
+import axios from 'axios'
 import { ethers } from 'ethers'
 import { GOLDX_USDX_UNISWAP_POOL_ABI } from '../../../constants'
-import { lookUpPrices, toDollar, toFixed } from '../../../utils'
-import axios from 'axios'
+import { priceLookupService } from '../../../price-lookup-service'
+import { toDollar, toFixed } from '../../../utils'
 
 export default async function main(App) {
-  const DFORCE_TOKEN_ADDR = '0x431ad2ff6a9c365805ebad47ee021148d6f7dbe0'
-  const USDX_TOKEN_ADDR = '0xeb269732ab75a6fd61ea60b06fe994cd32a83549'
   const DFORCE_WEEKLY_REWARDS = 76000
 
   const GOLDX_USDX_UNISWAP_POOL = new ethers.Contract(
@@ -18,13 +17,6 @@ export default async function main(App) {
   const yourPoolAmount =
     (await GOLDX_USDX_UNISWAP_POOL.balanceOf(App.YOUR_ADDRESS)) / 1e18
 
-  const poolReserves = await GOLDX_USDX_UNISWAP_POOL.getReserves()
-  const poolGOLDXAmount = poolReserves[0] / 1e18
-  const poolUSDXAmount = poolReserves[1] / 1e18
-
-  const USDXPerTotal = poolUSDXAmount / totalPoolAmount
-  const GOLDXPerTotal = poolGOLDXAmount / totalPoolAmount
-
   const rewardsPerPoolShare = DFORCE_WEEKLY_REWARDS / totalPoolAmount
 
   const roi = await axios.get('https://testapi.dforce.network/api/getRoi/')
@@ -32,15 +24,14 @@ export default async function main(App) {
   const weeklyRoi = yearlyRoi / 52
 
   // Prices
-  const prices = await lookUpPrices([
-    'usdx-stablecoin',
-    'dforce-goldx',
-    'dforce-token',
-  ])
-  const USDXPrice = prices['usdx-stablecoin'].usd
-  const DFORCEPrice = prices['dforce-token'].usd
-
-  // const poolSharePrice = USDXPerTotal * USDXPrice + GOLDXPerTotal * GOLDXPrice
+  const {
+    'usdx-stablecoin': USDXPrice,
+    'dforce-token': DFORCEPrice,
+  } = await priceLookupService.getPrices(['usdx-stablecoin', 'dforce-token'])
+  const goldxData = await axios.get(
+    'https://goldx.dforce.network/api/goldx/getPrice/'
+  )
+  const GOLDXPrice = goldxData.data.price
 
   return {
     provider: 'dForce',
@@ -50,6 +41,7 @@ export default async function main(App) {
     prices: [
       { label: 'USDX', value: toDollar(USDXPrice) },
       { label: 'DF', value: toDollar(DFORCEPrice) },
+      { label: 'GOLDX', value: toDollar(GOLDXPrice) },
     ],
     staking: [],
     rewards: [

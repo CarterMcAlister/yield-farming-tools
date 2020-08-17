@@ -1,19 +1,15 @@
-import {
-  get_synth_weekly_rewards,
-  lookUpPrices,
-  toFixed,
-  toDollar,
-} from '../../../utils'
 import { ethers } from 'ethers'
 import {
-  MUSD_WETH_BPT_TOKEN_ADDR,
   BALANCER_POOL_ABI,
   ERC20_ABI,
-  WETH_TOKEN_ADDR,
-  MUSD_TOKEN_ADDR,
-  MUSD_WETH_BPT_TOKEN_STAKING_ADDR,
   MSTABLE_REWARDS_POOL_ABI,
+  MUSD_TOKEN_ADDR,
+  MUSD_WETH_BPT_TOKEN_ADDR,
+  MUSD_WETH_BPT_TOKEN_STAKING_ADDR,
+  WETH_TOKEN_ADDR,
 } from '../../../constants'
+import { priceLookupService } from '../../../price-lookup-service'
+import { get_synth_weekly_rewards, toDollar, toFixed } from '../../../utils'
 
 export default async function main(App) {
   const MUSD_WETH_BALANCER_POOL = new ethers.Contract(
@@ -52,11 +48,11 @@ export default async function main(App) {
   const weekly_reward = await get_synth_weekly_rewards(BPT_STAKING_POOL)
   const MTARewardPerBPT = weekly_reward / totalStakedBPTAmount
 
-  // Look up prices
-  const prices = await lookUpPrices(['musd', 'meta', 'weth'])
-  const MTAPrice = prices['meta'].usd
-  const MUSDPrice = prices['musd'].usd
-  const WETHPrice = prices['weth'].usd
+  const {
+    musd: MUSDPrice,
+    meta: MTAPrice,
+    weth: WETHPrice,
+  } = await priceLookupService.getPrices(['musd', 'meta', 'weth'])
 
   const BPTPrice = WETHPerBPT * WETHPrice + MUSDPerBPT * MUSDPrice
 

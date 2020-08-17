@@ -1,15 +1,14 @@
 import { ethers } from 'ethers'
 import {
   BALANCER_POOL_ABI,
-  CURVE_Y_POOL_ABI,
-  CURVE_Y_POOL_ADDR,
   ERC20_ABI,
+  YCRV_TOKEN_ADDR,
   YFL_POOL_2_ADDR,
   YFL_TOKEN_ADDR,
   YFL_YCRV_BPT_TOKEN_ADDR,
   YGOV_BPT_STAKING_POOL_ABI,
-  YCRV_TOKEN_ADDR,
 } from '../../../constants'
+import { priceLookupService } from '../../../price-lookup-service'
 import { get_synth_weekly_rewards, toDollar, toFixed } from '../../../utils'
 
 export default async function main(App) {
@@ -31,12 +30,6 @@ export default async function main(App) {
     App.provider
   )
 
-  const CURVE_Y_POOL = new ethers.Contract(
-    CURVE_Y_POOL_ADDR,
-    CURVE_Y_POOL_ABI,
-    App.provider
-  )
-
   const stakedBPTAmount = (await YFL_POOL2.balanceOf(App.YOUR_ADDRESS)) / 1e18
   const earnedAmount = (await YFL_POOL2.earned(App.YOUR_ADDRESS)) / 1e18
   const totalBPTAmount = (await YFL_YCRV_BALANCER_POOL.totalSupply()) / 1e18
@@ -54,15 +47,10 @@ export default async function main(App) {
   const weeklyReward = await get_synth_weekly_rewards(YFL_POOL2)
   const rewardPerToken = weeklyReward / totalStakedBPTAmount
 
-  // Look up prices
-  const YVirtualPrice = (await CURVE_Y_POOL.get_virtual_price()) / 1e18
-  const YFLPrice =
-    ((await YFL_YCRV_BALANCER_POOL.getSpotPrice(
-      YCRV_TOKEN_ADDR,
-      YFL_TOKEN_ADDR
-    )) /
-      1e18) *
-    YVirtualPrice
+  const {
+    'curve-fi-ydai-yusdc-yusdt-ytusd': YVirtualPrice,
+    yflink: YFLPrice,
+  } = await priceLookupService.getPrices(['chainlink', 'yflink'])
 
   const BPTPrice = YFLPerBPT * YFLPrice + YCRVPerBPT * YVirtualPrice
   const weeklyROI = (rewardPerToken * YFLPrice * 100) / BPTPrice

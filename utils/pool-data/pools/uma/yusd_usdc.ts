@@ -6,7 +6,8 @@ import {
   YUSDSEP20_TOKEN_ADDR,
   YUSD_USDC_BPT_TOKEN_ADDR,
 } from '../../../constants'
-import { lookUpPrices, toDollar, toFixed } from '../../../utils'
+import { priceLookupService } from '../../../price-lookup-service'
+import { toDollar, toFixed } from '../../../utils'
 
 export default async function main(App) {
   const YUSD_USDC_BALANCER_POOL = new ethers.Contract(
@@ -36,10 +37,11 @@ export default async function main(App) {
   const weekly_reward = 25000 // 25k UMA every week
   const UMARewardPerBPT = weekly_reward / (totalBPTAmount - 100)
 
-  // Look up prices
-  const prices = await lookUpPrices(['usd-coin', 'uma'])
-  const USDCPrice = prices['usd-coin'].usd
-  const UMAPrice = prices['uma'].usd
+  const {
+    'usd-coin': USDCPrice,
+    uma: UMAPrice,
+  } = await priceLookupService.getPrices(['usd-coin', 'uma'])
+
   const YUSDSEP20Price =
     ((await YUSD_USDC_BALANCER_POOL.getSpotPrice(
       USDC_TOKEN_ADDR,

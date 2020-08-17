@@ -8,12 +8,8 @@ import {
   YFL_TOKEN_ADDR,
   YGOV_BPT_STAKING_POOL_ABI,
 } from '../../../constants'
-import {
-  get_synth_weekly_rewards,
-  lookUpPrices,
-  toDollar,
-  toFixed,
-} from '../../../utils'
+import { priceLookupService } from '../../../price-lookup-service'
+import { get_synth_weekly_rewards, toDollar, toFixed } from '../../../utils'
 
 export default async function main(App) {
   const rewardTokenTicker = 'YFL'
@@ -52,15 +48,10 @@ export default async function main(App) {
   const rewardPerToken = weeklyReward / totalStakedBPTAmount
 
   // Look up prices
-  const prices = await lookUpPrices(['chainlink'])
-  const LINKPrice = prices['chainlink'].usd
-  const YFLPrice =
-    ((await YFL_ALINK_BALANCER_POOL.getSpotPrice(
-      ALINK_TOKEN_ADDR,
-      YFL_TOKEN_ADDR
-    )) /
-      1e18) *
-    LINKPrice
+  const {
+    chainlink: LINKPrice,
+    yflink: YFLPrice,
+  } = await priceLookupService.getPrices(['chainlink', 'yflink'])
 
   const BPTPrice = YFLPerBPT * YFLPrice + LINKPerBPT * LINKPrice
   const weeklyROI = (rewardPerToken * YFLPrice * 100) / BPTPrice

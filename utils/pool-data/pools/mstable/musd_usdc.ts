@@ -2,18 +2,14 @@ import { ethers } from 'ethers'
 import {
   BALANCER_POOL_ABI,
   ERC20_ABI,
+  MSTABLE_REWARDS_POOL_ABI,
   MUSD_TOKEN_ADDR,
   MUSD_USDC_BPT_TOKEN_ADDR,
-  USDC_TOKEN_ADDR,
   MUSD_USDC_BPT_TOKEN_STAKING_ADDR,
-  MSTABLE_REWARDS_POOL_ABI,
+  USDC_TOKEN_ADDR,
 } from '../../../constants'
-import {
-  lookUpPrices,
-  toDollar,
-  toFixed,
-  get_synth_weekly_rewards,
-} from '../../../utils'
+import { priceLookupService } from '../../../price-lookup-service'
+import { get_synth_weekly_rewards, toDollar, toFixed } from '../../../utils'
 
 export default async function main(App) {
   const MUSD_USDC_BALANCER_POOL = new ethers.Contract(
@@ -53,14 +49,13 @@ export default async function main(App) {
   const MTARewardPerBPT = weekly_reward / totalStakedBPTAmount
 
   // Look up prices
-  const prices = await lookUpPrices(['musd', 'meta', 'usd-coin'])
-  const MTAPrice = prices['meta'].usd
-  const MUSDPrice = prices['musd'].usd
-  const USDCPrice = prices['usd-coin'].usd
+  const {
+    musd: MUSDPrice,
+    meta: MTAPrice,
+    'usd-coin': USDCPrice,
+  } = await priceLookupService.getPrices(['musd', 'meta', 'usd-coin'])
 
   const BPTPrice = USDCPerBPT * USDCPrice + MUSDPerBPT * MUSDPrice
-
-  // Finished. Start printing
 
   const weeklyRoi = (MTARewardPerBPT * MTAPrice * 100) / BPTPrice
 

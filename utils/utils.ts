@@ -144,6 +144,15 @@ export const lookUpPrices = async function (id_array) {
   return prices.data
 }
 
+export const getPrices = async function (ids) {
+  let idString = ids.join('%2C')
+  const prices = await axios.get(
+    `https://api.coingecko.com/api/v3/simple/price?ids=${idString}&vs_currencies=usd`
+  )
+  const priceMap = ids.map((id) => prices.data[id].usd)
+  return priceMap
+}
+
 export const getBlockTime = function () {
   return new Promise((resolve, reject) => {
     fetch('https://etherchain.org/api/basic_stats', { method: 'GET' })

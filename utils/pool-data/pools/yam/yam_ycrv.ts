@@ -1,20 +1,14 @@
 import { ethers } from 'ethers'
 import {
-  CURVE_Y_POOL_ABI,
-  CURVE_Y_POOL_ADDR,
   ERC20_ABI,
   YAM_TOKEN_ABI,
   YAM_TOKEN_ADDR,
   YAM_YCRV_UNI_TOKEN_ADDR,
-  YFFI_REWARD_CONTRACT_ABI,
   YCRV_TOKEN_ADDR,
+  YFFI_REWARD_CONTRACT_ABI,
 } from '../../../constants'
-import {
-  get_synth_weekly_rewards,
-  lookUpPrices,
-  toDollar,
-  toFixed,
-} from '../../../utils'
+import { priceLookupService } from '../../../price-lookup-service'
+import { get_synth_weekly_rewards, toDollar, toFixed } from '../../../utils'
 
 export default async function main(App) {
   const stakingTokenAddr = YAM_YCRV_UNI_TOKEN_ADDR
@@ -29,11 +23,7 @@ export default async function main(App) {
     YFFI_REWARD_CONTRACT_ABI,
     App.provider
   )
-  const CURVE_Y_POOL = new ethers.Contract(
-    CURVE_Y_POOL_ADDR,
-    CURVE_Y_POOL_ABI,
-    App.provider
-  )
+
   const STAKING_TOKEN = new ethers.Contract(
     stakingTokenAddr,
     ERC20_ABI,
@@ -62,7 +52,6 @@ export default async function main(App) {
   const totalStakedYAmount =
     (await STAKING_TOKEN.balanceOf(rewardPoolAddr)) / 1e18
 
-  // Find out reward rate
   const weekly_reward =
     ((await get_synth_weekly_rewards(REWARD_POOL)) *
       (await YAM_TOKEN.yamsScalingFactor())) /
@@ -70,17 +59,18 @@ export default async function main(App) {
 
   const rewardPerToken = weekly_reward / totalStakedYAmount
 
-  // Find out underlying assets of Y
-  const YVirtualPrice = (await CURVE_Y_POOL.get_virtual_price()) / 1e18
-
-  // Look up prices
-  const prices = await lookUpPrices(['yam'])
+  const {
+    yam: rewardTokenPrice,
+    'curve-fi-ydai-yusdc-yusdt-ytusd': YVirtualPrice,
+  } = await priceLookupService.getPrices([
+    'yam',
+    'curve-fi-ydai-yusdc-yusdt-ytusd',
+  ])
   const stakingTokenPrice =
-    (totalYAMInUniswapPair * prices['yam'].usd +
+    (totalYAMInUniswapPair * rewardTokenPrice +
       totalYCRVInUniswapPair * YVirtualPrice) /
     totalSupplyOfStakingToken
 
-  const rewardTokenPrice = prices['yam'].usd
   const YFIWeeklyROI =
     (rewardPerToken * rewardTokenPrice * 100) / stakingTokenPrice
 

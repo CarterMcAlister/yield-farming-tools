@@ -1,23 +1,15 @@
 import { ethers } from 'ethers'
 import {
   BALANCER_POOL_ABI,
-  CURVE_Y_POOL_ABI,
-  CURVE_Y_POOL_ADDR,
   DAI_TOKEN_ADDR,
   ERC20_ABI,
   YFFI_DAI_BPT_TOKEN_ADDR,
   YFFI_POOL_2_ADDR,
   YFFI_TOKEN_ADDR,
-  YFFI_YCRV_BPT_TOKEN_ADDR,
   YGOV_BPT_STAKING_POOL_ABI,
 } from '../../../constants'
-import {
-  getPeriodFinishForReward,
-  get_synth_weekly_rewards,
-  lookUpPrices,
-  toDollar,
-  toFixed,
-} from '../../../utils'
+import { priceLookupService } from '../../../price-lookup-service'
+import { get_synth_weekly_rewards, toDollar, toFixed } from '../../../utils'
 
 export default async function main(App) {
   const YFFI_POOL_2 = new ethers.Contract(
@@ -33,16 +25,6 @@ export default async function main(App) {
   const YFFI_DAI_BPT_TOKEN_CONTRACT = new ethers.Contract(
     YFFI_DAI_BPT_TOKEN_ADDR,
     ERC20_ABI,
-    App.provider
-  )
-  const YFFI_YCRV_BALANCER_POOL = new ethers.Contract(
-    YFFI_YCRV_BPT_TOKEN_ADDR,
-    BALANCER_POOL_ABI,
-    App.provider
-  )
-  const CURVE_Y_POOL = new ethers.Contract(
-    CURVE_Y_POOL_ADDR,
-    CURVE_Y_POOL_ABI as any,
     App.provider
   )
 
@@ -61,21 +43,13 @@ export default async function main(App) {
 
   // Find out reward rate
   const weekly_reward = await get_synth_weekly_rewards(YFFI_POOL_2)
-  const nextHalving = await getPeriodFinishForReward(YFFI_POOL_2)
   const rewardPerToken = weekly_reward / totalStakedBPTAmount
 
-  const YVirtualPrice = (await CURVE_Y_POOL.get_virtual_price()) / 1e18
-
   // Look up prices
-  const prices = await lookUpPrices(['dai'])
-  const DAIPrice = prices['dai'].usd
-  const YFFIPrice =
-    ((await YFFI_DAI_BALANCER_POOL.getSpotPrice(
-      DAI_TOKEN_ADDR,
-      YFFI_TOKEN_ADDR
-    )) /
-      1e18) *
-    DAIPrice
+  const {
+    'yffi-finance': YFFIPrice,
+    dai: DAIPrice,
+  } = await priceLookupService.getPrices(['yffi-finance', 'dai'])
 
   const BPTPrice = YFFIPerBPT * YFFIPrice + DAIPerBPT * DAIPrice
 

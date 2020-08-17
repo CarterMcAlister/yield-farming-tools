@@ -8,12 +8,8 @@ import {
   MTA_WETH_UNI_TOKEN_STAKING_ADDR,
   WETH_TOKEN_ADDR,
 } from '../../../constants'
-import {
-  get_synth_weekly_rewards,
-  lookUpPrices,
-  toDollar,
-  toFixed,
-} from '../../../utils'
+import { priceLookupService } from '../../../price-lookup-service'
+import { get_synth_weekly_rewards, toDollar, toFixed } from '../../../utils'
 
 export default async function main(App) {
   const MUSD_WETH_UNISWAP_POOL = new ethers.Contract(
@@ -54,14 +50,13 @@ export default async function main(App) {
   const WETHPerBPT = totalWETHAmount / totalBPTAmount
   const MTAPerBPT = totalMTAAmount / totalBPTAmount
 
-  // Find out reward rate
   const weekly_reward = await get_synth_weekly_rewards(BPT_STAKING_POOL)
   const MTARewardPerBPT = weekly_reward / totalStakedBPTAmount
 
-  // Look up prices
-  const prices = await lookUpPrices(['meta', 'weth'])
-  const MTAPrice = prices['meta'].usd
-  const WETHPrice = prices['weth'].usd
+  const {
+    meta: MTAPrice,
+    weth: WETHPrice,
+  } = await priceLookupService.getPrices(['meta', 'weth'])
 
   const BPTPrice = WETHPerBPT * WETHPrice + MTAPerBPT * MTAPrice
 

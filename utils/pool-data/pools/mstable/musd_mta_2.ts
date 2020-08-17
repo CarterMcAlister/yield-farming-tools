@@ -8,12 +8,8 @@ import {
   MUSD_MTA_BPT_TOKEN_2_STAKING_ADDR,
   MUSD_TOKEN_ADDR,
 } from '../../../constants'
-import {
-  get_synth_weekly_rewards,
-  lookUpPrices,
-  toDollar,
-  toFixed,
-} from '../../../utils'
+import { priceLookupService } from '../../../price-lookup-service'
+import { get_synth_weekly_rewards, toDollar, toFixed } from '../../../utils'
 
 export default async function main(App) {
   const MUSD_MTA_BALANCER_POOL = new ethers.Contract(
@@ -53,13 +49,12 @@ export default async function main(App) {
   const MTARewardPerBPT = weekly_reward / totalStakedBPTAmount
 
   // Look up prices
-  const prices = await lookUpPrices(['musd', 'meta'])
-  const MTAPrice = prices['meta'].usd
-  const MUSDPrice = prices['musd'].usd
+  const {
+    musd: MUSDPrice,
+    meta: MTAPrice,
+  } = await priceLookupService.getPrices(['musd', 'meta'])
 
   const BPTPrice = MTAPerBPT * MTAPrice + MUSDPerBPT * MUSDPrice
-
-  const weeklyEstimate = MTARewardPerBPT * yourBPTAmount
 
   const weeklyRoi = (MTARewardPerBPT * MTAPrice * 100) / BPTPrice
 

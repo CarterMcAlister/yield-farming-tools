@@ -6,12 +6,8 @@ import {
   YAM_TOKEN_ADDR,
   Y_STAKING_POOL_ABI,
 } from '../../../constants'
-import {
-  get_synth_weekly_rewards,
-  lookUpPrices,
-  toDollar,
-  toFixed,
-} from '../../../utils'
+import { priceLookupService } from '../../../price-lookup-service'
+import { get_synth_weekly_rewards, toDollar, toFixed } from '../../../utils'
 
 export default async function main(App) {
   const stakingTokenAddr = COMP_TOKEN_ADDR
@@ -51,18 +47,10 @@ export default async function main(App) {
 
   const rewardPerToken = weekly_reward / totalStakedYAmount
 
-  // Look up prices
-  // const prices = await lookUpPrices(["yearn-finance"]);
-  // const YFIPrice = prices["yearn-finance"].usd;
-  const prices = await lookUpPrices([
-    'compound-governance-token',
-    'ethereum',
-    'yam',
-  ])
-  const stakingTokenPrice = prices['compound-governance-token'].usd
-
-  // const rewardTokenPrice = (await YFFI_DAI_BALANCER_POOL.getSpotPrice(LINK_TOKEN_ADDR, rewardTokenAddr) / 1e18) * stakingTokenPrice;
-  const rewardTokenPrice = prices['yam'].usd
+  const {
+    'compound-governance-token': stakingTokenPrice,
+    yam: rewardTokenPrice,
+  } = await priceLookupService.getPrices(['compound-governance-token', 'yam'])
 
   const YFIWeeklyROI =
     (rewardPerToken * rewardTokenPrice * 100) / stakingTokenPrice

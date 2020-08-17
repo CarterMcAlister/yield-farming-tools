@@ -1,22 +1,12 @@
 import { ethers } from 'ethers'
 import {
-  BALANCER_POOL_ABI,
-  CURVE_Y_POOL_ABI,
-  CURVE_Y_POOL_ADDR,
-  DAI_TOKEN_ADDR,
   ERC20_ABI,
-  YFII_DAI_BPT_TOKEN_ADDR,
-  YFII_STAKING_POOL_ADDR,
-  YFII_TOKEN_ADDR,
-  Y_STAKING_POOL_ABI,
   YCRV_TOKEN_ADDR,
+  YFII_STAKING_POOL_ADDR,
+  Y_STAKING_POOL_ABI,
 } from '../../../constants'
-import {
-  get_synth_weekly_rewards,
-  lookUpPrices,
-  toDollar,
-  toFixed,
-} from '../../../utils'
+import { priceLookupService } from '../../../price-lookup-service'
+import { get_synth_weekly_rewards, toDollar, toFixed } from '../../../utils'
 
 export default async function main(App) {
   const Y_STAKING_POOL = new ethers.Contract(
@@ -24,17 +14,8 @@ export default async function main(App) {
     Y_STAKING_POOL_ABI,
     App.provider
   )
-  const CURVE_Y_POOL = new ethers.Contract(
-    CURVE_Y_POOL_ADDR,
-    CURVE_Y_POOL_ABI as any,
-    App.provider
-  )
+
   const Y_TOKEN = new ethers.Contract(YCRV_TOKEN_ADDR, ERC20_ABI, App.provider)
-  const YFI_DAI_BALANCER_POOL = new ethers.Contract(
-    YFII_DAI_BPT_TOKEN_ADDR,
-    BALANCER_POOL_ABI,
-    App.provider
-  )
 
   const stakedYAmount =
     (await Y_STAKING_POOL.balanceOf(App.YOUR_ADDRESS)) / 1e18
@@ -42,27 +23,17 @@ export default async function main(App) {
   const totalStakedYAmount =
     (await Y_TOKEN.balanceOf(YFII_STAKING_POOL_ADDR)) / 1e18
 
-  // Find out reward rate
   const weekly_reward = await get_synth_weekly_rewards(Y_STAKING_POOL)
-  // const weekly_reward = 0;
 
   const rewardPerToken = weekly_reward / totalStakedYAmount
 
-  // Find out underlying assets of Y
-  const YVirtualPrice = (await CURVE_Y_POOL.get_virtual_price()) / 1e18
-
-  // Look up prices
-  // const prices = await lookUpPrices(["yearn-finance"]);
-  // const YFIPrice = prices["yearn-finance"].usd;
-  const prices = await lookUpPrices(['dai'])
-  const DAIPrice = prices['dai'].usd
-  const YFIIPrice =
-    ((await YFI_DAI_BALANCER_POOL.getSpotPrice(
-      DAI_TOKEN_ADDR,
-      YFII_TOKEN_ADDR
-    )) /
-      1e18) *
-    DAIPrice
+  const {
+    'yfii-finance': YFIIPrice,
+    'curve-fi-ydai-yusdc-yusdt-ytusd': YVirtualPrice,
+  } = await priceLookupService.getPrices([
+    'yfii-finance',
+    'curve-fi-ydai-yusdc-yusdt-ytusd',
+  ])
 
   const YFIWeeklyROI = (rewardPerToken * YFIIPrice * 100) / YVirtualPrice
 
