@@ -84,7 +84,7 @@ export default async function main(App) {
     ],
     rewards: [
       {
-        label: `${toFixed(earnedYFFI, 4)} YAM`,
+        label: `${toFixed(earnedYFFI, 4)} BASED`,
         value: toDollar(earnedYFFI * rewardTokenPrice),
       },
     ],
