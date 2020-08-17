@@ -10,6 +10,32 @@ declare global {
   }
 }
 
+export enum RiskLevel {
+  NONE = 'None',
+  LOW = 'Low',
+  MEDIUM = 'Medium',
+  HIGH = 'High',
+  EXTREME = 'Extreme',
+}
+
+export const riskBlurbs = {
+  il: {
+    [RiskLevel.LOW]:
+      'This contract is not a split pool, so there is no risk of impermanent loss.',
+    [RiskLevel.MEDIUM]:
+      'This is a split pool, impermanent loss could occur if there is an extreme price change.',
+    [RiskLevel.HIGH]:
+      'This is a split pool with tokens that could be minted and used to drain the pool. Use at your own risk.',
+  },
+  sc: {
+    [RiskLevel.LOW]: 'This smart contract has been professionally audited.',
+    [RiskLevel.MEDIUM]:
+      'This smart contract is based on a tested contract, but has not been audited.',
+    [RiskLevel.HIGH]:
+      'This smart contract is unaudited and experimental. Use at your own risk.',
+  },
+}
+
 export async function connectToWallet() {
   const App: any = {}
 
@@ -252,4 +278,16 @@ export const getPeriodFinishForReward = async function (
   reward_contract_instance
 ) {
   return await reward_contract_instance.periodFinish()
+}
+
+export const trimOrFillTo = function (str, n) {
+  str = str + ''
+
+  if (str.length < n) {
+    str = str.padEnd(n, ' ')
+  } else {
+    str = str.substr(0, n - 4).padEnd(n, '.')
+  }
+
+  return str
 }

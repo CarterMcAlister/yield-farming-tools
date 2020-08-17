@@ -8,7 +8,7 @@ import {
   YFL_TOKEN_ADDR,
   YFL_YCRV_BPT_TOKEN_ADDR,
   YGOV_BPT_STAKING_POOL_ABI,
-  Y_TOKEN_ADDR,
+  YCRV_TOKEN_ADDR,
 } from '../../../constants'
 import { get_synth_weekly_rewards, toDollar, toFixed } from '../../../utils'
 
@@ -45,7 +45,7 @@ export default async function main(App) {
   const totalYFLAmount =
     (await YFL_YCRV_BALANCER_POOL.getBalance(YFL_TOKEN_ADDR)) / 1e18
   const totalYCRVAmount =
-    (await YFL_YCRV_BALANCER_POOL.getBalance(Y_TOKEN_ADDR)) / 1e18
+    (await YFL_YCRV_BALANCER_POOL.getBalance(YCRV_TOKEN_ADDR)) / 1e18
 
   const YFLPerBPT = totalYFLAmount / totalBPTAmount
   const YCRVPerBPT = totalYCRVAmount / totalBPTAmount
@@ -57,7 +57,10 @@ export default async function main(App) {
   // Look up prices
   const YVirtualPrice = (await CURVE_Y_POOL.get_virtual_price()) / 1e18
   const YFLPrice =
-    ((await YFL_YCRV_BALANCER_POOL.getSpotPrice(Y_TOKEN_ADDR, YFL_TOKEN_ADDR)) /
+    ((await YFL_YCRV_BALANCER_POOL.getSpotPrice(
+      YCRV_TOKEN_ADDR,
+      YFL_TOKEN_ADDR
+    )) /
       1e18) *
     YVirtualPrice
 

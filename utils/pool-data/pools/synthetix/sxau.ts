@@ -6,7 +6,7 @@ import {
   SYNTH_UNIV2_SXAU_STAKING_POOL_ADDR,
   UNISWAP_SXAU_USDC_POOL_ABI,
   UNISWAP_SXAU_USDC_POOL_ADDR,
-  USDC_ADDRESS,
+  USDC_TOKEN_ADDR,
 } from '../../../constants'
 import { get_synth_weekly_rewards, lookUpPrices, toFixed } from '../../../utils'
 
@@ -27,7 +27,7 @@ export default async function main(App) {
     App.provider
   )
   const USDC_CONTRACT = new ethers.Contract(
-    USDC_ADDRESS,
+    USDC_TOKEN_ADDR,
     ERC20_ABI,
     App.provider
   )

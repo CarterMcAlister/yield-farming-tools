@@ -17,7 +17,7 @@ const ResourceItem = ({ name, url, description, isForBeginners = false }) => (
         🔰
       </Tooltip>
     )}
-    <Text fontSize="sm" color="gray.600">
+    <Text fontSize="sm" color="gray.600" cursor="default">
       {description}
     </Text>
   </ListItem>

@@ -7,7 +7,7 @@ import {
   YAM_TOKEN_ADDR,
   YAM_YCRV_UNI_TOKEN_ADDR,
   YFFI_REWARD_CONTRACT_ABI,
-  Y_TOKEN_ADDR,
+  YCRV_TOKEN_ADDR,
 } from '../../../constants'
 import {
   get_synth_weekly_rewards,
@@ -40,7 +40,7 @@ export default async function main(App) {
     App.provider
   )
 
-  const Y_TOKEN = new ethers.Contract(Y_TOKEN_ADDR, ERC20_ABI, App.provider)
+  const Y_TOKEN = new ethers.Contract(YCRV_TOKEN_ADDR, ERC20_ABI, App.provider)
 
   const YAM_TOKEN = new ethers.Contract(
     YAM_TOKEN_ADDR,

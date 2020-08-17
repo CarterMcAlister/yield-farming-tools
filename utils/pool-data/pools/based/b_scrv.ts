@@ -9,6 +9,7 @@ import {
   lookUpPrices,
   toDollar,
   toFixed,
+  RiskLevel,
 } from '../../../utils'
 
 const SCRV_TOKEN_ADDR = '0xC25a3A3b969415c80451098fa907EC722572917F'
@@ -115,5 +116,9 @@ export default async function main(App) {
         link: 'https://stake.based.money/',
       },
     ],
+    risk: {
+      smartContract: RiskLevel.HIGH,
+      impermanentLoss: RiskLevel.LOW,
+    },
   }
 }

@@ -11,11 +11,12 @@ import snx_usdc from './pools/synthetix/snx_usdc'
 import susd from './pools/synthetix/susd'
 import sxau from './pools/synthetix/sxau'
 import yusd_usdc from './pools/uma/yusd_usdc'
-import ygov_balancer from './pools/yearn/ygov_balancer'
-import ygov_rewards from './pools/yearn/ygov_rewards'
-import ygov_vote from './pools/yearn/ygov_vote'
-import ygov_ycrv from './pools/yearn/ygov_ycrv'
-import ygov_ycrv_balancer from './pools/yearn/ygov_ycrv_balancer'
+import yvault_ycrv from './pools/yearn/yvault_ycrv'
+import yvault_dai from './pools/yearn/yvault_dai'
+import yvault_tusd from './pools/yearn/yvault_tusd'
+import yvault_usdc from './pools/yearn/yvault_usdc'
+import yvault_usdt from './pools/yearn/yvault_usdt'
+import yvault_alink from './pools/yearn/yvault_alink'
 import yffi from './pools/yffi/yffi_1'
 import yffi_dai from './pools/yffi/yffi_2'
 import yffi_ycrv from './pools/yffi/yffi_3'
@@ -82,4 +83,10 @@ export const pools = {
   yfl_1,
   yfl_2,
   yfl_3,
+  yvault_ycrv,
+  yvault_usdt,
+  yvault_usdc,
+  yvault_tusd,
+  yvault_dai,
+  yvault_alink,
 }

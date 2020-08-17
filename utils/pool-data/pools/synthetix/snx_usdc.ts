@@ -7,7 +7,7 @@ import {
   SNX_USDC_BPT_ADDRESS,
   SYNTH_USDC_SNX_BPT_STAKING_POOL_ABI,
   SYNTH_USDC_SNX_BPT_STAKING_POOL_ADDR,
-  USDC_ADDRESS,
+  USDC_TOKEN_ADDR,
 } from '../../../constants'
 import {
   getLatestTotalBALAmount,
@@ -44,7 +44,7 @@ export default async function main(App) {
   const totalSNXAmount =
     (await SNX_USDC_BALANCER_POOL.getBalance(SNX_TOKEN_ADDRESS)) / 1e18
   const totalUSDCAmount =
-    (await SNX_USDC_BALANCER_POOL.getBalance(USDC_ADDRESS)) / 1e6
+    (await SNX_USDC_BALANCER_POOL.getBalance(USDC_TOKEN_ADDR)) / 1e6
 
   const SNXperBPT = totalSNXAmount / totalBPTAmount
   const USDCperBPT = totalUSDCAmount / totalBPTAmount

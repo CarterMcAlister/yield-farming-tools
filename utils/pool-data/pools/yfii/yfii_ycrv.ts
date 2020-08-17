@@ -9,7 +9,7 @@ import {
   YFII_STAKING_POOL_ADDR,
   YFII_TOKEN_ADDR,
   Y_STAKING_POOL_ABI,
-  Y_TOKEN_ADDR,
+  YCRV_TOKEN_ADDR,
 } from '../../../constants'
 import {
   get_synth_weekly_rewards,
@@ -29,7 +29,7 @@ export default async function main(App) {
     CURVE_Y_POOL_ABI as any,
     App.provider
   )
-  const Y_TOKEN = new ethers.Contract(Y_TOKEN_ADDR, ERC20_ABI, App.provider)
+  const Y_TOKEN = new ethers.Contract(YCRV_TOKEN_ADDR, ERC20_ABI, App.provider)
   const YFI_DAI_BALANCER_POOL = new ethers.Contract(
     YFII_DAI_BPT_TOKEN_ADDR,
     BALANCER_POOL_ABI,

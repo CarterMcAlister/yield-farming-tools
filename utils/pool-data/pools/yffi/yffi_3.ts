@@ -10,7 +10,7 @@ import {
   YFFI_REWARD_CONTRACT_ABI,
   YFFI_TOKEN_ADDR,
   YFFI_YCRV_BPT_TOKEN_ADDR,
-  Y_TOKEN_ADDR,
+  YCRV_TOKEN_ADDR,
 } from '../../../constants'
 import {
   get_synth_weekly_rewards,
@@ -56,7 +56,7 @@ export default async function main(App) {
   const totalYFFIAmount =
     (await YFFI_YCRV_BALANCER_POOL.getBalance(YFFI_TOKEN_ADDR)) / 1e18
   const totalYAmount =
-    (await YFFI_YCRV_BALANCER_POOL.getBalance(Y_TOKEN_ADDR)) / 1e18
+    (await YFFI_YCRV_BALANCER_POOL.getBalance(YCRV_TOKEN_ADDR)) / 1e18
 
   // const yourUnstakedBPTAmount = await YFI_YCRV_BPT_TOKEN_CONTRACT.balanceOf(App.YOUR_ADDRESS) / 1e18;
 

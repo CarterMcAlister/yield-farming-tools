@@ -2,7 +2,7 @@ import { ethers } from 'ethers'
 import {
   BALANCER_POOL_ABI,
   ERC20_ABI,
-  USDC_ADDRESS,
+  USDC_TOKEN_ADDR,
   YUSDSEP20_TOKEN_ADDR,
   YUSD_USDC_BPT_TOKEN_ADDR,
 } from '../../../constants'
@@ -27,7 +27,7 @@ export default async function main(App) {
   const totalYUSDSEP20Amount =
     (await YUSD_USDC_BALANCER_POOL.getBalance(YUSDSEP20_TOKEN_ADDR)) / 1e18
   const totalUSDCAmount =
-    (await YUSD_USDC_BALANCER_POOL.getBalance(USDC_ADDRESS)) / 1e6
+    (await YUSD_USDC_BALANCER_POOL.getBalance(USDC_TOKEN_ADDR)) / 1e6
 
   const YUSDSEP20PerBPT = totalYUSDSEP20Amount / totalBPTAmount
   const USDCPerBPT = totalUSDCAmount / totalBPTAmount
@@ -42,7 +42,7 @@ export default async function main(App) {
   const UMAPrice = prices['uma'].usd
   const YUSDSEP20Price =
     ((await YUSD_USDC_BALANCER_POOL.getSpotPrice(
-      USDC_ADDRESS,
+      USDC_TOKEN_ADDR,
       YUSDSEP20_TOKEN_ADDR
     )) /
       1e6) *

@@ -19,10 +19,13 @@ import {
   SimpleGrid,
   Skeleton,
   Text,
+  Tooltip,
+  Tag,
 } from '@chakra-ui/core'
 import { useEffect, useState } from 'react'
 import { Card } from '../components/Card'
 import { pools } from '../utils/pool-data'
+import { RiskLevel, riskBlurbs } from '../utils/utils'
 
 enum SortOrder {
   Lowest,
@@ -252,11 +255,73 @@ const PoolItem = ({ poolItemData }) => {
           {poolItemData.rewards?.length > 0 && (
             <DetailItem title="Claimable Rewards" data={poolItemData.rewards} />
           )}
+          {typeof poolItemData.risk !== 'undefined' && (
+            <RiskList data={poolItemData.risk} />
+          )}
         </SimpleGrid>
       </Collapse>
     </Card>
   )
 }
+
+const riskColors = {
+  [RiskLevel.LOW]: 'green.400',
+  [RiskLevel.MEDIUM]: 'yellow.300',
+  [RiskLevel.HIGH]: 'red.500',
+}
+
+const RiskList = ({ data }) =>
+  data ? (
+    <Box>
+      <Heading as="h4" size="sm" color="gray.600" pb={2}>
+        Risk Levels
+      </Heading>
+      <Flex>
+        <Box pr={5}>
+          <Text pb=".1rem">Smart Contract Risk</Text>
+          <Text pb=".1rem">Impermanent Loss Risk</Text>
+        </Box>
+        <Box>
+          <Tooltip
+            label={riskBlurbs.il[data.smartContract]}
+            aria-label={riskBlurbs.il[data.smartContract]}
+            bg="white"
+            color="black"
+            placement="right-end"
+            pb=".1rem"
+          >
+            <Text
+              fontWeight="medium"
+              pb=".1rem"
+              color={riskColors[data.smartContract]}
+              cursor="default"
+            >
+              {data.smartContract}
+            </Text>
+          </Tooltip>
+          <Tooltip
+            label={riskBlurbs.il[data.impermanentLoss]}
+            aria-label={riskBlurbs.il[data.impermanentLoss]}
+            bg="white"
+            color="black"
+            placement="right-end"
+            pb=".1rem"
+          >
+            <Text
+              fontWeight="medium"
+              pb=".1rem"
+              color={riskColors[data.impermanentLoss]}
+              cursor="default"
+            >
+              {data.impermanentLoss}
+            </Text>
+          </Tooltip>
+        </Box>
+      </Flex>
+    </Box>
+  ) : (
+    <Box />
+  )
 
 const LinkList = ({ links }) => (
   <Box>

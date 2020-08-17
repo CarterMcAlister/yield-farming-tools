@@ -4,7 +4,7 @@ import {
   ERC20_ABI,
   MUSD_TOKEN_ADDR,
   MUSD_USDC_BPT_TOKEN_ADDR,
-  USDC_ADDRESS,
+  USDC_TOKEN_ADDR,
   MUSD_USDC_BPT_TOKEN_STAKING_ADDR,
   MSTABLE_REWARDS_POOL_ABI,
 } from '../../../constants'
@@ -41,7 +41,7 @@ export default async function main(App) {
     (await BPT_STAKING_POOL.balanceOf(App.YOUR_ADDRESS)) / 1e18
 
   const totalUSDCAmount =
-    (await MUSD_USDC_BALANCER_POOL.getBalance(USDC_ADDRESS)) / 1e6
+    (await MUSD_USDC_BALANCER_POOL.getBalance(USDC_TOKEN_ADDR)) / 1e6
   const totalMUSDAmount =
     (await MUSD_USDC_BALANCER_POOL.getBalance(MUSD_TOKEN_ADDR)) / 1e18
 

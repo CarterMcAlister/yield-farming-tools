@@ -148,22 +148,6 @@ const TopNav = ({ ethApp, setEthApp }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [ethAddress, setEthAddress] = useState('')
 
-  const initApp = async () => {
-    try {
-      const app = await initInfura()
-      setEthApp(app)
-    } catch (e) {
-      console.error(e)
-      toast({
-        title: 'An error occurred.',
-        description: e,
-        status: 'error',
-        duration: 5000,
-        isClosable: true,
-      })
-    }
-  }
-
   const connectWallet = async (address?: string) => {
     try {
       let app
@@ -196,7 +180,15 @@ const TopNav = ({ ethApp, setEthApp }) => {
 
   useEffect(() => {
     ;(async () => {
-      await initApp()
+      try {
+        const app = await connectToWallet()
+        setEthApp(app)
+      } catch {
+        const app = await initInfura(PLACEHOLDER_ADDRESS)
+        setEthApp(app)
+      }
+
+      // await initApp()
     })()
   }, [])
 
