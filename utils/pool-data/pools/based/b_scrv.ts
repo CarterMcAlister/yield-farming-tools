@@ -116,9 +116,5 @@ export default async function main(App) {
         link: 'https://stake.based.money/',
       },
     ],
-    risk: {
-      smartContract: RiskLevel.HIGH,
-      impermanentLoss: RiskLevel.LOW,
-    },
   }
 }
