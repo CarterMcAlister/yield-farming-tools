@@ -68,11 +68,11 @@ export default async function main(App) {
     links: [
       {
         title: 'Info',
-        link: 'https://medium.com/@yamfinance/yam-finance-d0ad577250c7',
+        link: 'https://twitter.com/FinanceShrimp',
       },
       {
         title: 'Staking',
-        link: 'https://yam.finance/',
+        link: 'https://shrimp.finance/',
       },
     ],
     apr: toFixed(weeklyRoi * 52, 4),

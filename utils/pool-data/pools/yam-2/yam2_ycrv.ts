@@ -71,11 +71,12 @@ export default async function main(App) {
     links: [
       {
         title: 'Info',
-        link: 'https://medium.com/@yamfinance/yam-finance-d0ad577250c7',
+        link:
+          'https://medium.com/yamfinance-classic/yam-2-0-the-farming-continues-2cb77e5d186b?source=collection_home---6------0-----------------------',
       },
       {
         title: 'Staking',
-        link: 'https://yam.finance/',
+        link: 'https://yamclassic.finance/#/farms/ycrv',
       },
     ],
     apr: toFixed(weeklyRoi * 52, 4),
