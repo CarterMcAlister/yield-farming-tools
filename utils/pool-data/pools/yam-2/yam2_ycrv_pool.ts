@@ -18,8 +18,8 @@ import {
 // todo: finish
 
 export default async function main(App) {
-  const stakingTokenAddr = YAM_YCRV_UNI_TOKEN_ADDR
   const YAM_YCRV_UNI_TOKEN_ADDR = '0xC329BC05CC9fb5f4e8dA13Bf6A849D33dD2A167b'
+  const stakingTokenAddr = YAM_YCRV_UNI_TOKEN_ADDR
   const stakingTokenTicker = 'UNIV2'
   const rewardPoolAddr = '0xADDBCd6A68BFeb6E312e82B30cE1EB4a54497F4c'
   const rewardTokenAddr = YAM_TOKEN_ADDR
