@@ -40,6 +40,13 @@ import yfl_0 from './pools/yflink/pool_0'
 import yfl_1 from './pools/yflink/pool_1'
 import yfl_2 from './pools/yflink/pool_2'
 import yfl_3 from './pools/yflink/pool_3'
+import shrimp_yfi from './pools/shrimp/shrimp_yfi'
+import shrimp_comp from './pools/shrimp/shrimp_comp'
+import shrimp_cream from './pools/shrimp/shrimp_cream'
+import shrimp_weth from './pools/shrimp/shrimp_weth'
+import yam2_weth from './pools/yam-2/yam2_weth'
+import yam2_ycrv from './pools/yam-2/yam2_ycrv'
+import yam2_yam from './pools/yam-2/yam2_yam'
 
 export const pools = {
   ibtc,
@@ -89,4 +96,11 @@ export const pools = {
   yvault_tusd,
   yvault_dai,
   yvault_alink,
+  shrimp_yfi,
+  shrimp_weth,
+  shrimp_cream,
+  shrimp_comp,
+  yam2_weth,
+  yam2_yam,
+  yam2_ycrv,
 }
