@@ -65,7 +65,7 @@ export default async function main(App) {
   const YFIWeeklyROI = (rewardPerToken * YFFIPrice * 100) / YVirtualPrice
 
   return {
-    provider: 'yfii.finance',
+    provider: 'yffi.finance',
     name: 'Curve-yCRV',
     poolRewards: ['YFII', 'CRV'],
     apr: toFixed(YFIWeeklyROI * 52, 4),
