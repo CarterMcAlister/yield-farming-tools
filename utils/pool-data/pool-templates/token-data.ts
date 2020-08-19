@@ -128,6 +128,7 @@ export const PASTA_TOKEN: TokenData = {
   address: PASTA_TOKEN_ADDR,
   ABI: ERC20_ABI,
   ticker: 'PASTA',
+  tokenId: 'spaghetti',
 }
 
 export const WBTC_TOKEN: TokenData = {

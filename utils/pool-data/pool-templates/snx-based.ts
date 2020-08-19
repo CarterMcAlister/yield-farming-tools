@@ -13,6 +13,7 @@ export type PoolData = {
   provider: string
   name: string
   links: Array<Object>
+  added: string
 }
 
 export async function getSnxBasedStakingData(
@@ -46,7 +47,7 @@ export async function getSnxBasedStakingData(
     App.provider
   )
 
-  let scalingFactor = 1
+  let scalingFactor
 
   try {
     scalingFactor = await REWARD_TOKEN.yamsScalingFactor()
@@ -55,17 +56,24 @@ export async function getSnxBasedStakingData(
   const yourStakedAmount =
     (await STAKING_POOL.balanceOf(App.YOUR_ADDRESS)) / 1e18
 
-  const yourEarnedRewards =
-    (scalingFactor * (await STAKING_POOL.earned(App.YOUR_ADDRESS))) / 1e18
-
   const totalStakedAmount =
     (await STAKING_TOKEN.balanceOf(stakingPool.address)) / 1e18
 
-  const weekly_reward =
-    ((await get_synth_weekly_rewards(STAKING_POOL)) * scalingFactor) / 1e18
+  let weekly_reward
+  let yourEarnedRewards
+  if (scalingFactor) {
+    weekly_reward =
+      ((await get_synth_weekly_rewards(STAKING_POOL)) * scalingFactor) / 1e18
+    yourEarnedRewards =
+      ((scalingFactor / 1e18) * (await STAKING_POOL.earned(App.YOUR_ADDRESS))) /
+      1e18
+  } else {
+    weekly_reward = await get_synth_weekly_rewards(STAKING_POOL)
+    yourEarnedRewards = (await STAKING_POOL.earned(App.YOUR_ADDRESS)) / 1e18
+  }
 
   const rewardPerToken = weekly_reward / totalStakedAmount
-
+  console.log(weekly_reward, totalStakedAmount, scalingFactor)
   let stakingTokenPrice
   let rewardTokenPrice
   if (!rewardToken.tokenId) {
@@ -97,7 +105,7 @@ export async function getSnxBasedStakingData(
     name: `${poolData.name} ${stakingToken.ticker}`,
     poolRewards: [rewardToken.ticker],
     links: poolData.links,
-    apr: toFixed(weeklyRoi * 52, 9),
+    apr: toFixed(weeklyRoi * 52, 4),
     prices: [
       { label: stakingToken.ticker, value: toDollar(stakingTokenPrice) },
       { label: rewardToken.ticker, value: toDollar(rewardTokenPrice) },
@@ -168,7 +176,7 @@ export async function getSnxBasedUniPoolStakingData(
     App.provider
   )
 
-  let scalingFactor = 1
+  let scalingFactor
 
   try {
     scalingFactor = await REWARD_TOKEN.yamsScalingFactor()
@@ -180,14 +188,23 @@ export async function getSnxBasedUniPoolStakingData(
     (await REWARD_TOKEN.balanceOf(uniPoolToken.address)) / 1e18
 
   const stakedUniTokens = (await REWARD_POOL.balanceOf(App.YOUR_ADDRESS)) / 1e18
-  const earnedTokens =
-    (scalingFactor * (await REWARD_POOL.earned(App.YOUR_ADDRESS))) / 1e18
+
   const totalSupplyOfStakingToken = (await UNI_POOL.totalSupply()) / 1e18
   const totalStakedUniTokens =
     (await UNI_POOL.balanceOf(rewardStakingPool.address)) / 1e18
 
-  const weeklyReward =
-    ((await get_synth_weekly_rewards(REWARD_POOL)) * scalingFactor) / 1e18
+  let weeklyReward
+  let yourEarnedRewards
+  if (scalingFactor) {
+    weeklyReward =
+      ((await get_synth_weekly_rewards(REWARD_POOL)) * scalingFactor) / 1e18
+    yourEarnedRewards =
+      ((scalingFactor / 1e18) * (await REWARD_POOL.earned(App.YOUR_ADDRESS))) /
+      1e18
+  } else {
+    weeklyReward = await get_synth_weekly_rewards(REWARD_POOL)
+    yourEarnedRewards = (await REWARD_POOL.earned(App.YOUR_ADDRESS)) / 1e18
+  }
 
   const rewardPerToken = weeklyReward / totalStakedUniTokens
 
@@ -245,8 +262,8 @@ export async function getSnxBasedUniPoolStakingData(
     ],
     rewards: [
       {
-        label: `${toFixed(earnedTokens, 4)} ${rewardToken.ticker}`,
-        value: toDollar(earnedTokens * rewardTokenPrice),
+        label: `${toFixed(yourEarnedRewards, 4)} ${rewardToken.ticker}`,
+        value: toDollar(yourEarnedRewards * rewardTokenPrice),
       },
     ],
     ROIs: [

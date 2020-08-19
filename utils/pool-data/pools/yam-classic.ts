@@ -16,6 +16,7 @@ const YCRV_YAM2_UNI_POOL_ADDR = '0xC329BC05CC9fb5f4e8dA13Bf6A849D33dD2A167b'
 const poolData: PoolData = {
   provider: 'Yam Classic',
   name: 'YAM2',
+  added: '2020-08-17 22:51:18',
   links: [
     {
       title: 'Info',

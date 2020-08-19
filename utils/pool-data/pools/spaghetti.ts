@@ -27,6 +27,7 @@ const YCRV_UNI_POOL_ADDR = '0x2dF3355eD1b532486B0e48A4977afc1CA8E8a566'
 const poolData: PoolData = {
   provider: 'spaghetti.money',
   name: `Spaghetti`,
+  added: '2020-08-18 22:50:58',
   links: [
     {
       title: 'Info',
@@ -50,8 +51,7 @@ export const pastaYfiPool = async (App) =>
     YFI_TOKEN,
     PASTA_TOKEN,
     yfiStakingPool,
-    poolData,
-    YCRV_UNI_POOL_ADDR
+    poolData
   )
 
 const compStakingPool: TokenData = {
@@ -64,8 +64,7 @@ export const pastaCompPool = async (App) =>
     COMP_TOKEN,
     PASTA_TOKEN,
     compStakingPool,
-    poolData,
-    YCRV_UNI_POOL_ADDR
+    poolData
   )
 
 const lendStakingPool: TokenData = {
@@ -78,8 +77,7 @@ export const pastaLendPool = async (App) =>
     LEND_TOKEN,
     PASTA_TOKEN,
     lendStakingPool,
-    poolData,
-    YCRV_UNI_POOL_ADDR
+    poolData
   )
 
 const linkStakingPool: TokenData = {
@@ -92,8 +90,7 @@ export const pastaLinkPool = async (App) =>
     ALINK_TOKEN,
     PASTA_TOKEN,
     linkStakingPool,
-    poolData,
-    YCRV_UNI_POOL_ADDR
+    poolData
   )
 
 const mkrStakingPool: TokenData = {
@@ -106,8 +103,7 @@ export const pastaMkrPool = async (App) =>
     MKR_TOKEN,
     PASTA_TOKEN,
     mkrStakingPool,
-    poolData,
-    YCRV_UNI_POOL_ADDR
+    poolData
   )
 
 const snxStakingPool: TokenData = {
@@ -120,8 +116,7 @@ export const pastaSnxPool = async (App) =>
     SNX_TOKEN,
     PASTA_TOKEN,
     snxStakingPool,
-    poolData,
-    YCRV_UNI_POOL_ADDR
+    poolData
   )
 
 const wethStakingPool: TokenData = {
@@ -134,8 +129,7 @@ export const pastaWethPool = async (App) =>
     WETH_TOKEN,
     PASTA_TOKEN,
     wethStakingPool,
-    poolData,
-    YCRV_UNI_POOL_ADDR
+    poolData
   )
 
 const wbtcStakingPool: TokenData = {
@@ -148,8 +142,7 @@ export const pastaWbtcPool = async (App) =>
     WBTC_TOKEN,
     PASTA_TOKEN,
     wbtcStakingPool,
-    poolData,
-    YCRV_UNI_POOL_ADDR
+    poolData
   )
 
 const uniTokenStakingPool: TokenData = {

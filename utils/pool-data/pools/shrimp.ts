@@ -23,6 +23,7 @@ import {
 const poolData: PoolData = {
   provider: 'Shrimp',
   name: 'Shrimp',
+  added: '2020-08-16 22:50:28',
   links: [
     {
       title: 'Info',
@@ -92,7 +93,7 @@ const uniTokenStakingPool: TokenData = {
   ABI: YFFI_REWARD_CONTRACT_ABI,
 }
 const shrimpYcrvPoolToken: TokenData = {
-  address: '',
+  address: '0xeba5d22bbeb146392d032a2f74a735d66a32aee4',
   ABI: ERC20_ABI,
   ticker: 'UNIV2',
 }
