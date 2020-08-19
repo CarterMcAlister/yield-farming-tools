@@ -25,6 +25,7 @@ import {
 const poolData: PoolData = {
   provider: 'yam.finance',
   name: `Yam`,
+  added: '2020-08-11 23:22:49',
   links: [
     {
       title: 'Info',
