@@ -1,8 +1,9 @@
 import {
   getSnxBasedStakingData,
+  getSnxBasedUniPoolStakingData,
   PoolData,
   TokenData,
-} from '../../pool-templates/snx-based'
+} from '../pool-templates/snx-based'
 import {
   YFI_TOKEN,
   YAM_TOKEN,
@@ -12,8 +13,14 @@ import {
   MKR_TOKEN,
   SNX_TOKEN,
   WETH_TOKEN,
-} from '../../pool-templates/token-data'
-import { Y_STAKING_POOL_ABI } from '../../../constants'
+  YCRV_TOKEN,
+} from '../pool-templates/token-data'
+import {
+  Y_STAKING_POOL_ABI,
+  YAM_YCRV_UNI_TOKEN_ADDR,
+  ERC20_ABI,
+  YFFI_REWARD_CONTRACT_ABI,
+} from '../../constants'
 
 const poolData: PoolData = {
   provider: 'yam.finance',
@@ -118,5 +125,29 @@ export const yamWethPool = async (App) =>
     WETH_TOKEN,
     YAM_TOKEN,
     wethStakingPool,
+    poolData
+  )
+
+const uniTokenStakingPool: TokenData = {
+  address: '0xADDBCd6A68BFeb6E312e82B30cE1EB4a54497F4c',
+  ABI: YFFI_REWARD_CONTRACT_ABI,
+}
+const yamYcrvPoolToken: TokenData = {
+  address: YAM_YCRV_UNI_TOKEN_ADDR,
+  ABI: ERC20_ABI,
+  ticker: 'UNIV2',
+}
+poolData.links.push({
+  title: 'Pool',
+  link:
+    'https://app.uniswap.org/#/add/0x0e2298e3b3390e3b945a5456fbf59ecc3f55da16/0xdf5e0e81dff6faf3a7e52ba697820c5e32d806a8',
+})
+export const yamYcrvPool = async (App) =>
+  await getSnxBasedUniPoolStakingData(
+    App,
+    YCRV_TOKEN,
+    YAM_TOKEN,
+    yamYcrvPoolToken,
+    uniTokenStakingPool,
     poolData
   )

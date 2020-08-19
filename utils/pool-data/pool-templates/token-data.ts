@@ -14,13 +14,23 @@ import {
   SHRIMP_TOKEN_ADDR,
   CREAM_TOKEN_ADDR,
   DICE_TOKEN_ADDR,
+  PASTA_TOKEN_ADDR,
+  WBTC_TOKEN_ADDR,
+  ALINK_TOKEN_ADDR,
 } from '../../constants'
 import { TokenData } from '../pool-templates/snx-based'
 
 export const YCRV_TOKEN: TokenData = {
   address: YCRV_TOKEN_ADDR,
   ABI: ERC20_ABI,
-  ticker: 'yCrv',
+  ticker: 'yCRV',
+  tokenId: 'curve-fi-ydai-yusdc-yusdt-ytusd',
+}
+
+export const YYCRV_TOKEN: TokenData = {
+  address: '0x5dbcf33d8c2e976c6b560249878e6f1491bca25c',
+  ABI: ERC20_ABI,
+  ticker: 'yyCRV',
   tokenId: 'curve-fi-ydai-yusdc-yusdt-ytusd',
 }
 
@@ -65,6 +75,13 @@ export const LINK_TOKEN: TokenData = {
   tokenId: 'chainlink',
 }
 
+export const ALINK_TOKEN: TokenData = {
+  address: ALINK_TOKEN_ADDR,
+  ABI: ERC20_ABI,
+  ticker: 'aLINK',
+  tokenId: 'chainlink',
+}
+
 export const MKR_TOKEN: TokenData = {
   address: MKR_TOKEN_ADDR,
   ABI: ERC20_ABI,
@@ -105,4 +122,16 @@ export const DICE_TOKEN: TokenData = {
   ABI: ERC20_ABI,
   ticker: 'DICE',
   tokenId: 'cream-2',
+}
+
+export const PASTA_TOKEN: TokenData = {
+  address: PASTA_TOKEN_ADDR,
+  ABI: ERC20_ABI,
+  ticker: 'PASTA',
+}
+
+export const WBTC_TOKEN: TokenData = {
+  address: WBTC_TOKEN_ADDR,
+  ABI: ERC20_ABI,
+  ticker: 'WBTC',
 }

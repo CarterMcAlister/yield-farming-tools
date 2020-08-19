@@ -8,13 +8,14 @@ import musd_mta_2 from './pools/mstable/musd_mta_2'
 import musd_usdc from './pools/mstable/musd_usdc'
 import musd_weth from './pools/mstable/musd_weth'
 import omen_pnk from './pools/omen/omen-pnk'
-import * as shrimpPools from './pools/shrimp/shrimp'
+import * as shrimpPools from './pools/shrimp'
+import * as spaghettiPools from './pools/spaghetti'
 import ibtc from './pools/synthetix/ibtc'
 import sbtc from './pools/synthetix/sbtc'
 import susd from './pools/synthetix/susd'
 import yusd_usdc from './pools/uma/yusd_usdc'
-import * as yamClassicPools from './pools/yam-2/yam-classic'
-import * as yamPools from './pools/yam/yam'
+import * as yamPools from './pools/yam'
+import * as yamClassicPools from './pools/yam-classic'
 import yvault_alink from './pools/yearn/yvault_alink'
 import yvault_dai from './pools/yearn/yvault_dai'
 import yvault_tusd from './pools/yearn/yvault_tusd'
@@ -33,17 +34,13 @@ import yfl_3 from './pools/yflink/pool_3'
 
 export const pools = {
   ibtc,
-  // ieth,
   musd_mta,
   musd_usdc,
   musd_weth,
   musd_mta_2,
   mta_weth,
-  // snx_usdc,
   sbtc,
-  // seth,
   susd,
-  // sxau,
   yfii_dai,
   yfii_ycrv,
   yusd_usdc,
@@ -68,4 +65,5 @@ export const pools = {
   ...yamPools,
   ...yamClassicPools,
   ...shrimpPools,
+  ...spaghettiPools,
 }

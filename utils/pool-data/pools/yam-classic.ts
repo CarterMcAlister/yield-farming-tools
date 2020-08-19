@@ -1,15 +1,15 @@
-import { Y_STAKING_POOL_ABI } from '../../../constants'
+import { Y_STAKING_POOL_ABI } from '../../constants'
 import {
   getSnxBasedStakingData,
   PoolData,
   TokenData,
-} from '../../pool-templates/snx-based'
+} from '../pool-templates/snx-based'
 import {
   WETH_TOKEN,
   YAM_CLASSIC_TOKEN,
   YAM_TOKEN,
   YCRV_TOKEN,
-} from '../../pool-templates/token-data'
+} from '../pool-templates/token-data'
 
 const YCRV_YAM2_UNI_POOL_ADDR = '0xC329BC05CC9fb5f4e8dA13Bf6A849D33dD2A167b'
 
@@ -33,16 +33,16 @@ const wethStakingPool: TokenData = {
   address: '0xd9c5472986A1a6E12390ceeb7a28A2D236D5CA02',
   ABI: Y_STAKING_POOL_ABI,
 }
-export const wethPool = async (App) =>
-  await getSnxBasedStakingData(
+export const yamcWethPool = async (App) => {
+  return await getSnxBasedStakingData(
     App,
     WETH_TOKEN,
     YAM_CLASSIC_TOKEN,
     wethStakingPool,
     poolData,
-    YCRV_TOKEN,
     YCRV_YAM2_UNI_POOL_ADDR
   )
+}
 
 const yamStakingPool: TokenData = {
   address: '0x880f0550F0972231Dad1EBa238F5925367338C6D',
@@ -55,7 +55,6 @@ export const yamPool = async (App) =>
     YAM_CLASSIC_TOKEN,
     yamStakingPool,
     poolData,
-    YCRV_TOKEN,
     YCRV_YAM2_UNI_POOL_ADDR
   )
 
@@ -70,6 +69,5 @@ export const yCrvPool = async (App) =>
     YAM_CLASSIC_TOKEN,
     yCrvStakingPool,
     poolData,
-    YCRV_TOKEN,
     YCRV_YAM2_UNI_POOL_ADDR
   )

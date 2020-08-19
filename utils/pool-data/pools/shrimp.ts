@@ -1,21 +1,24 @@
 import {
+  Y_STAKING_POOL_ABI,
+  YFFI_REWARD_CONTRACT_ABI,
+  YAM_YCRV_UNI_TOKEN_ADDR,
+  ERC20_ABI,
+} from '../../constants'
+import {
   getSnxBasedStakingData,
   PoolData,
   TokenData,
-} from '../../pool-templates/snx-based'
+  getSnxBasedUniPoolStakingData,
+} from '../pool-templates/snx-based'
 import {
-  YFI_TOKEN,
-  YAM_TOKEN,
   COMP_TOKEN,
-  LEND_TOKEN,
-  LINK_TOKEN,
-  MKR_TOKEN,
-  SNX_TOKEN,
-  WETH_TOKEN,
-  SHRIMP_TOKEN,
   CREAM_TOKEN,
-} from '../../pool-templates/token-data'
-import { Y_STAKING_POOL_ABI } from '../../../constants'
+  SHRIMP_TOKEN,
+  WETH_TOKEN,
+  YFI_TOKEN,
+  YCRV_TOKEN,
+  YAM_TOKEN,
+} from '../pool-templates/token-data'
 
 const poolData: PoolData = {
   provider: 'Shrimp',
@@ -81,6 +84,30 @@ export const yfiPool = async (App) =>
     YFI_TOKEN,
     SHRIMP_TOKEN,
     yfiStakingPool,
+    poolData
+  )
+
+const uniTokenStakingPool: TokenData = {
+  address: '0xADDBCd6A68BFeb6E312e82B30cE1EB4a54497F4c',
+  ABI: YFFI_REWARD_CONTRACT_ABI,
+}
+const shrimpYcrvPoolToken: TokenData = {
+  address: '',
+  ABI: ERC20_ABI,
+  ticker: 'UNIV2',
+}
+poolData.links.push({
+  title: 'Pool',
+  link:
+    'https://app.uniswap.org/#/add/0x0e2298e3b3390e3b945a5456fbf59ecc3f55da16/0xdf5e0e81dff6faf3a7e52ba697820c5e32d806a8',
+})
+export const shrimpYcrvPool = async (App) =>
+  await getSnxBasedUniPoolStakingData(
+    App,
+    YCRV_TOKEN,
+    YAM_TOKEN,
+    shrimpYcrvPoolToken,
+    uniTokenStakingPool,
     poolData
   )
 
