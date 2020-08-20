@@ -45,19 +45,19 @@ export const yamcWethPool = async (App) => {
   )
 }
 
-const yamStakingPool: TokenData = {
-  address: '0x880f0550F0972231Dad1EBa238F5925367338C6D',
-  ABI: Y_STAKING_POOL_ABI,
-}
-export const yamPool = async (App) =>
-  await getSnxBasedStakingData(
-    App,
-    YAM_TOKEN,
-    YAM_CLASSIC_TOKEN,
-    yamStakingPool,
-    poolData,
-    YCRV_YAM2_UNI_POOL_ADDR
-  )
+// const yamStakingPool: TokenData = {
+//   address: '0x880f0550F0972231Dad1EBa238F5925367338C6D',
+//   ABI: Y_STAKING_POOL_ABI,
+// }
+// export const yamPool = async (App) =>
+//   await getSnxBasedStakingData(
+//     App,
+//     YAM_TOKEN,
+//     YAM_CLASSIC_TOKEN,
+//     yamStakingPool,
+//     poolData,
+//     YCRV_YAM2_UNI_POOL_ADDR
+//   )
 
 const yCrvStakingPool: TokenData = {
   address: '0xE29b7D23e47c16B8EedF50a17A03649F5Db35433',
