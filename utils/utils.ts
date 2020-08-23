@@ -300,3 +300,6 @@ export const trimOrFillTo = function (str, n) {
 
   return str
 }
+
+export const toNumber = (numString) =>
+  parseFloat(numString?.replaceAll('$', '').replaceAll(',', '') || '0')

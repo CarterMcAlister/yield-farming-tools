@@ -22,11 +22,9 @@ import {
   YYCRV_TOKEN,
 } from '../pool-templates/token-data'
 
-const YCRV_UNI_POOL_ADDR = '0x2dF3355eD1b532486B0e48A4977afc1CA8E8a566'
-
 const poolData: PoolData = {
   provider: 'spaghetti.money',
-  name: `Spaghetti`,
+  name: `PASTA`,
   added: '2020-08-18 22:50:58',
   links: [
     {

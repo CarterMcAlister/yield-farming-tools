@@ -25,7 +25,7 @@ import {
 import { useEffect, useState } from 'react'
 import { Card } from '../components/Card'
 import { pools } from '../utils/pool-data'
-import { RiskLevel, riskBlurbs } from '../utils/utils'
+import { RiskLevel, riskBlurbs, toNumber } from '../utils/utils'
 
 enum SortOrder {
   Lowest,
@@ -37,7 +37,9 @@ enum SortOrder {
 
 enum Filters {
   ShowLowApr,
+  ShowLowLiquidity,
   OnlyMyPools,
+  OnlyMyRewards,
 }
 
 const TextMenuButton: React.FC<MenuButtonProps & ButtonProps> = ({
@@ -67,13 +69,28 @@ export const PoolSection: React.FC<{ ethApp: any }> = ({ ethApp }) => {
       return
     }
     if (filters.includes(Filters.OnlyMyPools)) {
-      pools = pools.filter((item) => {
-        return parseFloat(item?.staking[1]?.value?.replace('$', '') || '0') > 0
-      })
+      pools = pools.filter((item) => toNumber(item?.staking[1]?.value) > 0)
+    }
+
+    if (filters.includes(Filters.OnlyMyRewards)) {
+      pools = pools.filter(
+        (item) =>
+          item?.rewards?.length > 0 && toNumber(item?.rewards[0]?.value) > 0
+      )
     }
 
     if (!filters.includes(Filters.ShowLowApr)) {
-      pools = pools.filter((item) => parseFloat(item?.apr || '0') > 2)
+      pools = pools.filter((item) => toNumber(item?.apr) > 2)
+    }
+
+    if (!filters.includes(Filters.ShowLowLiquidity)) {
+      pools = pools.filter(
+        (item) =>
+          !item?.staking[0]?.value ||
+          parseFloat(
+            item?.staking[0]?.value.replace('$', '').replaceAll(',', '') || '0'
+          ) > 200000
+      )
     }
 
     if (sortOrder === SortOrder.Highest || sortOrder === SortOrder.Lowest) {
@@ -177,8 +194,14 @@ export const PoolSection: React.FC<{ ethApp: any }> = ({ ethApp }) => {
                 <MenuItemOption value={Filters.OnlyMyPools}>
                   Only show pools I'm in
                 </MenuItemOption>
+                <MenuItemOption value={Filters.OnlyMyRewards}>
+                  Only show pools I have rewards in
+                </MenuItemOption>
                 <MenuItemOption value={Filters.ShowLowApr}>
                   Show pools with low APR
+                </MenuItemOption>
+                <MenuItemOption value={Filters.ShowLowLiquidity}>
+                  Show pools with low liquidity
                 </MenuItemOption>
               </MenuOptionGroup>
             </MenuList>
