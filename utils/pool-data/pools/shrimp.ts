@@ -1,13 +1,11 @@
 import {
-  Y_STAKING_POOL_ABI,
-  YFFI_REWARD_CONTRACT_ABI,
-  YAM_YCRV_UNI_TOKEN_ADDR,
   ERC20_ABI,
+  YFFI_REWARD_CONTRACT_ABI,
+  Y_STAKING_POOL_ABI,
 } from '../../constants'
+import { PoolData, TokenData } from '../../types'
 import {
   getSnxBasedStakingData,
-  PoolData,
-  TokenData,
   getSnxBasedUniPoolStakingData,
 } from '../pool-templates/snx-based'
 import {
@@ -15,9 +13,9 @@ import {
   CREAM_TOKEN,
   SHRIMP_TOKEN,
   WETH_TOKEN,
-  YFI_TOKEN,
-  YCRV_TOKEN,
   YAM_TOKEN,
+  YCRV_TOKEN,
+  YFI_TOKEN,
 } from '../pool-templates/token-data'
 
 const poolData: PoolData = {
