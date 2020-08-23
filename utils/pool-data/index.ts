@@ -2,7 +2,6 @@ import b_scrv from './pools/based/b_scrv'
 import df_usdx from './pools/dforce/df-usdx'
 import dUSDT_dUSDC_dDAI from './pools/dforce/dUSDT-dUSDC-dDAI'
 import goldx_usdx from './pools/dforce/goldx-usdx'
-import mta_weth from './pools/mstable/mta_weth'
 import musd_mta from './pools/mstable/musd_mta'
 import musd_mta_2 from './pools/mstable/musd_mta_2'
 import musd_usdc from './pools/mstable/musd_usdc'
@@ -38,7 +37,6 @@ export const pools = {
   musd_usdc,
   musd_weth,
   musd_mta_2,
-  mta_weth,
   sbtc,
   susd,
   yfii_dai,

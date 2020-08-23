@@ -8,6 +8,7 @@ import {
 } from '../../../constants'
 import { priceLookupService } from '../../../price-lookup-service'
 import { toDollar, toFixed } from '../../../utils'
+import { RiskLevel } from '../../../types'
 
 export default async function main(App) {
   const YUSD_USDC_BALANCER_POOL = new ethers.Contract(
@@ -58,6 +59,10 @@ export default async function main(App) {
     provider: 'UMA Project',
     name: 'Balancer yUSD-USDC',
     poolRewards: ['UMA', 'BAL'],
+    risk: {
+      smartContract: RiskLevel.LOW,
+      impermanentLoss: RiskLevel.LOW,
+    },
     apr: toFixed(UMAWeeklyROI * 52, 4),
     prices: [
       { label: 'UMA', value: toDollar(UMAPrice) },

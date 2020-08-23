@@ -10,6 +10,7 @@ import {
 } from '../../../constants'
 import { priceLookupService } from '../../../price-lookup-service'
 import { get_synth_weekly_rewards, toDollar, toFixed } from '../../../utils'
+import { RiskLevel } from '../../../types'
 
 export default async function main(App) {
   const rewardTokenTicker = 'YFL'
@@ -60,6 +61,10 @@ export default async function main(App) {
     provider: 'YFLink',
     name: 'aLINK/YFL Balancer',
     poolRewards: [rewardTokenTicker],
+    risk: {
+      smartContract: RiskLevel.MEDIUM,
+      impermanentLoss: RiskLevel.MEDIUM,
+    },
     apr: toFixed(weeklyROI * 52, 4),
     prices: [
       { label: 'YFL', value: toDollar(YFLPrice) },

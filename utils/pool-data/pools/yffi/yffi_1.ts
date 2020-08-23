@@ -1,23 +1,13 @@
 import { ethers } from 'ethers'
 import {
-  BALANCER_POOL_ABI,
-  CURVE_Y_POOL_ABI,
-  CURVE_Y_POOL_ADDR,
-  DAI_TOKEN_ADDR,
   ERC20_ABI,
-  YFFI_DAI_BPT_TOKEN_ADDR,
-  YFFI_POOL_1_ADDR,
-  YFFI_TOKEN_ADDR,
-  Y_STAKING_POOL_ABI,
   YCRV_TOKEN_ADDR,
+  YFFI_POOL_1_ADDR,
+  Y_STAKING_POOL_ABI,
 } from '../../../constants'
-import {
-  get_synth_weekly_rewards,
-  lookUpPrices,
-  toDollar,
-  toFixed,
-} from '../../../utils'
 import { priceLookupService } from '../../../price-lookup-service'
+import { RiskLevel } from '../../../types'
+import { get_synth_weekly_rewards, toDollar, toFixed } from '../../../utils'
 
 export default async function main(App) {
   const Y_STAKING_POOL = new ethers.Contract(
@@ -52,6 +42,10 @@ export default async function main(App) {
     provider: 'yffi.finance',
     name: 'Curve-yCRV',
     poolRewards: ['YFFI', 'CRV'],
+    risk: {
+      smartContract: RiskLevel.LOW,
+      impermanentLoss: RiskLevel.NONE,
+    },
     apr: toFixed(YFIWeeklyROI * 52, 4),
     prices: [
       { label: 'YFFI', value: toDollar(YFFIPrice) },

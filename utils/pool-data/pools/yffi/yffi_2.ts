@@ -9,6 +9,7 @@ import {
   YGOV_BPT_STAKING_POOL_ABI,
 } from '../../../constants'
 import { priceLookupService } from '../../../price-lookup-service'
+import { RiskLevel } from '../../../types'
 import { get_synth_weekly_rewards, toDollar, toFixed } from '../../../utils'
 
 export default async function main(App) {
@@ -59,6 +60,10 @@ export default async function main(App) {
     provider: 'yffi.finance',
     name: 'Balancer YFFI-DAI',
     poolRewards: ['YFFI', 'BAL'],
+    risk: {
+      smartContract: RiskLevel.MEDIUM,
+      impermanentLoss: RiskLevel.MEDIUM,
+    },
     apr: toFixed(YFFIWeeklyROI * 52, 4),
     prices: [
       { label: 'YFFI', value: toDollar(YFFIPrice) },

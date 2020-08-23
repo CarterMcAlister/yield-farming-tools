@@ -6,6 +6,7 @@ import {
   Y_STAKING_POOL_ABI,
 } from '../../../constants'
 import { priceLookupService } from '../../../price-lookup-service'
+import { RiskLevel } from '../../../types'
 import { get_synth_weekly_rewards, toDollar, toFixed } from '../../../utils'
 
 export default async function main(App) {
@@ -41,6 +42,10 @@ export default async function main(App) {
     provider: 'yfii.finance',
     name: 'Curve yCRV',
     poolRewards: ['YFII', 'CRV'],
+    risk: {
+      smartContract: RiskLevel.MEDIUM,
+      impermanentLoss: RiskLevel.NONE,
+    },
     apr: toFixed(YFIWeeklyROI * 52, 4),
     prices: [
       { label: 'YFII', value: toDollar(YFIIPrice) },

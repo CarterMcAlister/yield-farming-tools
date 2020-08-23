@@ -2,6 +2,7 @@ import axios from 'axios'
 import { ethers } from 'ethers'
 import { balRewards } from './bal-rewards-constants'
 import * as Constants from './constants'
+import { RiskLevel } from './types'
 
 declare global {
   interface Window {
@@ -10,23 +11,13 @@ declare global {
   }
 }
 
-export enum RiskLevel {
-  NONE = 'None',
-  LOW = 'Low',
-  MEDIUM = 'Medium',
-  HIGH = 'High',
-  EXTREME = 'Extreme',
-}
-
 export const riskBlurbs = {
   il: {
     [RiskLevel.NONE]:
       'This contract is not a split pool, so there is no risk of impermanent loss.',
-    [RiskLevel.LOW]:
-      'This contract is not a split pool, so there is no risk of impermanent loss.',
-    [RiskLevel.MEDIUM]: 'This is a split pool, impermanent loss can occur.',
-    [RiskLevel.HIGH]:
-      'This is a split pool with tokens that could be minted and used to drain the pool. Use at your own risk.',
+    [RiskLevel.MEDIUM]:
+      'This is a unevenly split pool, impermanent loss can occur.',
+    [RiskLevel.HIGH]: 'This is a split pool, impermanent loss can occur.',
   },
   sc: {
     [RiskLevel.LOW]: 'This smart contract has been professionally audited.',

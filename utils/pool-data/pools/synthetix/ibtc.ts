@@ -11,6 +11,7 @@ import {
   toDollar,
   toFixed,
 } from '../../../utils'
+import { RiskLevel } from '../../../types'
 
 export default async function main(App) {
   const SYNTH_iBTC_POOL = new ethers.Contract(
@@ -45,6 +46,10 @@ export default async function main(App) {
     provider: 'Synthetix',
     name: 'Synthetix iBTC',
     poolRewards: ['SNX'],
+    risk: {
+      smartContract: RiskLevel.LOW,
+      impermanentLoss: RiskLevel.NONE,
+    },
     apr: toFixed(SNXWeeklyROI * 52, 4),
     prices: [
       { label: 'SNX', value: toDollar(SNXPrice) },

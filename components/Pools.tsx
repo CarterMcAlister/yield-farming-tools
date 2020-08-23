@@ -20,12 +20,12 @@ import {
   Skeleton,
   Text,
   Tooltip,
-  Tag,
 } from '@chakra-ui/core'
 import { useEffect, useState } from 'react'
 import { Card } from '../components/Card'
 import { pools } from '../utils/pool-data'
-import { RiskLevel, riskBlurbs, toNumber } from '../utils/utils'
+import { RiskLevel } from '../utils/types'
+import { riskBlurbs, toNumber } from '../utils/utils'
 
 enum SortOrder {
   Lowest,
@@ -288,9 +288,9 @@ const PoolItem = ({ poolItemData }) => {
 }
 
 const riskColors = {
-  [RiskLevel.NONE]: 'green.300',
+  [RiskLevel.NONE]: 'green.400',
   [RiskLevel.LOW]: 'green.400',
-  [RiskLevel.MEDIUM]: 'yellow.300',
+  [RiskLevel.MEDIUM]: 'orange.300',
   [RiskLevel.HIGH]: 'red.500',
   [RiskLevel.EXTREME]: 'red.700',
 }
@@ -303,8 +303,8 @@ const RiskList = ({ data }) =>
       </Heading>
       <Flex>
         <Box pr={5}>
-          <Text pb=".1rem">Smart Contract Risk</Text>
-          <Text pb=".1rem">Impermanent Loss Risk</Text>
+          <Text pb=".1rem">Smart Contract</Text>
+          <Text pb=".1rem">Impermanent Loss</Text>
         </Box>
         <Box>
           <Tooltip
@@ -313,7 +313,7 @@ const RiskList = ({ data }) =>
             bg="white"
             color="black"
             placement="right-end"
-            pb=".1rem"
+            p=".5rem"
           >
             <Text
               fontWeight="medium"
@@ -330,7 +330,7 @@ const RiskList = ({ data }) =>
             bg="white"
             color="black"
             placement="right-end"
-            pb=".1rem"
+            p=".5rem"
           >
             <Text
               fontWeight="medium"

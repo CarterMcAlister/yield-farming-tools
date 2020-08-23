@@ -2,19 +2,7 @@ import { ethers } from 'ethers'
 import { priceLookupService } from '../../price-lookup-service'
 import { get_synth_weekly_rewards, toDollar, toFixed } from '../../utils'
 import { YCRV_TOKEN as yCrvToken } from '../pool-templates/token-data'
-
-export type TokenData = {
-  address: string
-  ABI: any
-  ticker?: string
-  tokenId?: string
-}
-export type PoolData = {
-  provider: string
-  name: string
-  links: Array<Object>
-  added: string
-}
+import { TokenData, PoolData } from '../../types'
 
 export async function getSnxBasedStakingData(
   App,
@@ -99,12 +87,13 @@ export async function getSnxBasedStakingData(
 
   const weeklyRoi =
     (rewardPerToken * rewardTokenPrice * 100) / stakingTokenPrice
-
+  console.log(`zzz ${poolData.name} ${stakingToken.ticker}`, poolData.links)
   return {
     provider: poolData.provider,
     name: `${poolData.name} ${stakingToken.ticker}`,
     poolRewards: [rewardToken.ticker],
     links: poolData.links,
+    risk: poolData.risk,
     apr: toFixed(weeklyRoi * 52, 4),
     prices: [
       { label: stakingToken.ticker, value: toDollar(stakingTokenPrice) },
@@ -244,6 +233,7 @@ export async function getSnxBasedUniPoolStakingData(
     name: `${poolData.name} ${poolToken1.ticker}/${rewardToken.ticker}`,
     poolRewards: [rewardToken.ticker],
     links: poolData.links,
+    risk: poolData.risk,
     apr: toFixed(weeklyRoi * 52, 4),
     prices: [
       { label: poolToken1.ticker, value: toDollar(poolToken1Price) },

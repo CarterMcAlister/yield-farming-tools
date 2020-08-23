@@ -10,6 +10,7 @@ import {
 } from '../../../constants'
 import { priceLookupService } from '../../../price-lookup-service'
 import { get_synth_weekly_rewards, toDollar, toFixed } from '../../../utils'
+import { RiskLevel } from '../../../types'
 
 export default async function main(App) {
   const MUSD_MTA_BALANCER_POOL = new ethers.Contract(
@@ -63,6 +64,10 @@ export default async function main(App) {
     provider: 'mStable',
     name: 'mUSD-MTA 80-20',
     poolRewards: ['MTA', 'BAL'],
+    risk: {
+      smartContract: RiskLevel.LOW,
+      impermanentLoss: RiskLevel.MEDIUM,
+    },
     apr: toFixed(YFIWeeklyROI * 52, 4),
     prices: [
       { label: 'MTA', value: toDollar(MTAPrice) },

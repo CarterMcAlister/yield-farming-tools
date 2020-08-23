@@ -3,11 +3,10 @@ import {
   YFFI_REWARD_CONTRACT_ABI,
   Y_STAKING_POOL_ABI,
 } from '../../constants'
+import { PoolData, RiskLevel, TokenData } from '../../types'
 import {
   getSnxBasedStakingData,
   getSnxBasedUniPoolStakingData,
-  PoolData,
-  TokenData,
 } from '../pool-templates/snx-based'
 import {
   ALINK_TOKEN,
@@ -26,6 +25,10 @@ const poolData: PoolData = {
   provider: 'spaghetti.money',
   name: `PASTA`,
   added: '2020-08-18 22:50:58',
+  risk: {
+    smartContract: RiskLevel.MEDIUM,
+    impermanentLoss: RiskLevel.NONE,
+  },
   links: [
     {
       title: 'Info',
@@ -152,11 +155,22 @@ const pastaYycrvPoolToken: TokenData = {
   ABI: ERC20_ABI,
   ticker: 'UNIV2',
 }
-poolData.links.push({
-  title: 'Pool',
-  link:
-    'https://app.uniswap.org/#/add/0xdF5e0e81Dff6FAF3A7e52BA697820c5e32D806A8/0x08A2E41FB99A7599725190B9C970Ad3893fa33CF',
+
+const yyCrvPoolData = Object.assign({}, poolData, {
+  risk: {
+    smartContract: RiskLevel.MEDIUM,
+    impermanentLoss: RiskLevel.HIGH,
+  },
+  links: [
+    ...poolData.links,
+    {
+      title: 'Pool',
+      link:
+        'https://app.uniswap.org/#/add/0xdF5e0e81Dff6FAF3A7e52BA697820c5e32D806A8/0x08A2E41FB99A7599725190B9C970Ad3893fa33CF',
+    },
+  ],
 })
+
 export const pastaYcrvPool = async (App) =>
   await getSnxBasedUniPoolStakingData(
     App,
@@ -164,6 +178,6 @@ export const pastaYcrvPool = async (App) =>
     PASTA_TOKEN,
     pastaYycrvPoolToken,
     uniTokenStakingPool,
-    poolData,
+    yyCrvPoolData,
     pastaYycrvPoolToken.address
   )

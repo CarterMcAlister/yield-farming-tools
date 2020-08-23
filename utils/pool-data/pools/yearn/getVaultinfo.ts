@@ -12,6 +12,7 @@ import {
 } from '../../../constants'
 import { priceLookupService } from '../../../price-lookup-service'
 import { getBlockTime, toDollar, toFixed } from '../../../utils'
+import { RiskLevel } from '../../../types'
 
 type Token = {
   ticker: string
@@ -132,6 +133,10 @@ class YearnVault {
       strategyName: '',
       //
       apr: toFixed(ROI_week * 52, 4),
+      risk: {
+        smartContract: RiskLevel.LOW,
+        impermanentLoss: RiskLevel.NONE,
+      },
       prices: [{ label: tokenTicker, value: toDollar(tokenPrice) }],
       staking: [
         {
@@ -238,6 +243,10 @@ class YearnVault {
       //
       apr: toFixed(ROI_week * 52, 4),
       prices: [{ label: tokenTicker, value: toDollar(tokenPrice) }],
+      risk: {
+        smartContract: RiskLevel.LOW,
+        impermanentLoss: RiskLevel.LOW,
+      },
       staking: [
         {
           label: 'Pool Total',

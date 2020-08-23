@@ -7,6 +7,7 @@ import {
 } from '../../../constants'
 import { priceLookupService } from '../../../price-lookup-service'
 import { get_synth_weekly_rewards, toDollar, toFixed } from '../../../utils'
+import { RiskLevel } from '../../../types'
 
 export default async function main(App) {
   const rewardTokenTicker = 'YFL'
@@ -44,6 +45,10 @@ export default async function main(App) {
     provider: 'YFLink',
     name: 'LINK',
     poolRewards: [rewardTokenTicker],
+    risk: {
+      smartContract: RiskLevel.HIGH,
+      impermanentLoss: RiskLevel.NONE,
+    },
     apr: toFixed(weeklyROI * 52, 4),
     prices: [
       { label: stakingTokenTicker, value: toDollar(stakingTokenPrice) },

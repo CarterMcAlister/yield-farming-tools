@@ -10,6 +10,7 @@ import {
 } from '../../../constants'
 import { priceLookupService } from '../../../price-lookup-service'
 import { get_synth_weekly_rewards, toDollar, toFixed } from '../../../utils'
+import { RiskLevel } from '../../../types'
 
 export default async function main(App) {
   const YGOV_BPT_POOL = new ethers.Contract(
@@ -61,6 +62,10 @@ export default async function main(App) {
     provider: 'yfii.finance',
     name: 'Balancer YFII-DAI',
     poolRewards: ['YFII', 'BAL'],
+    risk: {
+      smartContract: RiskLevel.MEDIUM,
+      impermanentLoss: RiskLevel.MEDIUM,
+    },
     apr: toFixed(YFIWeeklyROI * 52, 4),
     prices: [
       { label: 'YFFI', value: toDollar(YFIIPrice) },

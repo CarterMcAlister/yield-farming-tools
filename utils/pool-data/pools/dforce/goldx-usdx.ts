@@ -2,6 +2,7 @@ import axios from 'axios'
 import { ethers } from 'ethers'
 import { GOLDX_USDX_UNISWAP_POOL_ABI } from '../../../constants'
 import { priceLookupService } from '../../../price-lookup-service'
+import { RiskLevel } from '../../../types'
 import { toDollar, toFixed } from '../../../utils'
 
 export default async function main(App) {

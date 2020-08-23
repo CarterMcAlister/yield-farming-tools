@@ -18,11 +18,3 @@ declare module '\*.json' {
   const content: string
   export default content
 }
-
-enum RiskLevel {
-  NONE,
-  LOW,
-  MEDIUM,
-  HIGH,
-  EXTREME,
-}

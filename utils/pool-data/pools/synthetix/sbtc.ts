@@ -1,5 +1,6 @@
 import { ethers } from 'ethers'
 import * as Constant from '../../../constants'
+import { RiskLevel } from '../../../types'
 import {
   getLatestTotalBALAmount,
   get_synth_weekly_rewards,
@@ -115,6 +116,10 @@ export default async function main(App) {
     provider: 'Synthetix & Ren',
     name: 'Curve sBTC',
     poolRewards: ['SNX', 'CRV', 'REN', 'BAL'],
+    risk: {
+      smartContract: RiskLevel.LOW,
+      impermanentLoss: RiskLevel.LOW,
+    },
     apr: toFixed(BALWeeklyROI * 52 + SNXWeeklyROI * 52, 4),
     prices: [
       { label: 'SNX', value: toDollar(SNXprice) },

@@ -1,3 +1,4 @@
+import { RiskLevel } from '../../../types'
 import { toDollar, toFixed } from '../../../utils'
 
 export default async function main(App) {
@@ -167,6 +168,10 @@ export default async function main(App) {
         provider: 'Omen',
         name: 'Omen Kleros',
         poolRewards: ['PNK'],
+        risk: {
+          smartContract: RiskLevel.HIGH,
+          impermanentLoss: RiskLevel.NONE,
+        },
         apr: toFixed(weeklyRoi * 52, 4),
         prices: [{ label: 'PNK', value: toDollar(pnkUSDValue) }],
         staking: [

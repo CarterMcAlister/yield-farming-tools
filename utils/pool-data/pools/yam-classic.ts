@@ -1,13 +1,9 @@
 import { Y_STAKING_POOL_ABI } from '../../constants'
-import {
-  getSnxBasedStakingData,
-  PoolData,
-  TokenData,
-} from '../pool-templates/snx-based'
+import { PoolData, RiskLevel, TokenData } from '../../types'
+import { getSnxBasedStakingData } from '../pool-templates/snx-based'
 import {
   WETH_TOKEN,
   YAM_CLASSIC_TOKEN,
-  YAM_TOKEN,
   YCRV_TOKEN,
 } from '../pool-templates/token-data'
 
@@ -17,6 +13,10 @@ const poolData: PoolData = {
   provider: 'Yam Classic',
   name: 'YAM2',
   added: '2020-08-17 22:51:18',
+  risk: {
+    smartContract: RiskLevel.MEDIUM,
+    impermanentLoss: RiskLevel.NONE,
+  },
   links: [
     {
       title: 'Info',

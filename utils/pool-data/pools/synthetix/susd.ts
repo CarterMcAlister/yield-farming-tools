@@ -1,5 +1,6 @@
 import { ethers } from 'ethers'
 import * as Constant from '../../../constants'
+import { RiskLevel } from '../../../types'
 import {
   get_synth_weekly_rewards,
   lookUpPrices,
@@ -88,6 +89,10 @@ export default async function main(App) {
     provider: 'Synthetix',
     name: 'Curve sUSD',
     poolRewards: ['SNX', 'CRV'],
+    risk: {
+      smartContract: RiskLevel.LOW,
+      impermanentLoss: RiskLevel.NONE,
+    },
     apr: toFixed(SNXWeeklyROI * 52, 4),
     prices: [
       { label: 'SNX', value: toDollar(SNXPrice) },
@@ -138,7 +143,7 @@ export default async function main(App) {
       },
       {
         title: 'Stake',
-        link: 'https://mintr.synthetix.io',
+        link: 'https://dao.curve.fi',
       },
     ],
   }
