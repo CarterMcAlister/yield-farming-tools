@@ -1,112 +1,11 @@
 import axios from 'axios'
-import { ethers } from 'ethers'
 import { balRewards } from './bal-rewards-constants'
 import * as Constants from './constants'
-import { RiskLevel } from './types'
 
 declare global {
   interface Window {
     ethereum: any
     web3: any
-  }
-}
-
-export const riskBlurbs = {
-  il: {
-    [RiskLevel.NONE]:
-      'This contract is not a split pool, so there is no risk of impermanent loss.',
-    [RiskLevel.MEDIUM]:
-      'This is a unevenly split pool, impermanent loss can occur.',
-    [RiskLevel.HIGH]: 'This is a split pool, impermanent loss can occur.',
-  },
-  sc: {
-    [RiskLevel.LOW]: 'This smart contract has been professionally audited.',
-    [RiskLevel.MEDIUM]:
-      'This smart contract is based on a tested contract, but has not been audited.',
-    [RiskLevel.HIGH]:
-      'This smart contract is unaudited and experimental. Use at your own risk.',
-  },
-}
-
-export async function connectToWallet() {
-  const App: any = {}
-
-  // Modern dapp browsers...
-  if (window.ethereum) {
-    App.web3Provider = window.ethereum
-    try {
-      // Request account access
-      await window.ethereum.enable()
-    } catch (error) {
-      // User denied account access...
-      console.error('User denied account access')
-      throw 'User denied account access'
-    }
-    App.provider = new ethers.providers.Web3Provider(window.ethereum)
-  }
-  // Legacy dapp browsers...
-  else if (window.web3) {
-    App.provider = new ethers.providers.Web3Provider(
-      window.web3.currentProvider
-    )
-  }
-  // No injected web3 instance
-  else {
-    throw 'No metamask instance found'
-  }
-
-  if (!App.YOUR_ADDRESS) {
-    const accounts = await App.provider.listAccounts()
-    App.YOUR_ADDRESS = accounts[0]
-  }
-
-  if (!App.YOUR_ADDRESS || !ethers.utils.isAddress(App.YOUR_ADDRESS)) {
-    throw 'Could not initialize your address. Make sure your address is checksum valid.'
-  }
-
-  localStorage.setItem('addr', App.YOUR_ADDRESS)
-  return App
-}
-
-export async function initInfura(address?: string) {
-  const App: any = {}
-
-  App.provider = new ethers.providers.InfuraProvider('homestead')
-  sleep(10)
-
-  App.YOUR_ADDRESS = address || getUrlParameter('addr')
-
-  // Cloud not load URL parameter
-  if (!App.YOUR_ADDRESS) {
-    if (localStorage.hasOwnProperty('addr')) {
-      App.YOUR_ADDRESS = localStorage.getItem('addr')
-    } else {
-      App.YOUR_ADDRESS = Constants.PLACEHOLDER_ADDRESS
-    }
-  }
-
-  if (!App.YOUR_ADDRESS || !ethers.utils.isAddress(App.YOUR_ADDRESS)) {
-    throw 'Could not initialize your address. Make sure your address is checksum valid.'
-  }
-
-  localStorage.setItem('addr', App.YOUR_ADDRESS)
-  return App
-}
-
-const getUrlParameter = function (sParam) {
-  let sPageURL = window.location.search.substring(1),
-    sURLVariables = sPageURL.split('&'),
-    sParameterName,
-    i
-
-  for (i = 0; i < sURLVariables.length; i++) {
-    sParameterName = sURLVariables[i].split('=')
-
-    if (sParameterName[0] === sParam) {
-      return sParameterName[1] === undefined
-        ? true
-        : decodeURIComponent(sParameterName[1])
-    }
   }
 }
 
@@ -118,14 +17,6 @@ export const toFixed = function (num, fixed) {
   } else {
     return '0'
   }
-}
-
-const sleep = function (milliseconds) {
-  const date = Date.now()
-  let currentDate = null
-  do {
-    currentDate = Date.now()
-  } while (currentDate - date < milliseconds)
 }
 
 export const lookUpPrices = async function (id_array) {
@@ -161,12 +52,6 @@ export const getBlockTime = function () {
       })
   })
 }
-
-export const printBALRewards = async function (
-  synthStakingPoolAddr,
-  BALPrice,
-  percentageOfBalancerPool
-) {}
 
 export const getLatestTotalBALAmount = async function (addr) {
   const bal_earnings = await getBALEarnings(
@@ -227,71 +112,12 @@ const reward_period_end = async function (reward_contract_instance) {
   return await reward_contract_instance.periodFinish()
 }
 
-const ID = function () {
-  // Math.random should be unique because of its seeding algorithm.
-  // Convert it to base 36 (numbers + letters), and grab the first 9 characters
-  // after the decimal.
-  return '_' + Math.random().toString(36).substr(2, 9)
-}
-
-export function sleep_async(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms))
-}
-
 const formatter = new Intl.NumberFormat('en-US', {
   style: 'currency',
   currency: 'USD',
 })
 
-/**
- * Translates seconds into human readable format of seconds, minutes, hours, days, and years
- *
- * @param  {number} seconds The number of seconds to be processed
- * @return {string}         The phrase describing the the amount of time
- */
-export const forHumans = function (seconds) {
-  const levels: Array<[number, string]> = [
-    [Math.floor(seconds / 31536000), 'years'],
-    [Math.floor((seconds % 31536000) / 86400), 'days'],
-    [Math.floor(((seconds % 31536000) % 86400) / 3600), 'hours'],
-    [Math.floor((((seconds % 31536000) % 86400) % 3600) / 60), 'minutes'],
-    [Math.floor((((seconds % 31536000) % 86400) % 3600) % 60), 'seconds'],
-  ]
-  let returntext = ''
-
-  for (var i = 0, max = levels.length; i < max; i++) {
-    if (levels[i][0] === 0) continue
-    returntext +=
-      ' ' +
-      levels[i][0] +
-      ' ' +
-      (levels[i][0] === 1
-        ? levels[i][1].substr(0, levels[i][1].length - 1)
-        : levels[i][1])
-  }
-
-  return returntext.trim()
-}
-
 export const toDollar = formatter.format
-
-export const getPeriodFinishForReward = async function (
-  reward_contract_instance
-) {
-  return await reward_contract_instance.periodFinish()
-}
-
-export const trimOrFillTo = function (str, n) {
-  str = str + ''
-
-  if (str.length < n) {
-    str = str.padEnd(n, ' ')
-  } else {
-    str = str.substr(0, n - 4).padEnd(n, '.')
-  }
-
-  return str
-}
 
 export const toNumber = (numString) =>
   parseFloat(numString?.replaceAll('$', '').replaceAll(',', '') || '0')

@@ -61,12 +61,10 @@ export async function getSnxBasedStakingData(
   }
 
   const rewardPerToken = weekly_reward / totalStakedAmount
-  console.log(weekly_reward, totalStakedAmount, scalingFactor)
   let stakingTokenPrice
   let rewardTokenPrice
   if (!rewardToken.tokenId) {
     // Can't get price from gecko
-    console.log(' Cant get price from gecko')
     const prices = await priceLookupService.getPrices([
       stakingToken.tokenId,
       yCrvToken.tokenId,
@@ -87,7 +85,7 @@ export async function getSnxBasedStakingData(
 
   const weeklyRoi =
     (rewardPerToken * rewardTokenPrice * 100) / stakingTokenPrice
-  console.log(`zzz ${poolData.name} ${stakingToken.ticker}`, poolData.links)
+
   return {
     provider: poolData.provider,
     name: `${poolData.name} ${stakingToken.ticker}`,
@@ -201,7 +199,6 @@ export async function getSnxBasedUniPoolStakingData(
   let rewardTokenPrice
   if (!rewardToken.tokenId) {
     // Can't get price from gecko
-    console.log(' Cant get price from gecko')
     const prices = await priceLookupService.getPrices([
       poolToken1.tokenId,
       yCrvToken.tokenId,

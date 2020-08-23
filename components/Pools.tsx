@@ -25,7 +25,8 @@ import { useEffect, useState } from 'react'
 import { Card } from '../components/Card'
 import { pools } from '../utils/pool-data'
 import { RiskLevel } from '../utils/types'
-import { riskBlurbs, toNumber } from '../utils/utils'
+import { toNumber } from '../utils/utils'
+import { useEthContext } from '../contexts/ProviderContext'
 
 enum SortOrder {
   Lowest,
@@ -47,9 +48,10 @@ const TextMenuButton: React.FC<MenuButtonProps & ButtonProps> = ({
   ...props
 }) => <MenuButton {...props}>{children}</MenuButton>
 
-const poolData = []
+let poolData = []
 
-export const PoolSection: React.FC<{ ethApp: any }> = ({ ethApp }) => {
+export const PoolSection: React.FC = () => {
+  const { ethApp } = useEthContext()
   const [visiblePools, setVisiblePools] = useState([])
   const [sortOrder, setSortOrder] = useState(SortOrder.Highest)
   const [filters, setFilters] = useState([])
@@ -106,13 +108,15 @@ export const PoolSection: React.FC<{ ethApp: any }> = ({ ethApp }) => {
 
   const getPoolInfo = async () => {
     if (ethApp) {
+      const fetchedPools = []
       await Promise.all(
         Object.values(pools).map((getPoolData) =>
           (getPoolData(ethApp) as any)
-            .then((data) => poolData.push(data))
+            .then((data) => fetchedPools.push(data))
             .catch((e) => console.error(e))
         )
       )
+      poolData = fetchedPools
       updateVisiblePools()
     }
   }
@@ -347,6 +351,23 @@ const RiskList = ({ data }) =>
   ) : (
     <Box />
   )
+
+const riskBlurbs = {
+  il: {
+    [RiskLevel.NONE]:
+      'This contract is not a split pool, so there is no risk of impermanent loss.',
+    [RiskLevel.MEDIUM]:
+      'This is a unevenly split pool, impermanent loss can occur.',
+    [RiskLevel.HIGH]: 'This is a split pool, impermanent loss can occur.',
+  },
+  sc: {
+    [RiskLevel.LOW]: 'This smart contract has been professionally audited.',
+    [RiskLevel.MEDIUM]:
+      'This smart contract is based on a tested contract, but has not been audited.',
+    [RiskLevel.HIGH]:
+      'This smart contract is unaudited and experimental. Use at your own risk.',
+  },
+}
 
 const LinkList = ({ links }) => (
   <Box>
