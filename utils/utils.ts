@@ -120,4 +120,4 @@ const formatter = new Intl.NumberFormat('en-US', {
 export const toDollar = formatter.format
 
 export const toNumber = (numString) =>
-  parseFloat(numString?.replaceAll('$', '').replaceAll(',', '') || '0')
+  parseFloat(numString?.split('$').join('').split(',').join('') || '0')

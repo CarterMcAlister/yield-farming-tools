@@ -89,9 +89,7 @@ export const PoolSection: React.FC = () => {
       pools = pools.filter(
         (item) =>
           !item?.staking[0]?.value ||
-          parseFloat(
-            item?.staking[0]?.value.replace('$', '').replaceAll(',', '') || '0'
-          ) > 200000
+          toNumber(item?.staking[0]?.value) > 200000
       )
     }
 
@@ -111,9 +109,11 @@ export const PoolSection: React.FC = () => {
       const fetchedPools = []
       await Promise.all(
         Object.values(pools).map((getPoolData) =>
-          (getPoolData(ethApp) as any)
-            .then((data) => fetchedPools.push(data))
-            .catch((e) => console.error(e))
+          new Promise((resolve, reject) => {
+            (getPoolData(ethApp) as any)
+              .then((data) => { fetchedPools.push(data); resolve(); })
+              .catch((e) => { console.error(e); resolve(); })
+          })
         )
       )
       poolData = fetchedPools
