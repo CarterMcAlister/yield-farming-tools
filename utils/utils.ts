@@ -20,10 +20,11 @@ export enum RiskLevel {
 
 export const riskBlurbs = {
   il: {
+    [RiskLevel.NONE]:
+      'This contract is not a split pool, so there is no risk of impermanent loss.',
     [RiskLevel.LOW]:
       'This contract is not a split pool, so there is no risk of impermanent loss.',
-    [RiskLevel.MEDIUM]:
-      'This is a split pool, impermanent loss could occur if there is an extreme price change.',
+    [RiskLevel.MEDIUM]: 'This is a split pool, impermanent loss can occur.',
     [RiskLevel.HIGH]:
       'This is a split pool with tokens that could be minted and used to drain the pool. Use at your own risk.',
   },

@@ -288,9 +288,11 @@ const PoolItem = ({ poolItemData }) => {
 }
 
 const riskColors = {
+  [RiskLevel.NONE]: 'green.300',
   [RiskLevel.LOW]: 'green.400',
   [RiskLevel.MEDIUM]: 'yellow.300',
   [RiskLevel.HIGH]: 'red.500',
+  [RiskLevel.EXTREME]: 'red.700',
 }
 
 const RiskList = ({ data }) =>
@@ -306,8 +308,8 @@ const RiskList = ({ data }) =>
         </Box>
         <Box>
           <Tooltip
-            label={riskBlurbs.il[data.smartContract]}
-            aria-label={riskBlurbs.il[data.smartContract]}
+            label={riskBlurbs.sc[data.smartContract]}
+            aria-label={riskBlurbs.sc[data.smartContract]}
             bg="white"
             color="black"
             placement="right-end"

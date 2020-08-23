@@ -4,13 +4,9 @@ import {
   ERC20_ABI,
   YFFI_REWARD_CONTRACT_ABI,
 } from '../../../constants'
-import {
-  getPrices,
-  get_synth_weekly_rewards,
-  toDollar,
-  toFixed,
-} from '../../../utils'
 import { priceLookupService } from '../../../price-lookup-service'
+import { get_synth_weekly_rewards, toDollar, toFixed } from '../../../utils'
+import { RiskLevel } from '../../../types'
 
 const SCRV_TOKEN_ADDR = '0xC25a3A3b969415c80451098fa907EC722572917F'
 const CURVE_SUSD_POOL_ADDR = '0xA5407eAE9Ba41422680e2e00537571bcC53efBfD'
@@ -74,6 +70,10 @@ export default async function main(App) {
       },
     ],
     apr: toFixed(weeklyRoi * 52, 4),
+    risk: {
+      smartContract: RiskLevel.HIGH,
+      impermanentLoss: RiskLevel.NONE,
+    },
     prices: [
       { label: 'BASED', value: toDollar(rewardTokenPrice) },
       { label: stakingTokenTicker, value: toDollar(stakingTokenPrice) },

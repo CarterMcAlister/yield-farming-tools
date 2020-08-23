@@ -42,6 +42,10 @@ export default async function main(App) {
     provider: 'dForce',
     name: 'Uniswap DF-USDx',
     poolRewards: ['DF'],
+    risk: {
+      smartContract: RiskLevel.MEDIUM,
+      impermanentLoss: RiskLevel.HIGH,
+    },
     apr: toFixed(weeklyRoi * 52, 4),
     prices: [
       { label: 'USDX', value: toDollar(USDXPrice) },

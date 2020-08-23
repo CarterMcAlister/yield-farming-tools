@@ -26,6 +26,10 @@ export default async function main(App) {
     provider: 'dForce',
     name: 'dUSDT/dUSDC/dDAI',
     poolRewards: ['DF'],
+    risk: {
+      smartContract: RiskLevel.MEDIUM,
+      impermanentLoss: RiskLevel.NONE,
+    },
     apr: toFixed(weeklyRoi * 52, 4),
     prices: [
       { label: 'USDT', value: toDollar(USDTPrice) },
