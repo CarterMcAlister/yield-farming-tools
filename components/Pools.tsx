@@ -89,9 +89,8 @@ export const PoolSection: React.FC = () => {
       pools = pools.filter(
         (item) =>
           !item?.staking[0]?.value ||
-          parseFloat(
-            item?.staking[0]?.value.replace('$', '').replaceAll(',', '') || '0'
-          ) > 200000
+          (item?.staking?.length > 0 &&
+            toNumber(item?.staking[0]?.value) > 200000)
       )
     }
 
