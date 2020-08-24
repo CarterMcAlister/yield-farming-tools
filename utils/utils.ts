@@ -119,8 +119,13 @@ const formatter = new Intl.NumberFormat('en-US', {
 
 export const toDollar = formatter.format
 
-export const toNumber = (numString) =>
-  numString &&
-  parseFloat(
-    numString?.toString()?.replaceAll('$', '')?.replaceAll(',', '') || '0'
-  )
+export const toNumber = (numString) => {
+  try {
+    const num = parseFloat(
+      numString?.toString()?.replaceAll('$', '')?.replaceAll(',', '') || '0'
+    )
+    return num
+  } catch (e) {
+    return 0
+  }
+}
