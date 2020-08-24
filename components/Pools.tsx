@@ -88,8 +88,7 @@ export const PoolSection: React.FC = () => {
     if (!filters.includes(Filters.ShowLowLiquidity)) {
       pools = pools.filter(
         (item) =>
-          !item?.staking[0]?.value ||
-          toNumber(item?.staking[0]?.value) > 200000
+          !item?.staking[0]?.value || toNumber(item?.staking[0]?.value) > 200000
       )
     }
 
@@ -108,12 +107,19 @@ export const PoolSection: React.FC = () => {
     if (ethApp) {
       const fetchedPools = []
       await Promise.all(
-        Object.values(pools).map((getPoolData) =>
-          new Promise((resolve, reject) => {
-            (getPoolData(ethApp) as any)
-              .then((data) => { fetchedPools.push(data); resolve(); })
-              .catch((e) => { console.error(e); resolve(); })
-          })
+        Object.values(pools).map(
+          (getPoolData) =>
+            new Promise((resolve, reject) => {
+              ;(getPoolData(ethApp) as any)
+                .then((data) => {
+                  fetchedPools.push(data)
+                  resolve()
+                })
+                .catch((e) => {
+                  console.error(e)
+                  resolve()
+                })
+            })
         )
       )
       poolData = fetchedPools

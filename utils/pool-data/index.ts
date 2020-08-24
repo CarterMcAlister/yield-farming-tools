@@ -1,4 +1,6 @@
 import b_scrv from './pools/based/b_scrv'
+import cream_bal from './pools/cream/cream_bal'
+import cream_uni from './pools/cream/cream_uni'
 import df_usdx from './pools/dforce/df-usdx'
 import dUSDT_dUSDC_dDAI from './pools/dforce/dUSDT-dUSDC-dDAI'
 import goldx_usdx from './pools/dforce/goldx-usdx'
@@ -60,6 +62,8 @@ export const pools = {
   yvault_tusd,
   yvault_dai,
   yvault_alink,
+  cream_bal,
+  cream_uni,
   ...yamPools,
   ...yamClassicPools,
   ...shrimpPools,
