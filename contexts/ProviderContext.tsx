@@ -1,14 +1,20 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
-import { useEthers, EthersProps } from '../hooks/useEthers'
+import { connectToWeb3, initInfura } from '../hooks/useEthers'
+import { PLACEHOLDER_ADDRESS } from '../utils/constants'
 
 const Context = createContext(null)
 
 export const EthContext = ({ children }) => {
   const [ethApp, setEthApp] = useState()
 
-  const setEthProvider = async (ethersValues?: EthersProps) => {
-    const app = await useEthers(ethersValues || {})
-    setEthApp(app)
+  const setEthProvider = async () => {
+    try {
+      const app = await connectToWeb3()
+      setEthApp(app)
+    } catch {
+      const app = await initInfura(PLACEHOLDER_ADDRESS)
+      setEthApp(app)
+    }
   }
 
   useEffect(() => {
@@ -16,7 +22,7 @@ export const EthContext = ({ children }) => {
   }, [])
 
   return (
-    <Context.Provider value={{ ethApp, setEthProvider }}>
+    <Context.Provider value={{ ethApp, setEthProvider, setEthApp }}>
       {children}
     </Context.Provider>
   )

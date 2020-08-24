@@ -17,22 +17,29 @@ import {
 } from '@chakra-ui/core'
 import { useState } from 'react'
 import { Card } from '../components/Card'
+import { useEthContext } from '../contexts/ProviderContext'
+import { connectToWeb3, initInfura } from '../hooks/useEthers'
 import ethLogo from '../resources/eth-logo.svg'
 import metamaskLogo from '../resources/metamask-fox.svg'
 import { PLACEHOLDER_ADDRESS } from '../utils/constants'
-import { useEthContext } from '../contexts/ProviderContext'
-import { EthersProps } from '../hooks/useEthers'
 
 export const TopNav = () => {
   const toast = useToast()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [ethAddress, setEthAddress] = useState('')
-  const { ethApp, setEthProvider } = useEthContext()
+  const { ethApp, setEthApp } = useEthContext()
 
-  const connectWallet = async (ethersProps: EthersProps) => {
+  const connectWallet = async (address?: string) => {
     try {
-      await setEthProvider(ethersProps)
+      let app
+      console.log(address)
+      if (address) {
+        app = await initInfura(address)
+      } else {
+        app = await connectToWeb3()
+      }
 
+      setEthApp(app)
       toast({
         title: 'Address connected successfully',
         status: 'success',
@@ -115,7 +122,7 @@ export const TopNav = () => {
                 ml="-15px"
               />
               <Button
-                onClick={() => connectWallet({ web3: true })}
+                onClick={() => connectWallet()}
                 background="#F6851B"
                 color="#FFF"
                 _hover={{ bg: '#e2761B' }}
@@ -148,7 +155,7 @@ export const TopNav = () => {
                   onChange={(e) => setEthAddress(e.target.value)}
                 />
                 <IconButton
-                  onClick={() => connectWallet({ address: ethAddress })}
+                  onClick={() => connectWallet(ethAddress)}
                   aria-label="Add address"
                   background="#4099FF"
                   color="#FFF"
