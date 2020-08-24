@@ -6,6 +6,7 @@ import {
   IconButton,
   Image,
   Input,
+  Link,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -32,7 +33,6 @@ export const TopNav = () => {
   const connectWallet = async (address?: string) => {
     try {
       let app
-      console.log(address)
       if (address) {
         app = await initInfura(address)
       } else {
@@ -65,8 +65,10 @@ export const TopNav = () => {
       <Flex as={Card} justifyContent="space-between" alignItems="center">
         <Box>
           <Heading as="h1" size="xl">
-            <Box display={{ xs: 'block', md: 'inline' }}>🧑‍🌾 </Box>
-            Yield Farming Tools
+            <Link href="/" style={{ textDecoration: 'none' }}>
+              <Box display={{ xs: 'block', md: 'inline' }}>🧑‍🌾 </Box>
+              Yield Farming Tools
+            </Link>
           </Heading>
           <Text pl={{ xs: 0, md: 12 }} fontSize="md" color="gray.600">
             {tagLines[randomIndex(0, tagLines.length - 1)]}

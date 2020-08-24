@@ -91,7 +91,7 @@ export default async function main(App) {
     poolRewards: ['CREAM'],
     risk: {
       smartContract: RiskLevel.HIGH,
-      impermanentLoss: RiskLevel.MEDIUM,
+      impermanentLoss: RiskLevel.HIGH,
     },
     apr: toFixed(weeklyRoi * 52, 4),
     prices: [
