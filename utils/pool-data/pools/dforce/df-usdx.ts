@@ -28,7 +28,7 @@ export default async function main(App) {
   const rewardsPerPoolShare = DFORCE_WEEKLY_REWARDS / totalPoolAmount
 
   const roi = await axios.get('https://testapi.dforce.network/api/getRoi/')
-  const yearlyRoi = roi.data.DF * 100
+  const yearlyRoi = roi.data['DF/USDx'] * 100
   const weeklyRoi = yearlyRoi / 52
 
   // Prices
@@ -38,7 +38,6 @@ export default async function main(App) {
   } = await priceLookupService.getPrices(['usdx-stablecoin', 'dforce-token'])
 
   const poolSharePrice = USDXPerTotal * USDXPrice + DFORCEPerTotal * dForcePrice
-
   return {
     provider: 'dForce',
     name: 'Uniswap DF-USDx',

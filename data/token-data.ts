@@ -151,3 +151,17 @@ export const SUSD_TOKEN: TokenData = {
   ticker: 'sUSD',
   tokenId: 'nusd',
 }
+
+export const ZOMBIE_TOKEN: TokenData = {
+  address: '0xd55BD2C12B30075b325Bc35aEf0B46363B3818f8',
+  ABI: ERC20_ABI,
+  ticker: 'ZOMBIE',
+  tokenId: 'zombie-finance',
+}
+
+export const DAI_TOKEN: TokenData = {
+  address: '0xd55BD2C12B30075b325Bc35aEf0B46363B3818f8',
+  ABI: ERC20_ABI,
+  ticker: 'DAI',
+  tokenId: 'dai',
+}

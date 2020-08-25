@@ -21,7 +21,7 @@ export default async function main(App) {
   const rewardsPerPoolShare = DFORCE_WEEKLY_REWARDS / totalPoolAmount
 
   const roi = await axios.get('https://testapi.dforce.network/api/getRoi/')
-  const yearlyRoi = roi.data.Glodx * 100
+  const yearlyRoi = roi.data['GOLDx/USDx'] * 100
   const weeklyRoi = yearlyRoi / 52
 
   // Prices

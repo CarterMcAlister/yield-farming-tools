@@ -103,9 +103,13 @@ export const get_synth_weekly_rewards = async function (
 }
 
 const isRewardPeriodOver = async function (reward_contract_instance) {
-  const now = Date.now() / 1000
-  const periodFinish = await reward_period_end(reward_contract_instance)
-  return periodFinish < now
+  try {
+    const now = Date.now() / 1000
+    const periodFinish = await reward_period_end(reward_contract_instance)
+    return periodFinish < now
+  } catch (e) {
+    return false
+  }
 }
 
 const reward_period_end = async function (reward_contract_instance) {

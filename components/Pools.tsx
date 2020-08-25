@@ -23,10 +23,10 @@ import {
 } from '@chakra-ui/core'
 import { useEffect, useState } from 'react'
 import { Card } from '../components/Card'
-import { pools } from '../utils/pool-data'
-import { RiskLevel } from '../types'
-import { toNumber } from '../utils/utils'
 import { useEthContext } from '../contexts/ProviderContext'
+import { RiskLevel } from '../types'
+import { pools } from '../utils/pool-data'
+import { toNumber } from '../utils/utils'
 
 enum SortOrder {
   Lowest,
@@ -219,8 +219,8 @@ export const PoolSection: React.FC = () => {
         </Flex>
         <Box mx="1rem">
           {visiblePools.length > 0
-            ? visiblePools.map((poolItemData) => (
-                <PoolItem key={poolItemData.name} poolItemData={poolItemData} />
+            ? visiblePools.map((poolItemData, index) => (
+                <PoolItem key={index} poolItemData={poolItemData} />
               ))
             : !filters.includes(Filters.OnlyMyPools) && (
                 <Box>
