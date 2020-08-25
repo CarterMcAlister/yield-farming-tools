@@ -1,5 +1,6 @@
 import {
   ALINK_TOKEN_ADDR,
+  BASED_TOKEN_ADDR,
   COMP_TOKEN_ADDR,
   CREAM_TOKEN_ADDR,
   DICE_TOKEN_ADDR,
@@ -17,8 +18,8 @@ import {
   YAM_TOKEN_ADDR,
   YCRV_TOKEN_ADDR,
   YFI_TOKEN_ADDR,
-} from '../../constants'
-import { TokenData } from '../../types'
+} from './constants'
+import { TokenData } from '../types'
 
 export const YCRV_TOKEN: TokenData = {
   address: YCRV_TOKEN_ADDR,
@@ -135,4 +136,18 @@ export const WBTC_TOKEN: TokenData = {
   address: WBTC_TOKEN_ADDR,
   ABI: ERC20_ABI,
   ticker: 'WBTC',
+}
+
+export const BASED_TOKEN: TokenData = {
+  address: BASED_TOKEN_ADDR,
+  ABI: ERC20_ABI,
+  ticker: 'BASED',
+  tokenId: 'based-money',
+}
+
+export const SUSD_TOKEN: TokenData = {
+  address: '0x57ab1ec28d129707052df4df418d58a2d46d5f51',
+  ABI: ERC20_ABI,
+  ticker: 'sUSD',
+  tokenId: 'nusd',
 }

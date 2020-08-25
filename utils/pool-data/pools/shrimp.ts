@@ -2,12 +2,8 @@ import {
   ERC20_ABI,
   YFFI_REWARD_CONTRACT_ABI,
   Y_STAKING_POOL_ABI,
-} from '../../constants'
-import { PoolData, TokenData } from '../../types'
-import {
-  getSnxBasedStakingData,
-  getSnxBasedUniPoolStakingData,
-} from '../pool-templates/snx-based'
+} from '../../../data/constants'
+import { getSnxBasedStakingData } from '../../pool-templates/staking'
 import {
   COMP_TOKEN,
   CREAM_TOKEN,
@@ -16,7 +12,9 @@ import {
   YAM_TOKEN,
   YCRV_TOKEN,
   YFI_TOKEN,
-} from '../pool-templates/token-data'
+} from '../../../data/token-data'
+import { getSnxBasedUniPoolStakingData } from '../../pool-templates/uniswap-staking'
+import { PoolData, TokenData } from '../../../types'
 
 const poolData: PoolData = {
   provider: 'Shrimp',

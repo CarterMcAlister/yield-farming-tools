@@ -1,6 +1,6 @@
 import axios from 'axios'
-import { balRewards } from './bal-rewards-constants'
-import * as Constants from './constants'
+import { balRewards } from '../data/bal-rewards-constants'
+import * as Constants from '../data/constants'
 
 declare global {
   interface Window {

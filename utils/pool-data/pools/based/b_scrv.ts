@@ -3,10 +3,10 @@ import {
   CURVE_SUSD_POOL_ABI,
   ERC20_ABI,
   YFFI_REWARD_CONTRACT_ABI,
-} from '../../../constants'
-import { priceLookupService } from '../../../price-lookup-service'
+} from '../../../../data/constants'
+import { priceLookupService } from '../../../../services/price-lookup-service'
 import { get_synth_weekly_rewards, toDollar, toFixed } from '../../../utils'
-import { RiskLevel } from '../../../types'
+import { RiskLevel } from '../../../../types'
 
 const SCRV_TOKEN_ADDR = '0xC25a3A3b969415c80451098fa907EC722572917F'
 const CURVE_SUSD_POOL_ADDR = '0xA5407eAE9Ba41422680e2e00537571bcC53efBfD'

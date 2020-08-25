@@ -1,6 +1,6 @@
 import { ethers } from 'ethers'
-import * as Constant from '../../../constants'
-import { RiskLevel } from '../../../types'
+import * as Constant from '../../../../data/constants'
+import { RiskLevel } from '../../../../types'
 import {
   getLatestTotalBALAmount,
   get_synth_weekly_rewards,

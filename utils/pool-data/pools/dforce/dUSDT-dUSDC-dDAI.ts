@@ -1,6 +1,6 @@
 import axios from 'axios'
-import { priceLookupService } from '../../../price-lookup-service'
-import { RiskLevel } from '../../../types'
+import { priceLookupService } from '../../../../services/price-lookup-service'
+import { RiskLevel } from '../../../../types'
 import { toDollar, toFixed } from '../../../utils'
 
 export default async function main(App) {

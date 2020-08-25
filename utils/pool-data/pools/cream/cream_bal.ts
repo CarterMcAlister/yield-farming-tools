@@ -7,8 +7,8 @@ import {
   CREAM_WETH_BPT_TOKEN_ADDR,
   ERC20_ABI,
   WETH_TOKEN_ADDR,
-} from '../../../constants'
-import { PoolData, RiskLevel } from '../../../types'
+} from '../../../../data/constants'
+import { PoolData, RiskLevel } from '../../../../types'
 import {
   get_synth_weekly_rewards,
   lookUpPrices,

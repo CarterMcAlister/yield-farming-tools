@@ -9,10 +9,10 @@ import {
   YEARN_VAULT_ABI,
   YEARN_VAULT_CONTROLLER_ABI,
   YEARN_VAULT_CONTROLLER_ADDR,
-} from '../../../constants'
-import { priceLookupService } from '../../../price-lookup-service'
+} from '../../../../data/constants'
+import { priceLookupService } from '../../../../services/price-lookup-service'
 import { getBlockTime, toDollar, toFixed } from '../../../utils'
-import { RiskLevel } from '../../../types'
+import { RiskLevel } from '../../../../types'
 
 type Token = {
   ticker: string

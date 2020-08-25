@@ -8,7 +8,7 @@ import {
   SYNTH_USDC_SNX_BPT_STAKING_POOL_ABI,
   SYNTH_USDC_SNX_BPT_STAKING_POOL_ADDR,
   USDC_TOKEN_ADDR,
-} from '../../../constants'
+} from '../../../../data/constants'
 import {
   getLatestTotalBALAmount,
   get_synth_weekly_rewards,

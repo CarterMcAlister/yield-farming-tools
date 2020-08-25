@@ -1,6 +1,6 @@
 import { ethers } from 'ethers'
-import * as Constants from '../utils/constants'
-import { PLACEHOLDER_ADDRESS } from '../utils/constants'
+import * as Constants from '../data/constants'
+import { PLACEHOLDER_ADDRESS } from '../data/constants'
 
 declare global {
   interface Window {

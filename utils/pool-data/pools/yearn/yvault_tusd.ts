@@ -1,4 +1,4 @@
-import { TUSD_TOKEN_ADDR } from '../../../constants'
+import { TUSD_TOKEN_ADDR } from '../../../../data/constants'
 import { yearnVault } from './getVaultinfo'
 
 export default async function main(App) {

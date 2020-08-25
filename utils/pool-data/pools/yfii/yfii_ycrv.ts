@@ -4,9 +4,9 @@ import {
   YCRV_TOKEN_ADDR,
   YFII_STAKING_POOL_ADDR,
   Y_STAKING_POOL_ABI,
-} from '../../../constants'
-import { priceLookupService } from '../../../price-lookup-service'
-import { RiskLevel } from '../../../types'
+} from '../../../../data/constants'
+import { priceLookupService } from '../../../../services/price-lookup-service'
+import { RiskLevel } from '../../../../types'
 import { get_synth_weekly_rewards, toDollar, toFixed } from '../../../utils'
 
 export default async function main(App) {

@@ -2,12 +2,8 @@ import {
   ERC20_ABI,
   YFFI_REWARD_CONTRACT_ABI,
   Y_STAKING_POOL_ABI,
-} from '../../constants'
-import { PoolData, RiskLevel, TokenData } from '../../types'
-import {
-  getSnxBasedStakingData,
-  getSnxBasedUniPoolStakingData,
-} from '../pool-templates/snx-based'
+} from '../../../data/constants'
+import { getSnxBasedStakingData } from '../../pool-templates/staking'
 import {
   ALINK_TOKEN,
   COMP_TOKEN,
@@ -19,7 +15,9 @@ import {
   WETH_TOKEN,
   YFI_TOKEN,
   YYCRV_TOKEN,
-} from '../pool-templates/token-data'
+} from '../../../data/token-data'
+import { getSnxBasedUniPoolStakingData } from '../../pool-templates/uniswap-staking'
+import { PoolData, RiskLevel, TokenData } from '../../../types'
 
 const poolData: PoolData = {
   provider: 'spaghetti.money',
@@ -157,6 +155,7 @@ const pastaYycrvPoolToken: TokenData = {
 }
 
 const yyCrvPoolData = Object.assign({}, poolData, {
+  name: '',
   risk: {
     smartContract: RiskLevel.MEDIUM,
     impermanentLoss: RiskLevel.HIGH,

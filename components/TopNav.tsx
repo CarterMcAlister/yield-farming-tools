@@ -22,7 +22,7 @@ import { useEthContext } from '../contexts/ProviderContext'
 import { connectToWeb3, initInfura } from '../hooks/useEthers'
 import ethLogo from '../resources/eth-logo.svg'
 import metamaskLogo from '../resources/metamask-fox.svg'
-import { PLACEHOLDER_ADDRESS } from '../utils/constants'
+import { PLACEHOLDER_ADDRESS } from '../data/constants'
 
 export const TopNav = () => {
   const toast = useToast()

@@ -7,8 +7,8 @@ import {
   YFL_POOL_1_ADDR,
   YFL_TOKEN_ADDR,
   YGOV_BPT_STAKING_POOL_ABI,
-} from '../../../constants'
-import { priceLookupService } from '../../../price-lookup-service'
+} from '../../../../data/constants'
+import { priceLookupService } from '../../../../services/price-lookup-service'
 import { get_synth_weekly_rewards, toDollar, toFixed } from '../../../utils'
 
 export default async function main(App) {

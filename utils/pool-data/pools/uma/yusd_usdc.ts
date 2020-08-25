@@ -5,10 +5,10 @@ import {
   USDC_TOKEN_ADDR,
   YUSDSEP20_TOKEN_ADDR,
   YUSD_USDC_BPT_TOKEN_ADDR,
-} from '../../../constants'
-import { priceLookupService } from '../../../price-lookup-service'
+} from '../../../../data/constants'
+import { priceLookupService } from '../../../../services/price-lookup-service'
 import { toDollar, toFixed } from '../../../utils'
-import { RiskLevel } from '../../../types'
+import { RiskLevel } from '../../../../types'
 
 export default async function main(App) {
   const YUSD_USDC_BALANCER_POOL = new ethers.Contract(

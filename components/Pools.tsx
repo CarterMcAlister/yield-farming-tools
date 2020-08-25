@@ -24,7 +24,7 @@ import {
 import { useEffect, useState } from 'react'
 import { Card } from '../components/Card'
 import { pools } from '../utils/pool-data'
-import { RiskLevel } from '../utils/types'
+import { RiskLevel } from '../types'
 import { toNumber } from '../utils/utils'
 import { useEthContext } from '../contexts/ProviderContext'
 

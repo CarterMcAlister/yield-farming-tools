@@ -1,4 +1,5 @@
 import b_scrv from './pools/based/b_scrv'
+import b_susd from './pools/based/b_susd'
 import cream_bal from './pools/cream/cream_bal'
 import cream_uni from './pools/cream/cream_uni'
 import df_usdx from './pools/dforce/df-usdx'
@@ -64,6 +65,7 @@ export const pools = {
   yvault_alink,
   cream_bal,
   cream_uni,
+  b_susd,
   ...yamPools,
   ...yamClassicPools,
   ...shrimpPools,

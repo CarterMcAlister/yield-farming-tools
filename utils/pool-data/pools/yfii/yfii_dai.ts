@@ -7,10 +7,10 @@ import {
   YFII_DAI_BPT_TOKEN_ADDR,
   YFII_TOKEN_ADDR,
   YGOV_BPT_STAKING_POOL_ABI,
-} from '../../../constants'
-import { priceLookupService } from '../../../price-lookup-service'
+} from '../../../../data/constants'
+import { priceLookupService } from '../../../../services/price-lookup-service'
 import { get_synth_weekly_rewards, toDollar, toFixed } from '../../../utils'
-import { RiskLevel } from '../../../types'
+import { RiskLevel } from '../../../../types'
 
 export default async function main(App) {
   const YGOV_BPT_POOL = new ethers.Contract(

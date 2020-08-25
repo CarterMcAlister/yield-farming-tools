@@ -1,4 +1,4 @@
-import { RiskLevel } from '../../../types'
+import { RiskLevel } from '../../../../types'
 import { toDollar, toFixed } from '../../../utils'
 
 export default async function main(App) {

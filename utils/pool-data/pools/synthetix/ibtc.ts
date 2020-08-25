@@ -4,14 +4,14 @@ import {
   iBTC_TOKEN_ADDR,
   SYNTH_iBTC_STAKING_POOL_ABI,
   SYNTH_iBTC_STAKING_POOL_ADDR,
-} from '../../../constants'
+} from '../../../../data/constants'
 import {
   get_synth_weekly_rewards,
   lookUpPrices,
   toDollar,
   toFixed,
 } from '../../../utils'
-import { RiskLevel } from '../../../types'
+import { RiskLevel } from '../../../../types'
 
 export default async function main(App) {
   const SYNTH_iBTC_POOL = new ethers.Contract(

@@ -7,7 +7,7 @@ import {
   UNISWAP_SXAU_USDC_POOL_ABI,
   UNISWAP_SXAU_USDC_POOL_ADDR,
   USDC_TOKEN_ADDR,
-} from '../../../constants'
+} from '../../../../data/constants'
 import { get_synth_weekly_rewards, lookUpPrices, toFixed } from '../../../utils'
 
 export default async function main(App) {

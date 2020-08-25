@@ -4,7 +4,7 @@ import {
   iETH_TOKEN_ADDR,
   SYNTH_iETH_STAKING_POOL_ABI,
   SYNTH_iETH_STAKING_POOL_ADDR,
-} from '../../../constants'
+} from '../../../../data/constants'
 import { get_synth_weekly_rewards, lookUpPrices, toFixed } from '../../../utils'
 
 export default async function main(App) {

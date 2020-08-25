@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { connectToWeb3, initInfura } from '../hooks/useEthers'
-import { PLACEHOLDER_ADDRESS } from '../utils/constants'
+import { PLACEHOLDER_ADDRESS } from '../data/constants'
 
 const Context = createContext(null)
 

@@ -7,10 +7,10 @@ import {
   MUSD_MTA_BPT_TOKEN_ADDR,
   MUSD_MTA_BPT_TOKEN_STAKING_ADDR,
   MUSD_TOKEN_ADDR,
-} from '../../../constants'
-import { priceLookupService } from '../../../price-lookup-service'
+} from '../../../../data/constants'
+import { priceLookupService } from '../../../../services/price-lookup-service'
 import { get_synth_weekly_rewards, toDollar, toFixed } from '../../../utils'
-import { RiskLevel } from '../../../types'
+import { RiskLevel } from '../../../../types'
 
 export default async function main(App) {
   const MUSD_MTA_BALANCER_POOL = new ethers.Contract(
