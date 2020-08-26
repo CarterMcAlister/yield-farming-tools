@@ -55,6 +55,9 @@ export const PoolSection: React.FC = () => {
   const [visiblePools, setVisiblePools] = useState([])
   const [sortOrder, setSortOrder] = useState(SortOrder.Highest)
   const [filters, setFilters] = useState([])
+  const [showAll, setShowAll] = useState(false)
+
+  const toggleVisibleItems = () => setShowAll(!showAll)
 
   const sortByApr = (a, b) => {
     if (sortOrder === SortOrder.Highest) {
@@ -218,17 +221,32 @@ export const PoolSection: React.FC = () => {
           </Menu>
         </Flex>
         <Box mx="1rem">
-          {visiblePools.length > 0
-            ? visiblePools.map((poolItemData, index) => (
-                <PoolItem key={index} poolItemData={poolItemData} />
-              ))
-            : !filters.includes(Filters.OnlyMyPools) && (
-                <Box>
-                  {[...Array(6)].map((_e, i) => (
-                    <Skeleton height={72} my={4} width="100%" key={i} />
-                  ))}
-                </Box>
-              )}
+          {visiblePools.length > 0 ? (
+            <Flex direction="column" justifyContent="center">
+              <Collapse startingHeight={620} isOpen={showAll}>
+                {visiblePools.map((poolItemData, index) => (
+                  <PoolItem key={index} poolItemData={poolItemData} />
+                ))}
+              </Collapse>
+              <Button
+                mt={showAll ? 0 : 2}
+                size="sm"
+                bg="white"
+                leftIcon={showAll ? 'chevron-up' : 'chevron-down'}
+                onClick={toggleVisibleItems}
+              >
+                Show {showAll ? 'Less' : 'More'}
+              </Button>
+            </Flex>
+          ) : (
+            !filters.includes(Filters.OnlyMyPools) && (
+              <Box>
+                {[...Array(7)].map((_e, i) => (
+                  <Skeleton height={72} my={4} width="100%" key={i} />
+                ))}
+              </Box>
+            )
+          )}
         </Box>
       </Box>
     </Box>
