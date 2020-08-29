@@ -29,8 +29,7 @@ const poolData: PoolData = {
   links: [
     {
       title: 'Info',
-      link:
-        'https://medium.com/@SpaghettiMoney/announcing-spaghetti-money-6694beaeaf45',
+      link: 'https://medium.com/sushiswap/the-sushiswap-project-c4049ea9941e',
     },
     {
       title: 'Staking',
