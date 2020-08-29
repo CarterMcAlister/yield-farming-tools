@@ -144,14 +144,6 @@ export const BASED_TOKEN: TokenData = {
   ticker: 'BASED',
   tokenId: 'based-money',
 }
-
-export const SUSD_TOKEN: TokenData = {
-  address: '0x57ab1ec28d129707052df4df418d58a2d46d5f51',
-  ABI: ERC20_ABI,
-  ticker: 'sUSD',
-  tokenId: 'nusd',
-}
-
 export const ZOMBIE_TOKEN: TokenData = {
   address: '0xd55BD2C12B30075b325Bc35aEf0B46363B3818f8',
   ABI: ERC20_ABI,
@@ -159,9 +151,61 @@ export const ZOMBIE_TOKEN: TokenData = {
   tokenId: 'zombie-finance',
 }
 
+export const SUSHI_TOKEN: TokenData = {
+  address: '0x6B3595068778DD592e39A122f4f5a5cF09C90fE2',
+  ABI: ERC20_ABI,
+  ticker: 'SUSHI',
+  tokenId: 'sushi',
+}
+
+export const UMA_TOKEN: TokenData = {
+  address: '0x04fa0d235c4abf4bcf4787af4cf447de572ef828',
+  ABI: ERC20_ABI,
+  ticker: 'UMA',
+  tokenId: 'uma',
+}
+
+export const BAND_TOKEN: TokenData = {
+  address: '0xBA11D00c5f74255f56a5E366F4F77f5A186d7f55',
+  ABI: ERC20_ABI,
+  ticker: 'BAND',
+  tokenId: 'band-protocol',
+}
+
+export const TETHER_TOKEN: TokenData = {
+  address: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
+  ABI: ERC20_ABI,
+  ticker: 'USDT',
+  tokenId: 'tether',
+  numBase: 1e6,
+}
+
+export const AMPL_TOKEN: TokenData = {
+  address: '0xd46ba6d942050d489dbd938a2c909a5d5039a161',
+  ABI: ERC20_ABI,
+  ticker: 'AMPL',
+  tokenId: 'ampleforth',
+  numBase: 1e9,
+}
+
 export const DAI_TOKEN: TokenData = {
-  address: '0xd55BD2C12B30075b325Bc35aEf0B46363B3818f8',
+  address: '0x6b175474e89094c44da98b954eedeac495271d0f',
   ABI: ERC20_ABI,
   ticker: 'DAI',
   tokenId: 'dai',
+}
+
+export const USDC_TOKEN: TokenData = {
+  address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+  ABI: ERC20_ABI,
+  ticker: 'USDC',
+  tokenId: 'usd-coin',
+  numBase: 1e6,
+}
+
+export const SUSD_TOKEN: TokenData = {
+  address: '0x57ab1ec28d129707052df4df418d58a2d46d5f51',
+  ABI: ERC20_ABI,
+  ticker: 'sUSD',
+  tokenId: 'nusd',
 }
