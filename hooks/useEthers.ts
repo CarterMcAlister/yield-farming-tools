@@ -95,6 +95,21 @@ export async function initInfura(address?: string) {
   return App
 }
 
+export async function initInfuraServer() {
+  const App: any = {}
+
+  App.provider = new ethers.providers.InfuraProvider('homestead')
+  sleep(10)
+
+  App.YOUR_ADDRESS = Constants.PLACEHOLDER_ADDRESS
+
+  if (!App.YOUR_ADDRESS || !ethers.utils.isAddress(App.YOUR_ADDRESS)) {
+    throw 'Could not initialize your address. Make sure your address is checksum valid.'
+  }
+
+  return App
+}
+
 const getUrlParameter = function (sParam) {
   let sPageURL = window.location.search.substring(1),
     sURLVariables = sPageURL.split('&'),

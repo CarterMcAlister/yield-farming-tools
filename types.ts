@@ -6,6 +6,21 @@ export enum RiskLevel {
   EXTREME = 'Extreme',
 }
 
+export enum SortOrder {
+  Lowest,
+  Highest,
+  Newest,
+  Oldest,
+  Provider,
+}
+
+export enum FilterOptions {
+  ShowLowApr,
+  ShowLowLiquidity,
+  OnlyMyPools,
+  OnlyMyRewards,
+}
+
 export type TokenData = {
   address: string
   ABI: any

@@ -12,6 +12,7 @@
     "@emotion/core": "^10.0.28",
     "@emotion/styled": "^10.0.27",
     "axios": "^0.19.2",
+    "constate": "^2.0.0",
     "emotion-theming": "^10.0.27",
     "ethers": "^5.0.7",
     "focus-visible": "^5.1.0",
