@@ -36,7 +36,7 @@ export default async function main(App) {
 
   return {
     provider: 'dForce',
-    name: 'Uniswap GOLDx-USDx',
+    name: 'Uni GOLDx-USDx',
     poolRewards: ['DF'],
     risk: {
       smartContract: RiskLevel.MEDIUM,

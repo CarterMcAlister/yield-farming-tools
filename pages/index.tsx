@@ -6,6 +6,7 @@ import Wrapper from '../components/Wrapper'
 import { initInfuraServer } from '../hooks/useEthers'
 import { graphcms, linkSectionContents } from '../services/graph-cms-service'
 import { pools } from '../utils/pool-data'
+import { Filters } from '../components/Filters'
 
 export default ({ informationSection, toolSection, poolData }) => (
   <PoolProvider>
@@ -20,7 +21,7 @@ export default ({ informationSection, toolSection, poolData }) => (
           <Text color="gray.600" fontWeight="bold" pt="1rem" pl="20px">
             Filters
           </Text>
-          {/* <Filters /> */}
+          <Filters />
           <Text color="gray.600" fontWeight="bold" pt="1rem" pl="20px">
             Information
           </Text>

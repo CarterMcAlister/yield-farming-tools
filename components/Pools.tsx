@@ -154,30 +154,11 @@ export const PoolSection: React.FC<{ prefetchedPools: any }> = ({
           </Text>
         </Flex>
         <Box mx="1rem">
-          {visiblePools.length > 0 ? (
-            <Flex direction="column" justifyContent="center">
-              {visiblePools.map((poolItemData, index) => (
-                <PoolItem key={index} poolItemData={poolItemData} />
-              ))}
-              <Button
-                mt={showAll ? 0 : 2}
-                size="sm"
-                bg="white"
-                leftIcon={showAll ? 'chevron-up' : 'chevron-down'}
-                onClick={toggleVisibleItems}
-              >
-                Show {showAll ? 'Less' : 'More'}
-              </Button>
-            </Flex>
-          ) : (
-            !filters.includes(FilterOptions.OnlyMyPools) && (
-              <Box>
-                {[...Array(7)].map((_e, i) => (
-                  <Skeleton height={72} my={4} width="100%" key={i} />
-                ))}
-              </Box>
-            )
-          )}
+          <Flex direction="column" justifyContent="center">
+            {visiblePools.map((poolItemData, index) => (
+              <PoolItem key={index} poolItemData={poolItemData} />
+            ))}
+          </Flex>
         </Box>
       </Box>
     </Box>

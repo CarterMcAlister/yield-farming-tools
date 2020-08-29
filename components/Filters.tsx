@@ -40,12 +40,12 @@ export const Filters = () => {
     const collateralItems = []
     const rewardItems = []
     pools.map((item) => {
-      item.prices.map((priceItem) => {
+      item?.prices?.map((priceItem) => {
         if (priceItem?.label && !collateralItems?.includes(priceItem?.label)) {
           collateralItems.push(priceItem.label)
         }
       })
-      item.poolRewards.map((rewardItem) => {
+      item?.poolRewards?.map((rewardItem) => {
         if (rewardItem && !rewardItems?.includes(rewardItem)) {
           rewardItems.push(rewardItem)
         }

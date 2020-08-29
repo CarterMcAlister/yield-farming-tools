@@ -40,7 +40,7 @@ export default async function main(App) {
   const poolSharePrice = USDXPerTotal * USDXPrice + DFORCEPerTotal * dForcePrice
   return {
     provider: 'dForce',
-    name: 'Uniswap DF-USDx',
+    name: 'Uni DF-USDx',
     poolRewards: ['DF'],
     risk: {
       smartContract: RiskLevel.MEDIUM,
