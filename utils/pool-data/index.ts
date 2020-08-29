@@ -12,6 +12,7 @@ import musd_weth from './pools/mstable/musd_weth'
 import omen_pnk from './pools/omen/omen-pnk'
 import * as shrimpPools from './pools/shrimp'
 import * as spaghettiPools from './pools/spaghetti'
+import * as sushiPools from './pools/sushi'
 import ibtc from './pools/synthetix/ibtc'
 import sbtc from './pools/synthetix/sbtc'
 import susd from './pools/synthetix/susd'
@@ -33,7 +34,6 @@ import yfl_0 from './pools/yflink/pool_0'
 import yfl_1 from './pools/yflink/pool_1'
 import yfl_2 from './pools/yflink/pool_2'
 import yfl_3 from './pools/yflink/pool_3'
-import * as zombiePools from './pools/zombie'
 
 export const pools = {
   ibtc,
@@ -71,5 +71,5 @@ export const pools = {
   ...yamClassicPools,
   ...shrimpPools,
   ...spaghettiPools,
-  // ...zombiePools,
+  ...sushiPools,
 }

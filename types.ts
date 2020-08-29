@@ -26,6 +26,7 @@ export type TokenData = {
   ABI: any
   ticker?: string
   tokenId?: string
+  numBase?: number
 }
 
 export type RiskProfile = {
