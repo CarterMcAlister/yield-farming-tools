@@ -1,6 +1,6 @@
 import { ERC20_ABI, MASTER_CHEF_ABI } from '../../../data/constants'
 import { PoolData, RiskLevel, TokenData } from '../../../types'
-import { getSushiPoolData } from '../pool-templates/sushi-based'
+import { getSushiPoolData } from '../../pool-templates/sushi-based'
 import {
   AMPL_TOKEN,
   BAND_TOKEN,

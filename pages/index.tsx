@@ -67,7 +67,7 @@ const prerenderPoolData = async () => {
     const fetchedPools = []
     await Promise.all(
       Object.values(pools).map((getPoolData) =>
-        Promise.race([getPoolData(ethApp), maxTime(30000)])
+        Promise.race([getPoolData(ethApp), maxTime(10000)])
           .then((data) => {
             console.log(data)
             fetchedPools.push(data)

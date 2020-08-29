@@ -1,7 +1,7 @@
 import { ethers } from 'ethers'
-import { priceLookupService } from '../../../services/price-lookup-service'
-import { PoolData, TokenData } from '../../../types'
-import { toDollar, toFixed } from '../../utils'
+import { priceLookupService } from '../../services/price-lookup-service'
+import { PoolData, TokenData } from '../../types'
+import { toDollar, toFixed } from '../utils'
 
 export async function getSushiPoolData(
   App,
