@@ -30,7 +30,6 @@ import yffi_dai from './pools/yffi/yffi_2'
 import yffi_ycrv from './pools/yffi/yffi_3'
 import yfii_dai from './pools/yfii/yfii_dai'
 import yfii_ycrv from './pools/yfii/yfii_ycrv'
-import yfl_0 from './pools/yflink/pool_0'
 import yfl_1 from './pools/yflink/pool_1'
 import yfl_2 from './pools/yflink/pool_2'
 import yfl_3 from './pools/yflink/pool_3'
@@ -54,7 +53,6 @@ export const pools = {
   dUSDT_dUSDC_dDAI,
   omen_pnk,
   b_scrv,
-  yfl_0,
   yfl_1,
   yfl_2,
   yfl_3,

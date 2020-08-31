@@ -1,5 +1,4 @@
 import { Grid, Heading } from '@chakra-ui/core'
-import { GraphQLClient } from 'graphql-request'
 import { PoolProvider } from '../components/Pools'
 import { ResourceCard } from '../components/ResourceCard'
 import { TopNav } from '../components/TopNav'

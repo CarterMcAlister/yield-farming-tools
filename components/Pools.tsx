@@ -1,6 +1,7 @@
 import {
   Badge,
   Box,
+  Button,
   Collapse,
   Divider,
   Flex,
@@ -15,30 +16,45 @@ import {
 } from '@chakra-ui/core'
 import constate from 'constate'
 import { useEffect, useState } from 'react'
-import { Card } from '../components/Card'
 import { useEthContext } from '../contexts/ProviderContext'
-import { FilterOptions, RiskLevel, SortOrder } from '../types'
+import { LoadState, RiskLevel, SortOrder } from '../types'
 import { pools } from '../utils/pool-data'
-import { toNumber } from '../utils/utils'
+import { Card } from './Card'
+import { useFilterSidebarContext } from './FilterSidebar'
 
 const usePools = () => {
   const [pools, setPools] = useState([])
   const [filteredPools, setFilteredPools] = useState([])
-  return { pools, setPools, filteredPools, setFilteredPools }
+  const [expandAll, setExpandAll] = useState(false)
+  const [expandAllStateChanged, setExpandAllStateChanged] = useState(0)
+  const [loadState, setLoadState] = useState(LoadState.LOADED)
+
+  const expandOrCollapseAll = (value: boolean) => {
+    setExpandAllStateChanged(expandAllStateChanged + 1)
+    setExpandAll(value)
+  }
+
+  return {
+    pools,
+    setPools,
+    filteredPools,
+    setFilteredPools,
+    expandAll,
+    expandAllStateChanged,
+    expandOrCollapseAll,
+    loadState,
+    setLoadState,
+  }
 }
 export const [PoolProvider, usePoolContext] = constate(usePools)
-
-let poolData = []
 
 export const PoolSection: React.FC<{ prefetchedPools: any }> = ({
   prefetchedPools,
 }) => {
   const { ethApp } = useEthContext()
-  const [visiblePools, setVisiblePools] = useState([])
   const [sortOrder, setSortOrder] = useState(SortOrder.Highest)
-  const [filters, setFilters] = useState([])
-  const { setPools, filteredPools } = usePoolContext()
-  console.log('pfp', prefetchedPools)
+  const { setPools, filteredPools, loadState, setLoadState } = usePoolContext()
+  const { onOpen } = useFilterSidebarContext()
 
   const sortByApr = (a, b) => {
     if (sortOrder === SortOrder.Highest) {
@@ -48,55 +64,28 @@ export const PoolSection: React.FC<{ prefetchedPools: any }> = ({
     }
   }
 
-  const updateVisiblePools = (pools: Array<any>) => {
-    if (pools.length < 1) {
-      return
-    }
-    if (filters.includes(FilterOptions.OnlyMyPools)) {
-      pools = pools.filter((item) => toNumber(item?.staking[1]?.value) > 0)
-    }
-
-    if (filters.includes(FilterOptions.OnlyMyRewards)) {
-      pools = pools.filter(
-        (item) =>
-          item?.rewards?.length > 0 && toNumber(item?.rewards[0]?.value) > 0
-      )
-    }
-
-    if (!filters.includes(FilterOptions.ShowLowApr)) {
-      pools = pools.filter((item) => toNumber(item?.apr) > 2)
-    }
-
-    if (!filters.includes(FilterOptions.ShowLowLiquidity)) {
-      pools = pools.filter(
-        (item) =>
-          !item?.staking[0]?.value || toNumber(item?.staking[0]?.value) > 200000
-      )
-    }
-
+  const sortPools = (pools: Array<any>) => {
     if (sortOrder === SortOrder.Highest || sortOrder === SortOrder.Lowest) {
-      pools.sort(sortByApr)
+      return sortByApr
     } else if (sortOrder === SortOrder.Newest) {
       pools.reverse()
     } else if (sortOrder === SortOrder.Provider) {
-      pools.sort((a, b) => a.provider.localeCompare(b.provider))
+      pools.sort()
+      return (a, b) => a.provider.localeCompare(b.provider)
     }
-
-    setVisiblePools([...pools])
   }
 
   const getPoolInfo = async () => {
-    console.log(ethApp, 'eth')
     if (ethApp) {
-      console.log('pools', pools)
+      setLoadState(LoadState.LOADING)
+
       const fetchedPools = []
       await Promise.all(
         Object.values(pools).map(
           (getPoolData) =>
-            new Promise((resolve, reject) => {
+            new Promise((resolve) => {
               ;(getPoolData(ethApp) as any)
                 .then((data) => {
-                  console.log(data)
                   fetchedPools.push(data)
                   resolve()
                 })
@@ -107,82 +96,96 @@ export const PoolSection: React.FC<{ prefetchedPools: any }> = ({
             })
         )
       )
-      console.log('fp', fetchedPools)
-      poolData = fetchedPools
-      setPools(poolData)
-      updateVisiblePools(poolData)
+      setPools(fetchedPools)
+      setLoadState(LoadState.LOADED)
     }
   }
 
-  // useEffect(() => {
-  //   console.log('gpi')
-  //   getPoolInfo()
-  // }, [ethApp])
-
   useEffect(() => {
-    updateVisiblePools(poolData)
-  }, [sortOrder, filters])
+    if (ethApp) {
+      getPoolInfo()
+    }
+  }, [ethApp])
 
   useEffect(() => {
     setPools(prefetchedPools)
-    updateVisiblePools(prefetchedPools)
   }, [prefetchedPools])
 
   return (
-    <Box pt={4}>
-      <Box>
-        <Grid
-          templateColumns="1fr 2fr 1.4fr 1fr 0.2fr"
-          marginX="2rem"
-          marginBottom="0.3rem"
+    <Box pt={{ xs: 1, lg: 4 }}>
+      <Button
+        onClick={onOpen}
+        d={{ xs: 'block', lg: 'none' }}
+        marginLeft="1rem"
+        marginBottom="1rem"
+        variantColor="teal"
+      >
+        Filters
+      </Button>
+      <Grid
+        templateColumns={['1.5fr 1fr 1.2fr 0.2fr', '1fr 1.5fr 1.3fr 1fr 0.2fr']}
+        marginX="2rem"
+        marginBottom="0.3rem"
+      >
+        <Text
+          d={{ xs: 'none', md: 'flex' }}
+          color="gray.600"
+          fontWeight="bold"
+          alignItems="center"
         >
-          <Text
-            d={{ xs: 'none', md: 'flex' }}
-            color="gray.600"
-            fontWeight="bold"
-            alignItems="center"
-          >
-            Provider
-          </Text>
-          <Text
-            color="gray.600"
-            fontWeight="bold"
-            display="flex"
-            alignItems="center"
-          >
-            Pool
-          </Text>
-          <Text
-            color="gray.600"
-            fontWeight="bold"
-            display="flex"
-            alignItems="center"
-          >
-            Rewards
-          </Text>
-          <Text
-            color="gray.600"
-            fontWeight="bold"
-            display="flex"
-            alignItems="center"
-          >
-            APR
-          </Text>
-          <IconButton
-            aria-label="refresh"
-            icon="repeat"
-            variant="ghost"
-            justifySelf="end"
-            isRound={true}
-          />
-        </Grid>
-        <Box mx="1rem">
-          <Flex direction="column" justifyContent="center">
-            {visiblePools.map((poolItemData, index) => (
-              <PoolItem key={index} poolItemData={poolItemData} />
-            ))}
-          </Flex>
-        </Box>
+          Provider
+        </Text>
+        <Text
+          color="gray.600"
+          fontWeight="bold"
+          display="flex"
+          alignItems="center"
+        >
+          Pool
+        </Text>
+        <Text
+          color="gray.600"
+          fontWeight="bold"
+          display="flex"
+          alignItems="center"
+        >
+          Rewards
+        </Text>
+        <Text
+          color="gray.600"
+          fontWeight="bold"
+          display="flex"
+          alignItems="center"
+        >
+          APR
+        </Text>
+        <IconButton
+          isLoading={loadState === LoadState.LOADING}
+          onClick={getPoolInfo}
+          aria-label="refresh"
+          title="Refresh Pools"
+          icon="repeat"
+          variant="ghost"
+          justifySelf="end"
+          isRound={true}
+        />
+      </Grid>
+      <Box mx="1rem">
+        <Flex direction="column" justifyContent="center">
+          {filteredPools.length > 0 ? (
+            filteredPools
+              ?.sort(sortByApr)
+              ?.map((poolItemData, index) => (
+                <PoolItem key={index} poolItemData={poolItemData} />
+              ))
+          ) : (
+            <Card>
+              <Text fontWeight="medium">
+                No pools found using the selected criteria
+              </Text>
+            </Card>
+          )}
+        </Flex>
       </Box>
     </Box>
   )
@@ -191,11 +194,16 @@ export const PoolSection: React.FC<{ prefetchedPools: any }> = ({
 const PoolItem = ({ poolItemData }) => {
   const { provider, name, poolRewards } = poolItemData
   const [show, setShow] = useState(false)
+  const { expandAll, expandAllStateChanged } = usePoolContext()
+
+  useEffect(() => {
+    setShow(expandAll)
+  }, [expandAllStateChanged])
 
   return (
     <Card boxShadow="sm" mx={0} mt={0}>
       <Grid
-        templateColumns="1fr 2fr 1.4fr 1fr 0.2fr"
+        templateColumns={['1.5fr 1fr 1.2fr 0.2fr', '1fr 1.5fr 1.3fr 1fr 0.2fr']}
         onClick={() => setShow(!show)}
         cursor="pointer"
       >

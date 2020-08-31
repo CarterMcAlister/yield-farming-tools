@@ -42,3 +42,9 @@ export type PoolData = {
   risk?: RiskProfile
   logo?: string
 }
+
+export enum LoadState {
+  LOADING,
+  LOADED,
+  ERROR,
+}

@@ -19,10 +19,10 @@ import {
 import { useState } from 'react'
 import { Card } from '../components/Card'
 import { useEthContext } from '../contexts/ProviderContext'
+import { PLACEHOLDER_ADDRESS } from '../data/constants'
 import { connectToWeb3, initInfura } from '../hooks/useEthers'
 import ethLogo from '../resources/eth-logo.svg'
 import metamaskLogo from '../resources/metamask-fox.svg'
-import { PLACEHOLDER_ADDRESS } from '../data/constants'
 
 export const TopNav = () => {
   const toast = useToast()
