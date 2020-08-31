@@ -65,7 +65,7 @@ export const getStaticProps = async () => {
 
   return {
     props: { ...sectionData, poolData: JSON.parse(JSON.stringify(poolData)) },
-    unstable_revalidate: 5,
+    unstable_revalidate: 300,
   }
 }
 
