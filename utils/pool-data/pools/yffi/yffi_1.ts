@@ -40,11 +40,11 @@ export default async function main(App) {
 
   return {
     provider: 'yffi.finance',
-    name: 'Curve-yCRV',
+    name: 'Balancer Curve-yCRV',
     poolRewards: ['YFFI', 'CRV'],
     risk: {
-      smartContract: RiskLevel.LOW,
-      impermanentLoss: RiskLevel.NONE,
+      smartContract: RiskLevel.MEDIUM,
+      impermanentLoss: RiskLevel.HIGH,
     },
     apr: toFixed(YFIWeeklyROI * 52, 4),
     prices: [

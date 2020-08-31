@@ -102,7 +102,7 @@ export const PoolSection: React.FC<{ prefetchedPools: any }> = ({
   }
 
   useEffect(() => {
-    if (ethApp) {
+    if (ethApp && typeof window !== 'undefined') {
       getPoolInfo()
     }
   }, [ethApp])

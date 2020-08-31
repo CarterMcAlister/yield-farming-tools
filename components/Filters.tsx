@@ -18,9 +18,11 @@ export const Filters = () => {
   const { pools, setFilteredPools, expandOrCollapseAll } = usePoolContext()
   const [collaterals, setCollaterals] = React.useState([])
   const [rewards, setRewards] = React.useState([])
+  const [providers, setProviders] = React.useState([])
 
   const [selectedCollateral, setSelectedCollateral] = useState({})
   const [selectedRewards, setSelectedRewards] = useState({})
+  const [selectedProviders, setSelectedProviders] = useState({})
   const [maxIlRisk, setMaxIlRisk] = useState(null)
   const [maxScRisk, setMaxScRisk] = useState(null)
   const [showOnlyMyPools, setShowOnlyMyPools] = useState(false)
@@ -31,24 +33,24 @@ export const Filters = () => {
     setMaxScRisk(null)
     setMaxIlRisk(null)
     setMaxIlRisk(null)
-    const unselectRewards = Object.keys(selectedRewards).reduce(
-      objectToDefaultsReducer,
-      {}
+    setSelectedRewards(
+      Object.keys(selectedRewards).reduce(objectToDefaultsReducer, {})
     )
-    setSelectedRewards(unselectRewards)
-    const unselectedCollateral = Object.keys(selectedCollateral).reduce(
-      objectToDefaultsReducer,
-      {}
+    setSelectedCollateral(
+      Object.keys(selectedCollateral).reduce(objectToDefaultsReducer, {})
     )
-    setSelectedCollateral(unselectedCollateral)
+    setSelectedProviders(
+      Object.keys(selectedProviders).reduce(objectToDefaultsReducer, {})
+    )
     setShowOnlyMyPools(false)
     setShowLowLiq(false)
     setShowLowApr(false)
   }
 
-  const getCollateralAndRewardItems = () => {
+  const getFilterData = () => {
     const collateralItems = []
     const rewardItems = []
+    const providers = []
     pools?.map((item) => {
       item?.prices?.map((priceItem) => {
         if (priceItem?.label && !collateralItems?.includes(priceItem?.label)) {
@@ -60,11 +62,17 @@ export const Filters = () => {
           rewardItems.push(rewardItem)
         }
       })
+      if (!providers?.includes(item?.provider)) {
+        providers.push(item?.provider)
+      }
     })
+
     setCollaterals(collateralItems.sort())
     setRewards(rewardItems.sort())
+    setProviders(providers.sort())
     setSelectedCollateral(collateralItems.reduce(objectToDefaultsReducer, {}))
     setSelectedRewards(rewardItems.reduce(objectToDefaultsReducer, {}))
+    setSelectedProviders(providers.reduce(objectToDefaultsReducer, {}))
   }
 
   const poolFilter = (item) => {
@@ -76,8 +84,13 @@ export const Filters = () => {
       (bool, value) => value || bool,
       false
     )
+    const providersFiltered = Object.values(selectedProviders).reduce(
+      (bool, value) => value || bool,
+      false
+    )
 
     let passesFilters = true
+
     if (showOnlyMyPools) {
       passesFilters =
         toNumber(item?.staking[1]?.value) > 0 ||
@@ -91,6 +104,19 @@ export const Filters = () => {
     if (passesFilters && !showLowLiq) {
       passesFilters =
         !item?.staking[0]?.value || toNumber(item?.staking[0]?.value) > 200000
+    }
+
+    if (passesFilters && providersFiltered) {
+      console.log(item?.provider, selectedProviders[item?.provider])
+      passesFilters = selectedProviders[item?.provider]
+    }
+
+    if (passesFilters && maxIlRisk) {
+      passesFilters = underMaxRisk(item.risk.impermanentLoss, maxIlRisk)
+    }
+
+    if (passesFilters && maxScRisk) {
+      passesFilters = underMaxRisk(item.risk.smartContract, maxScRisk)
     }
 
     if (passesFilters && collateralFiltered) {
@@ -107,18 +133,10 @@ export const Filters = () => {
       )
     }
 
-    if (passesFilters && maxIlRisk) {
-      passesFilters = underMaxRisk(item.risk.impermanentLoss, maxIlRisk)
-    }
-
-    if (passesFilters && maxScRisk) {
-      passesFilters = underMaxRisk(item.risk.smartContract, maxScRisk)
-    }
-
     return passesFilters
   }
 
-  useEffect(() => getCollateralAndRewardItems(), [pools])
+  useEffect(() => getFilterData(), [pools])
 
   useEffect(() => {
     const filteredPools = pools.filter(poolFilter)
@@ -129,6 +147,7 @@ export const Filters = () => {
     maxIlRisk,
     selectedRewards,
     selectedCollateral,
+    selectedProviders,
     showLowLiq,
     showLowApr,
     showOnlyMyPools,
@@ -216,9 +235,28 @@ export const Filters = () => {
         </FormControl>
       </FilterSection>
 
+      <FilterSection title="Providers">
+        <Stack>
+          {providers.map((provider) => (
+            <Checkbox
+              isChecked={selectedProviders[provider]}
+              onChange={(e) => {
+                const updatedValue = e?.target?.checked
+                setSelectedProviders((prevState) => ({
+                  ...prevState,
+                  [provider]: updatedValue,
+                }))
+              }}
+            >
+              {provider}
+            </Checkbox>
+          ))}
+        </Stack>
+      </FilterSection>
+
       <FilterSection title="Collateral">
         <Stack>
-          {collaterals.map((collateral, index) => (
+          {collaterals.map((collateral) => (
             <Checkbox
               isChecked={selectedCollateral[collateral]}
               onChange={(e) => {
