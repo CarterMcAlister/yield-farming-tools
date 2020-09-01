@@ -200,7 +200,7 @@ export const Filters = () => {
         </Stack>
       </FilterSection>
 
-      <FilterSection title="Risk Levels">
+      <FilterSection title="Risk Level">
         <FormControl pb={4}>
           <FormLabel htmlFor="maximumSCRisk">
             Maximum Smart Contract Risk
@@ -235,7 +235,7 @@ export const Filters = () => {
         </FormControl>
       </FilterSection>
 
-      <FilterSection title="Providers">
+      <FilterSection title="Provider">
         <Stack>
           {providers.map((provider) => (
             <Checkbox

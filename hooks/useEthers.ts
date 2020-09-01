@@ -98,9 +98,9 @@ export async function initInfura(address?: string) {
 export async function initInfuraServer() {
   const App: any = {}
 
-  App.provider = new ethers.providers.InfuraProvider('homestead', {
-    infura: '26ad962f630d4a188571cb17d58a84fb',
-  })
+  App.provider = new ethers.providers.JsonRpcProvider(
+    'https://mainnet.infura.io/v3/26ad962f630d4a188571cb17d58a84fb'
+  )
   sleep(10)
 
   App.YOUR_ADDRESS = Constants.PLACEHOLDER_ADDRESS

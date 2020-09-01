@@ -17,8 +17,9 @@ import {
 import constate from 'constate'
 import { useEffect, useState } from 'react'
 import { useEthContext } from '../contexts/ProviderContext'
-import { LoadState, RiskLevel, SortOrder } from '../types'
+import { LoadState, RiskLevel } from '../types'
 import { pools } from '../utils/pool-data'
+import { toDollar, toNumber } from '../utils/utils'
 import { Card } from './Card'
 import { useFilterSidebarContext } from './FilterSidebar'
 
@@ -28,6 +29,8 @@ const usePools = () => {
   const [expandAll, setExpandAll] = useState(false)
   const [expandAllStateChanged, setExpandAllStateChanged] = useState(0)
   const [loadState, setLoadState] = useState(LoadState.LOADED)
+  const [totalWeeklyRoi, setTotalWeeklyRoi] = useState(0)
+  const [claimableRewards, setClaimableRewards] = useState([])
 
   const expandOrCollapseAll = (value: boolean) => {
     setExpandAllStateChanged(expandAllStateChanged + 1)
@@ -44,6 +47,10 @@ const usePools = () => {
     expandOrCollapseAll,
     loadState,
     setLoadState,
+    totalWeeklyRoi,
+    setTotalWeeklyRoi,
+    claimableRewards,
+    setClaimableRewards,
   }
 }
 export const [PoolProvider, usePoolContext] = constate(usePools)
@@ -52,34 +59,25 @@ export const PoolSection: React.FC<{ prefetchedPools: any }> = ({
   prefetchedPools,
 }) => {
   const { ethApp } = useEthContext()
-  const [sortOrder, setSortOrder] = useState(SortOrder.Highest)
-  const { setPools, filteredPools, loadState, setLoadState } = usePoolContext()
+  const {
+    setPools,
+    filteredPools,
+    loadState,
+    setLoadState,
+    setTotalWeeklyRoi,
+    setClaimableRewards,
+  } = usePoolContext()
   const { onOpen } = useFilterSidebarContext()
 
-  const sortByApr = (a, b) => {
-    if (sortOrder === SortOrder.Highest) {
-      return parseFloat(b.apr) - parseFloat(a.apr)
-    } else {
-      return parseFloat(a.apr) - parseFloat(b.apr)
-    }
-  }
-
-  const sortPools = (pools: Array<any>) => {
-    if (sortOrder === SortOrder.Highest || sortOrder === SortOrder.Lowest) {
-      return sortByApr
-    } else if (sortOrder === SortOrder.Newest) {
-      pools.reverse()
-    } else if (sortOrder === SortOrder.Provider) {
-      pools.sort()
-      return (a, b) => a.provider.localeCompare(b.provider)
-    }
-  }
+  const sortByApr = (a, b) => parseFloat(b.apr) - parseFloat(a.apr)
 
   const getPoolInfo = async () => {
-    if (ethApp) {
+    if (ethApp && typeof window !== 'undefined') {
       setLoadState(LoadState.LOADING)
 
       const fetchedPools = []
+      const claimableRewards = []
+      let weeklyRoi = 0
       await Promise.all(
         Object.values(pools).map(
           (getPoolData) =>
@@ -87,6 +85,19 @@ export const PoolSection: React.FC<{ prefetchedPools: any }> = ({
               ;(getPoolData(ethApp) as any)
                 .then((data) => {
                   fetchedPools.push(data)
+                  if (data?.ROIs[2]?.value && data?.staking[1]?.value) {
+                    const roi =
+                      (toNumber(data.ROIs[2].value) *
+                        toNumber(data.staking[1].value)) /
+                      100
+                    weeklyRoi += roi
+                  }
+                  if (
+                    data?.rewards[0]?.value &&
+                    toNumber(data.rewards[0].value) > 10
+                  ) {
+                    claimableRewards.push(data.rewards[0])
+                  }
                   resolve()
                 })
                 .catch((e) => {
@@ -96,15 +107,15 @@ export const PoolSection: React.FC<{ prefetchedPools: any }> = ({
             })
         )
       )
+      setTotalWeeklyRoi(weeklyRoi)
+      setClaimableRewards(claimableRewards)
       setPools(fetchedPools)
       setLoadState(LoadState.LOADED)
     }
   }
 
   useEffect(() => {
-    if (ethApp && typeof window !== 'undefined') {
-      getPoolInfo()
-    }
+    getPoolInfo()
   }, [ethApp])
 
   useEffect(() => {
@@ -351,7 +362,7 @@ const LinkList = ({ links }) => (
 )
 
 const DetailItem = ({ title, data }) =>
-  data ? (
+  data && data.length > 0 ? (
     <Box>
       <Heading as="h4" size="sm" color="gray.600" pb={2}>
         {title}
@@ -373,6 +384,35 @@ const DetailItem = ({ title, data }) =>
         </Box>
       </Flex>
     </Box>
-  ) : (
-    <Box />
-  )
+  ) : null
+
+export const EarningsCard = ({ ...props }) => {
+  const { totalWeeklyRoi, claimableRewards } = usePoolContext()
+  const rois = [
+    {
+      label: 'Hourly',
+      value: toDollar(totalWeeklyRoi / 7 / 24),
+    },
+    {
+      label: 'Daily',
+      value: toDollar(totalWeeklyRoi / 7),
+    },
+    {
+      label: 'Weekly',
+      value: toDollar(totalWeeklyRoi),
+    },
+  ]
+  return totalWeeklyRoi > 0 ? (
+    <Box {...props}>
+      <Text color="gray.600" fontWeight="bold" pt="1rem" pl="20px">
+        Rewards
+      </Text>
+      <Card>
+        <SimpleGrid minChildWidth="212px" spacing={4} cursor="auto">
+          <DetailItem title="Your Estimated Earnings" data={rois} />
+          <DetailItem title="Your Claimable Rewards" data={claimableRewards} />
+        </SimpleGrid>
+      </Card>
+    </Box>
+  ) : null
+}

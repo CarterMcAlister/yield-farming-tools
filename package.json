@@ -21,7 +21,8 @@
     "next-images": "^1.4.1",
     "react": "16.13.1",
     "react-dom": "16.13.1",
-    "react-ga": "^3.1.2"
+    "react-ga": "^3.1.2",
+    "react-icons": "^3.11.0"
   },
   "devDependencies": {
     "@types/node": "^14.0.26",

@@ -5,26 +5,29 @@ import {
   FilterDrawer,
   FilterSidebarProvider,
 } from '../components/FilterSidebar'
-import { PoolProvider, PoolSection } from '../components/Pools'
+import { PoolProvider, PoolSection, EarningsCard } from '../components/Pools'
 import { ResourceCard } from '../components/ResourceCard'
 import { TopNav } from '../components/TopNav'
 import Wrapper from '../components/Wrapper'
 import { initInfuraServer } from '../hooks/useEthers'
 import { graphcms, linkSectionContents } from '../services/graph-cms-service'
 import { pools } from '../utils/pool-data'
+import { Footer } from '../components/Footer'
 
 export default ({ informationSection, toolSection, poolData }) => (
   <FilterSidebarProvider>
     <PoolProvider>
       <Wrapper maxW="1200px">
         <TopNav />
+        <EarningsCard display={{ xs: 'block', lg: 'none' }} />
         <Flex direction={{ xs: 'column', lg: 'row' }} pb="1rem">
           <Box width={{ xs: '100%', lg: '70%' }}>
             <PoolSection prefetchedPools={poolData} />
           </Box>
-          <Box flexGrow={1}>
+          <Box flexGrow={1} pt=".5rem">
+            <EarningsCard display={{ xs: 'none', lg: 'block' }} />
             <Box d={{ xs: 'none', lg: 'block' }}>
-              <Text color="gray.600" fontWeight="bold" pt={6} pl="20px">
+              <Text color="gray.600" fontWeight="bold" pt="1rem" pl="20px">
                 Filters
               </Text>
               <Card>
@@ -42,6 +45,7 @@ export default ({ informationSection, toolSection, poolData }) => (
           </Box>
         </Flex>
         <FilterDrawer />
+        <Footer />
       </Wrapper>
     </PoolProvider>
   </FilterSidebarProvider>
@@ -64,14 +68,13 @@ export const getStaticProps = async () => {
   const poolData = await prerenderPoolData()
 
   return {
-    props: { ...sectionData, poolData: JSON.parse(JSON.stringify(poolData)) },
     unstable_revalidate: 300,
+    props: { ...sectionData, poolData: JSON.parse(JSON.stringify(poolData)) },
   }
 }
 
-const maxTime = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
-
 const prerenderPoolData = async () => {
+  return []
   const ethApp = await initInfuraServer()
   if (ethApp) {
     const fetchedPools = []
