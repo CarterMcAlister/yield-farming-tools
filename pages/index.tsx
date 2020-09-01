@@ -74,17 +74,20 @@ const maxTime = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 const prerenderPoolData = async () => {
   const ethApp = await initInfuraServer()
   if (ethApp) {
-    console.log('pools', pools)
     const fetchedPools = []
     await Promise.all(
-      Object.values(pools).map((getPoolData) =>
-        Promise.race([getPoolData(ethApp), maxTime(10000)])
-          .then((data) => {
-            console.log(data)
-            fetchedPools.push(data)
-          })
-          .catch((e) => {
-            console.error(e)
+      Object.values(pools).map(
+        (getPoolData) =>
+          new Promise((resolve) => {
+            ;(getPoolData(ethApp) as any)
+              .then((data) => {
+                fetchedPools.push(data)
+                resolve()
+              })
+              .catch((e) => {
+                console.error(e)
+                resolve()
+              })
           })
       )
     )
