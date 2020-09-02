@@ -108,7 +108,7 @@ export const PoolSection: React.FC<{ prefetchedPools: any }> = ({
                   }
                   if (
                     data?.rewards[0]?.value &&
-                    toNumber(data.rewards[0].value) > 10
+                    toNumber(data?.rewards[0]?.value) > 10
                   ) {
                     claimableRewards.push(data.rewards[0])
                   }
