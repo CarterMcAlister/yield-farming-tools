@@ -66,7 +66,7 @@ export default async function main(App) {
     apr: toFixed(UMAWeeklyROI * 52, 4),
     prices: [
       { label: 'UMA', value: toDollar(UMAPrice) },
-      { label: 'yUSD-SEP20', value: toDollar(YUSDSEP20Price) },
+      { label: 'yUSD-OCT20', value: toDollar(YUSDSEP20Price) },
       { label: 'BPT', value: toDollar(BPTPrice) },
     ],
     staking: [
@@ -112,7 +112,7 @@ export default async function main(App) {
       {
         title: 'Balancer Pool',
         link:
-          'https://pools.balancer.exchange/#/pool/0x58EF3abAB72c6C365D4D0D8a70039752b9f32Bc9',
+          'https://pools.balancer.exchange/#/pool/0xD2F574637898526FCddfb3D487cc73c957Fa0268',
       },
     ],
   }

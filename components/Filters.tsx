@@ -107,7 +107,6 @@ export const Filters = () => {
     }
 
     if (passesFilters && providersFiltered) {
-      console.log(item?.provider, selectedProviders[item?.provider])
       passesFilters = selectedProviders[item?.provider]
     }
 

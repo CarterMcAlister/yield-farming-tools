@@ -101,7 +101,7 @@ export const PoolSection: React.FC<{ prefetchedPools: any }> = ({
                     }
                     if (toNumber(data?.staking[1]?.value) > 10) {
                       yourPoolPositions.push({
-                        label: `${data.provider} ${data.name}`,
+                        label: data.name,
                         value: data?.staking[1].value,
                       })
                     }
@@ -122,7 +122,6 @@ export const PoolSection: React.FC<{ prefetchedPools: any }> = ({
             })
         )
       )
-      console.log('yourPoolPositions', yourPoolPositions)
       setTotalWeeklyRoi(weeklyRoi)
       setClaimableRewards(claimableRewards)
       setPoolPositions(yourPoolPositions)
