@@ -3,8 +3,8 @@ import { css, Global } from '@emotion/core'
 import 'focus-visible/dist/focus-visible'
 import Head from 'next/head'
 import { useEffect } from 'react'
-import { useAnalytics } from '../hooks/useAnalytics'
 import { EthContext } from '../contexts/ProviderContext'
+import { useAnalytics } from '../hooks/useAnalytics'
 
 const GlobalStyles = css`
   .js-focus-visible :focus:not([data-focus-visible-added]) {

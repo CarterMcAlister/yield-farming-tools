@@ -22,6 +22,7 @@ import { pools } from '../utils/pool-data'
 import { toDollar, toNumber } from '../utils/utils'
 import { Card } from './Card'
 import { useFilterSidebarContext } from './FilterSidebar'
+import { FiFilter } from 'react-icons/fi'
 
 const usePools = () => {
   const [pools, setPools] = useState([])
@@ -31,6 +32,7 @@ const usePools = () => {
   const [loadState, setLoadState] = useState(LoadState.LOADED)
   const [totalWeeklyRoi, setTotalWeeklyRoi] = useState(0)
   const [claimableRewards, setClaimableRewards] = useState([])
+  const [poolPositions, setPoolPositions] = useState([])
 
   const expandOrCollapseAll = (value: boolean) => {
     setExpandAllStateChanged(expandAllStateChanged + 1)
@@ -51,6 +53,8 @@ const usePools = () => {
     setTotalWeeklyRoi,
     claimableRewards,
     setClaimableRewards,
+    poolPositions,
+    setPoolPositions,
   }
 }
 export const [PoolProvider, usePoolContext] = constate(usePools)
@@ -66,6 +70,7 @@ export const PoolSection: React.FC<{ prefetchedPools: any }> = ({
     setLoadState,
     setTotalWeeklyRoi,
     setClaimableRewards,
+    setPoolPositions,
   } = usePoolContext()
   const { onOpen } = useFilterSidebarContext()
 
@@ -77,6 +82,7 @@ export const PoolSection: React.FC<{ prefetchedPools: any }> = ({
 
       const fetchedPools = []
       const claimableRewards = []
+      const yourPoolPositions = []
       let weeklyRoi = 0
       await Promise.all(
         Object.values(pools).map(
@@ -85,12 +91,20 @@ export const PoolSection: React.FC<{ prefetchedPools: any }> = ({
               ;(getPoolData(ethApp) as any)
                 .then((data) => {
                   fetchedPools.push(data)
-                  if (data?.ROIs[2]?.value && data?.staking[1]?.value) {
-                    const roi =
-                      (toNumber(data.ROIs[2].value) *
-                        toNumber(data.staking[1].value)) /
-                      100
-                    weeklyRoi += roi
+                  if (data?.staking[1]?.value) {
+                    if (data?.ROIs[2]?.value) {
+                      const roi =
+                        (toNumber(data.ROIs[2].value) *
+                          toNumber(data.staking[1].value)) /
+                        100
+                      weeklyRoi += roi
+                    }
+                    if (toNumber(data?.staking[1]?.value) > 10) {
+                      yourPoolPositions.push({
+                        label: `${data.provider} ${data.name}`,
+                        value: data?.staking[1].value,
+                      })
+                    }
                   }
                   if (
                     data?.rewards[0]?.value &&
@@ -98,6 +112,7 @@ export const PoolSection: React.FC<{ prefetchedPools: any }> = ({
                   ) {
                     claimableRewards.push(data.rewards[0])
                   }
+
                   resolve()
                 })
                 .catch((e) => {
@@ -107,8 +122,10 @@ export const PoolSection: React.FC<{ prefetchedPools: any }> = ({
             })
         )
       )
+      console.log('yourPoolPositions', yourPoolPositions)
       setTotalWeeklyRoi(weeklyRoi)
       setClaimableRewards(claimableRewards)
+      setPoolPositions(yourPoolPositions)
       setPools(fetchedPools)
       setLoadState(LoadState.LOADED)
     }
@@ -126,10 +143,11 @@ export const PoolSection: React.FC<{ prefetchedPools: any }> = ({
     <Box pt={{ xs: 1, lg: 4 }}>
       <Button
         onClick={onOpen}
-        d={{ xs: 'block', lg: 'none' }}
+        d={{ xs: 'flex', lg: 'none' }}
         marginLeft="1rem"
         marginBottom="1rem"
         variantColor="teal"
+        leftIcon={FiFilter}
       >
         Filters
       </Button>
@@ -361,7 +379,7 @@ const LinkList = ({ links }) => (
   </Box>
 )
 
-const DetailItem = ({ title, data }) =>
+const DetailItem = ({ title, data, totalValue = '' }) =>
   data && data.length > 0 ? (
     <Box>
       <Heading as="h4" size="sm" color="gray.600" pb={2}>
@@ -387,7 +405,15 @@ const DetailItem = ({ title, data }) =>
   ) : null
 
 export const EarningsCard = ({ ...props }) => {
-  const { totalWeeklyRoi, claimableRewards } = usePoolContext()
+  const { totalWeeklyRoi, claimableRewards, poolPositions } = usePoolContext()
+  const totalClaimableRewards = claimableRewards?.reduce(
+    (total, item) => total + toNumber(item.value),
+    0
+  )
+  const totalPoolPositions = poolPositions?.reduce(
+    (total, item) => total + toNumber(item.value),
+    0
+  )
   const rois = [
     {
       label: 'Hourly',
@@ -402,15 +428,26 @@ export const EarningsCard = ({ ...props }) => {
       value: toDollar(totalWeeklyRoi),
     },
   ]
-  return totalWeeklyRoi > 0 ? (
+  return totalWeeklyRoi > 0 ||
+    claimableRewards.length > 0 ||
+    poolPositions.length > 0 ? (
     <Box {...props}>
       <Text color="gray.600" fontWeight="bold" pt="1rem" pl="20px">
-        Rewards
+        Your Farm
       </Text>
       <Card>
         <SimpleGrid minChildWidth="212px" spacing={4} cursor="auto">
-          <DetailItem title="Your Estimated Earnings" data={rois} />
-          <DetailItem title="Your Claimable Rewards" data={claimableRewards} />
+          <DetailItem title="Estimated Earnings" data={rois} />
+          <DetailItem
+            title="Claimable Rewards"
+            data={claimableRewards}
+            totalValue={toDollar(totalClaimableRewards)}
+          />
+          <DetailItem
+            title="Pool Positions"
+            data={poolPositions}
+            totalValue={toDollar(totalPoolPositions)}
+          />
         </SimpleGrid>
       </Card>
     </Box>

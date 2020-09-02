@@ -15,6 +15,7 @@ import {
   Text,
   useDisclosure,
   useToast,
+  Icon,
 } from '@chakra-ui/core'
 import { useState } from 'react'
 import { Card } from '../components/Card'
@@ -23,6 +24,7 @@ import { PLACEHOLDER_ADDRESS } from '../data/constants'
 import { connectToWeb3, initInfura } from '../hooks/useEthers'
 import ethLogo from '../resources/eth-logo.svg'
 import metamaskLogo from '../resources/metamask-fox.svg'
+import farmerLogo from '../resources/farmer.png'
 
 export const TopNav = () => {
   const toast = useToast()
@@ -66,11 +68,10 @@ export const TopNav = () => {
         <Box>
           <Heading as="h1" size="xl">
             <Link href="/" style={{ textDecoration: 'none' }}>
-              <Box display={{ xs: 'block', md: 'inline' }}>🧑‍🌾 </Box>
               Yield Farming Tools
             </Link>
           </Heading>
-          <Text pl={{ xs: 0, md: 12 }} fontSize="md" color="gray.600">
+          <Text pl={{ xs: 0, md: 6 }} fontSize="md" color="gray.600">
             {tagLines[randomIndex(0, tagLines.length - 1)]}
           </Text>
           <Button
