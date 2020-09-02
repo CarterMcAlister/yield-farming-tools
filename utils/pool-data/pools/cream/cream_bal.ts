@@ -29,7 +29,7 @@ const poolData: PoolData = {
     {
       title: 'Pool',
       link:
-        'https://pools.balancer.exchange/#/pool/0x5a82503652d05b21780f33178fdf53d31c29b916/',
+        'https://pools.balancer.exchange/#/pool/0xCcD5cb3401704AF8462a4FFE708a180d3C5c4Da0/',
     },
     {
       title: 'Staking',
