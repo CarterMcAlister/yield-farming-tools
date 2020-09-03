@@ -71,8 +71,8 @@ export const yfiPool = async (App) => {
 
   return await getSnxBasedBalPool(
     App,
-    { ...YFI_TOKEN, ratio: 98 },
-    { ...YFV_TOKEN, ratio: 2 },
+    YFI_TOKEN,
+    YFV_TOKEN,
     YFV_TOKEN,
     balPoolToken,
     stakingPool,
