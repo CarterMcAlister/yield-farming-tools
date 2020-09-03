@@ -1,31 +1,15 @@
+import { ERC20_ABI, Y_STAKING_POOL_ABI } from '../../../data/constants'
 import {
-  ERC20_ABI,
-  MASTER_CHEF_ABI,
-  Y_STAKING_POOL_ABI,
-} from '../../../data/constants'
-import { PoolData, RiskLevel, TokenData } from '../../../types'
-import { getSushiPoolData } from '../../pool-templates/sushi-based'
-import {
-  AMPL_TOKEN,
-  BAND_TOKEN,
-  COMP_TOKEN,
-  DAI_TOKEN,
-  LEND_TOKEN,
+  BAL_TOKEN,
+  BAT_TOKEN,
+  KNC_TOKEN,
   LINK_TOKEN,
-  SNX_TOKEN,
-  SUSD_TOKEN,
-  SUSHI_TOKEN,
-  TETHER_TOKEN,
-  UMA_TOKEN,
-  USDC_TOKEN,
+  REN_TOKEN,
   WETH_TOKEN,
   YFI_TOKEN,
   YFV_TOKEN,
-  BAL_TOKEN,
-  REN_TOKEN,
-  BAT_TOKEN,
-  KNC_TOKEN,
 } from '../../../data/token-data'
+import { PoolData, RiskLevel, TokenData } from '../../../types'
 import { getSnxBasedBalPool } from '../../pool-templates/balancer-staking'
 
 const poolData: PoolData = {
