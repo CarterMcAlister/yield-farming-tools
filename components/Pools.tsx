@@ -275,7 +275,7 @@ const PoolItem = ({ poolItemData }) => {
           {poolItemData.staking?.length > 0 && (
             <DetailItem title="Staking" data={poolItemData.staking} />
           )}
-          {poolItemData.rewards?.length > 0 && (
+          {poolItemData?.rewards?.length > 0 && (
             <DetailItem title="Claimable Rewards" data={poolItemData.rewards} />
           )}
           {typeof poolItemData.risk !== 'undefined' && (
