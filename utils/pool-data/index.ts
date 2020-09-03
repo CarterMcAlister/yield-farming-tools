@@ -33,6 +33,7 @@ import yfii_ycrv from './pools/yfii/yfii_ycrv'
 import yfl_1 from './pools/yflink/pool_1'
 import yfl_2 from './pools/yflink/pool_2'
 import yfl_3 from './pools/yflink/pool_3'
+import * as yfvPools from './pools/yfv'
 
 export const pools = {
   ibtc,
@@ -70,4 +71,5 @@ export const pools = {
   ...shrimpPools,
   ...spaghettiPools,
   ...sushiPools,
+  ...yfvPools,
 }

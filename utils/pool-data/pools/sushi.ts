@@ -23,7 +23,7 @@ const poolData: PoolData = {
   name: 'Uni',
   added: '2020-08-28 22:50:58',
   risk: {
-    smartContract: RiskLevel.HIGH,
+    smartContract: RiskLevel.LOW,
     impermanentLoss: RiskLevel.HIGH,
   },
   links: [

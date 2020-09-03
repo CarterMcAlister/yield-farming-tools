@@ -209,3 +209,38 @@ export const SUSD_TOKEN: TokenData = {
   ticker: 'sUSD',
   tokenId: 'nusd',
 }
+
+export const YFV_TOKEN: TokenData = {
+  address: '0x45f24BaEef268BB6d63AEe5129015d69702BCDfa',
+  ABI: ERC20_ABI,
+  ticker: 'YFV',
+  tokenId: 'yfv-finance',
+}
+
+export const BAL_TOKEN: TokenData = {
+  address: '0xba100000625a3754423978a60c9317c58a424e3D',
+  ABI: ERC20_ABI,
+  ticker: 'BAL',
+  tokenId: 'balancer',
+}
+
+export const BAT_TOKEN: TokenData = {
+  address: '0x0d8775f648430679a709e98d2b0cb6250d2887ef',
+  ABI: ERC20_ABI,
+  ticker: 'BAT',
+  tokenId: 'basic-attention-token',
+}
+
+export const REN_TOKEN: TokenData = {
+  address: '0x408e41876cccdc0f92210600ef50372656052a38',
+  ABI: ERC20_ABI,
+  ticker: 'REN',
+  tokenId: 'republic-protocol',
+}
+
+export const KNC_TOKEN: TokenData = {
+  address: '0xdd974d5c2e2928dea5f71b9825b8b646686bd200',
+  ABI: ERC20_ABI,
+  ticker: 'KNC',
+  tokenId: 'kyber-network',
+}
