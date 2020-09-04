@@ -13,6 +13,7 @@ import React, { useEffect, useState } from 'react'
 import { RiskLevel } from '../types'
 import { toNumber } from '../utils/utils'
 import { usePoolContext } from './Pools'
+import { MinusIcon, AddIcon } from '@chakra-ui/icons'
 
 export const Filters = () => {
   const { pools, setFilteredPools, expandOrCollapseAll } = usePoolContext()
@@ -299,7 +300,7 @@ const FilterSection: React.FC<{ title: string }> = ({ title, children }) => {
   return (
     <Box py={1}>
       <Button
-        rightIcon={isOpen ? 'minus' : 'add'}
+        rightIcon={isOpen ? <MinusIcon /> : <AddIcon />}
         variant="ghost"
         w="100%"
         d="flex"

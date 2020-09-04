@@ -74,7 +74,7 @@ export const TopNav = () => {
           <Button
             onClick={onOpen}
             display={{ xs: 'block', sm: 'none' }}
-            variantColor="teal"
+            colorScheme="teal"
             mt={3}
           >
             {ethApp && ethApp?.YOUR_ADDRESS != PLACEHOLDER_ADDRESS
@@ -90,7 +90,7 @@ export const TopNav = () => {
           <Button
             onClick={onOpen}
             display={{ xs: 'none', sm: 'block' }}
-            variantColor="teal"
+            colorScheme="teal"
           >
             {ethApp && ethApp?.YOUR_ADDRESS != PLACEHOLDER_ADDRESS
               ? 'Wallet Connected'

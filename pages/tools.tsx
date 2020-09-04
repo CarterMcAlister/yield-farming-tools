@@ -12,12 +12,10 @@ import {
   SliderFilledTrack,
   SliderThumb,
   SliderTrack,
-  Text,
+  Text
 } from '@chakra-ui/core'
 import { useEffect, useState } from 'react'
 import { Card } from '../components/Card'
-import { TopNav } from '../components/TopNav'
-import Wrapper from '../components/Wrapper'
 import { useDebounce } from '../hooks/useDebounce'
 
 const toPercent = (num) => num * 0.01
@@ -146,10 +144,7 @@ const SliderInput = ({ value, setValue, sliderColor = 'teal' }) => (
 )
 
 export default () => (
-  <Wrapper maxW="1200px">
-    <TopNav />
-    <Flex justifyContent="center" pb="1rem">
-      <ImpermanentLossCalculator />
-    </Flex>
-  </Wrapper>
+  <Flex justifyContent="center" pb="1rem">
+    <ImpermanentLossCalculator />
+  </Flex>
 )

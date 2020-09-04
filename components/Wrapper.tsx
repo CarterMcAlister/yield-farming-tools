@@ -1,5 +1,5 @@
-import { Box, CSSReset, Flex, theme, ThemeProvider } from '@chakra-ui/core'
-import { css, Global } from '@emotion/core'
+import { Box, CSSReset, Flex, theme, ChakraProvider } from '@chakra-ui/core'
+// import { css, Global } from '@emotion/core'
 import 'focus-visible/dist/focus-visible'
 import Head from 'next/head'
 import { useEffect } from 'react'
@@ -7,19 +7,19 @@ import { EthContext } from '../contexts/ProviderContext'
 import { useAnalytics } from '../hooks/useAnalytics'
 import { PoolProvider } from './Pools'
 
-const GlobalStyles = css`
-  .js-focus-visible :focus:not([data-focus-visible-added]) {
-    outline: none;
-    box-shadow: none;
-  }
-`
+// todo: update
+// const GlobalStyles = css`
+//   .js-focus-visible :focus:not([data-focus-visible-added]) {
+//     outline: none;
+//     box-shadow: none;
+//   }
+// `
 
 const Wrapper = ({ children, ...props }) => (
-  <ThemeProvider theme={theme}>
+  <ChakraProvider resetCSS theme={theme}>
     <EthContext>
       <PoolProvider>
-        <CSSReset />
-        <Global styles={GlobalStyles} />
+        {/* <Global styles={GlobalStyles} /> */}
         <SEO />
         <Flex justifyContent="center">
           <Box width="100%" {...props}>
@@ -28,7 +28,7 @@ const Wrapper = ({ children, ...props }) => (
         </Flex>
       </PoolProvider>
     </EthContext>
-  </ThemeProvider>
+  </ChakraProvider>
 )
 
 const SEO = () => {

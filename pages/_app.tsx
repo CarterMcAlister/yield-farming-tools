@@ -1,14 +1,12 @@
+import { Box, Grid } from '@chakra-ui/core'
 import type { AppProps /*, AppContext */ } from 'next/app'
-import Wrapper from '../components/Wrapper'
-import { TopNav } from '../components/TopNav'
-import { Footer } from '../components/Footer'
-import { Grid, Box } from '@chakra-ui/core'
 import { Sidebar } from '../components/Sidebar'
+import Wrapper from '../components/Wrapper'
 
 function MyApp({ Component, pageProps }: AppProps) {
   console.log('MyApp -> pageProps', pageProps)
   return (
-    <Wrapper>
+    <Wrapper background="#FBFCFE">
       <Grid templateColumns="300px auto" gridGap={1}>
         <Box>
           <Sidebar />

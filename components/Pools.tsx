@@ -30,6 +30,7 @@ import { Card } from './Card'
 import { useFilterSidebarContext } from './FilterSidebar'
 import pools from '../pages/pools'
 import CountUp from 'react-countup'
+import { ChevronUpIcon, ChevronDownIcon } from '@chakra-ui/icons'
 
 const usePools = () => {
   const { ethApp } = useEthContext()
@@ -147,7 +148,7 @@ export const PoolSection: React.FC<{ prefetchedPools: any }> = ({
         d={{ xs: 'flex', lg: 'none' }}
         marginLeft="1rem"
         marginBottom="1rem"
-        variantColor="teal"
+        colorScheme="teal"
         leftIcon={FiFilter}
       >
         Filters
@@ -265,7 +266,7 @@ const PoolItem = ({ poolItemData }) => {
           onClick={() => setShow(!show)}
           isRound={true}
           aria-label="Show more"
-          icon={show ? 'chevron-up' : 'chevron-down'}
+          icon={show ? <ChevronUpIcon /> : <ChevronDownIcon />}
         />
       </Grid>
       <Collapse mt={4} isOpen={show}>

@@ -34,7 +34,7 @@ import { TiHome } from 'react-icons/ti'
 import { GrStackOverflow } from 'react-icons/gr'
 import { FaToolbox } from 'react-icons/fa'
 import { abbrWallet } from '../utils/utils'
-
+import { ChevronDownIcon } from '@chakra-ui/icons'
 export const Sidebar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { ethApp } = useEthContext()
@@ -44,6 +44,7 @@ export const Sidebar = () => {
       <Card
         height="100%"
         m={0}
+        rounded={20}
         justifyContent="space-between"
         alignItems="center"
       >
@@ -62,7 +63,7 @@ export const Sidebar = () => {
               variant="solid"
               background="white"
               boxShadow="md"
-              rightIcon="chevron-down"
+              rightIcon={<ChevronDownIcon />}
             >
               {ethApp?.YOUR_ADDRESS &&
               ethApp?.YOUR_ADDRESS !== PLACEHOLDER_ADDRESS ? (
@@ -122,7 +123,7 @@ const SidebarLink: React.FC<{ link: string; icon: any }> = ({
       my={1}
       size="md"
       variant={isSelected ? 'solid' : 'ghost'}
-      variantColor={isSelected ? 'teal' : 'grey'}
+      colorScheme={isSelected ? 'teal' : 'grey'}
       rounded={10}
       height={50}
       cursor="pointer"
