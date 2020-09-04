@@ -43,6 +43,28 @@ export type PoolData = {
   logo?: string
 }
 
+export type Link = {
+  title: string
+  link: string
+}
+
+type Price = {
+  ticker: string
+  usdValue: number
+}
+
+export type Pool = {
+  provider: string
+  name: string
+  links: Link[]
+  added: string
+  risk: RiskProfile
+  //data
+  apr: number
+  weeklyRoi: number
+  prices: Price[]
+}
+
 export enum LoadState {
   LOADING,
   LOADED,

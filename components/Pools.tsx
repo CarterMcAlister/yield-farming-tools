@@ -14,6 +14,10 @@ import {
   Text,
   Tooltip,
   Spinner,
+  Stat,
+  StatLabel,
+  StatNumber,
+  StatHelpText,
 } from '@chakra-ui/core'
 import constate from 'constate'
 import { useEffect, useState, useMemo } from 'react'
@@ -25,6 +29,7 @@ import { toDollar, toNumber } from '../utils/utils'
 import { Card } from './Card'
 import { useFilterSidebarContext } from './FilterSidebar'
 import pools from '../pages/pools'
+import CountUp from 'react-countup'
 
 const usePools = () => {
   const { ethApp } = useEthContext()
@@ -385,20 +390,18 @@ const DetailItem = ({ title, data, totalValue = '' }) =>
         {title}
       </Heading>
       <Flex>
-        <Box pr={5}>
-          {data.map(({ label }) => (
-            <Text fontWeight="bold" key={label} pb=".1rem">
-              {label}
-            </Text>
+        <Grid templateColumns="repeat(2, 1fr)" rowGap={1} columnGap={4}>
+          {data.map(({ label, value }) => (
+            <>
+              <Text fontWeight="bold" key={label} pb=".1rem">
+                {label}
+              </Text>
+              <Text key={value} pb=".1rem">
+                {value}
+              </Text>
+            </>
           ))}
-        </Box>
-        <Box>
-          {data.map(({ value }, index) => (
-            <Text pb=".1rem" key={index}>
-              {value}
-            </Text>
-          ))}
-        </Box>
+        </Grid>
       </Flex>
     </Box>
   ) : null
@@ -437,6 +440,16 @@ export const EarningsSection = ({ ...props }) => {
             Estimated Earnings
           </Text>
           <Card height="100%">
+            <Stat>
+              <StatNumber>
+                <CountUp
+                  end={toNumber(rois[0].value)}
+                  decimals={2}
+                  prefix="$"
+                />
+              </StatNumber>
+              <StatHelpText>Per Hour</StatHelpText>
+            </Stat>
             <DetailItem title="" data={rois} />
           </Card>
         </Flex>

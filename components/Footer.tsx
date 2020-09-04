@@ -2,19 +2,8 @@ import { Box, Flex, Link, Text, Stack } from '@chakra-ui/core'
 import { BiDonateHeart } from 'react-icons/bi'
 import { VscGithub } from 'react-icons/vsc'
 export const Footer = () => (
-  <Stack spacing={2} pb={4} alignItems="center">
-    <Link
-      display="flex"
-      alignItems="center"
-      href="https://gitcoin.co/grants/1017/yield-farming-tools"
-      target="_blank"
-      rel="noopener"
-    >
-      <Box as={BiDonateHeart} size={5} mr={2} />
-      Support further development
-    </Link>
-
-    <Text>
+  <Stack spacing={2} py={4}>
+    <Text textAlign="center" fontSize="sm">
       Built with 🖤 and ☕️ by{' '}
       <Link
         href="https://twitter.com/CarterMcAIister"
@@ -28,12 +17,14 @@ export const Footer = () => (
     <Link
       display="flex"
       alignItems="center"
-      href="https://github.com/CarterMcAlister/yield-farming-tools"
+      justifyContent="center"
+      href="https://gitcoin.co/grants/1017/yield-farming-tools"
       target="_blank"
       rel="noopener"
+      fontSize="sm"
     >
-      <Box as={VscGithub} size={5} mr={2} />
-      PRs welcomed
+      <Box as={BiDonateHeart} size={4} mr={2} />
+      Support development
     </Link>
   </Stack>
 )

@@ -125,3 +125,11 @@ export const toDollar = formatter.format
 
 export const toNumber = (numString) =>
   parseFloat(numString?.replace(/[^\d.-]/g, '') || '0')
+
+export const removeNumbers = (string) => string.replace(/[0-9]/g, '')
+
+export const abbrWallet = (address) =>
+  `${address.slice(0, 5)}...${address.slice(
+    address.length - 5,
+    address.length - 1
+  )}`
