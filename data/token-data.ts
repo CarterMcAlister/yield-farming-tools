@@ -244,3 +244,24 @@ export const KNC_TOKEN: TokenData = {
   ticker: 'KNC',
   tokenId: 'kyber-network',
 }
+
+export const SERUM_TOKEN: TokenData = {
+  address: '0x476c5E26a75bd202a9683ffD34359C0CC15be0fF',
+  ABI: ERC20_ABI,
+  ticker: 'SRM',
+  tokenId: 'serum',
+}
+
+export const YAMV2_TOKEN: TokenData = {
+  address: '0xAba8cAc6866B83Ae4eec97DD07ED254282f6aD8A',
+  ABI: ERC20_ABI,
+  ticker: 'YAMv2',
+  tokenId: 'yam-v2',
+}
+
+export const CRV_TOKEN: TokenData = {
+  address: '0xD533a949740bb3306d119CC777fa900bA034cd52',
+  ABI: ERC20_ABI,
+  ticker: 'CRV',
+  tokenId: 'curve-dao-token',
+}

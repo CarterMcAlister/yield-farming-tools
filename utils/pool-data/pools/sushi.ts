@@ -16,6 +16,10 @@ import {
   USDC_TOKEN,
   WETH_TOKEN,
   YFI_TOKEN,
+  SERUM_TOKEN,
+  YAMV2_TOKEN,
+  REN_TOKEN,
+  CRV_TOKEN,
 } from '../../../data/token-data'
 
 const poolData: PoolData = {
@@ -431,4 +435,124 @@ export const susdEthPool = async (App) =>
     ethSusdPoolData,
     WETH_TOKEN,
     ethSusdPoolId
+  )
+
+//SERUM-ETH
+const serumEthPoolId = 15
+const serumEthPoolToken: TokenData = {
+  address: '0xCc3d1EceF1F9fD25599dbeA2755019DC09db3c54',
+  ABI: ERC20_ABI,
+  ticker: 'UNIV2',
+}
+const serumEthPoolData = Object.assign({}, poolData, {
+  links: [
+    ...poolData.links,
+    {
+      title: 'Pool',
+      link:
+        'https://uniswap.info/pair/0xCc3d1EceF1F9fD25599dbeA2755019DC09db3c54',
+    },
+  ],
+})
+
+export const serumEthPool = async (App) =>
+  await getSushiPoolData(
+    App,
+    SERUM_TOKEN,
+    SUSHI_TOKEN,
+    serumEthPoolToken,
+    masterChefStakingPool,
+    serumEthPoolData,
+    WETH_TOKEN,
+    serumEthPoolId
+  )
+
+//YAMv2-ETH
+const yamv2EthPoolId = 16
+const yamv2EthPoolToken: TokenData = {
+  address: '0xA5904961f61baE7c4dD8478077556c91BF291cFD',
+  ABI: ERC20_ABI,
+  ticker: 'UNIV2',
+}
+const yamv2EthPoolData = Object.assign({}, poolData, {
+  links: [
+    ...poolData.links,
+    {
+      title: 'Pool',
+      link:
+        'https://uniswap.info/pair/0xA5904961f61baE7c4dD8478077556c91BF291cFD',
+    },
+  ],
+})
+
+export const yamv2EthPool = async (App) =>
+  await getSushiPoolData(
+    App,
+    YAMV2_TOKEN,
+    SUSHI_TOKEN,
+    yamv2EthPoolToken,
+    masterChefStakingPool,
+    yamv2EthPoolData,
+    WETH_TOKEN,
+    yamv2EthPoolId
+  )
+
+//REN-ETH
+const renEthPoolId = 13
+const renEthPoolToken: TokenData = {
+  address: '0x8Bd1661Da98EBDd3BD080F0bE4e6d9bE8cE9858c',
+  ABI: ERC20_ABI,
+  ticker: 'UNIV2',
+}
+const renEthPoolData = Object.assign({}, poolData, {
+  links: [
+    ...poolData.links,
+    {
+      title: 'Pool',
+      link:
+        'https://uniswap.info/pair/0x8Bd1661Da98EBDd3BD080F0bE4e6d9bE8cE9858c',
+    },
+  ],
+})
+
+export const renEthPool = async (App) =>
+  await getSushiPoolData(
+    App,
+    REN_TOKEN,
+    SUSHI_TOKEN,
+    renEthPoolToken,
+    masterChefStakingPool,
+    renEthPoolData,
+    WETH_TOKEN,
+    renEthPoolId
+  )
+
+//CRV-ETH
+const crvEthPoolId = 17
+const crvEthPoolToken: TokenData = {
+  address: '0x3dA1313aE46132A397D90d95B1424A9A7e3e0fCE',
+  ABI: ERC20_ABI,
+  ticker: 'UNIV2',
+}
+const crvEthPoolData = Object.assign({}, poolData, {
+  links: [
+    ...poolData.links,
+    {
+      title: 'Pool',
+      link:
+        'https://uniswap.info/pair/0x3dA1313aE46132A397D90d95B1424A9A7e3e0fCE',
+    },
+  ],
+})
+
+export const crvEthPool = async (App) =>
+  await getSushiPoolData(
+    App,
+    CRV_TOKEN,
+    SUSHI_TOKEN,
+    crvEthPoolToken,
+    masterChefStakingPool,
+    crvEthPoolData,
+    WETH_TOKEN,
+    crvEthPoolId
   )
