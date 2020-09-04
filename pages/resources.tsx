@@ -11,29 +11,24 @@ export default ({
   farmingSection,
   utilitySection,
 }) => (
-  <PoolProvider>
-    <Wrapper maxW="1200px">
-      <TopNav />
+  <Wrapper maxW="1200px">
+    <TopNav />
 
-      <Heading mx="1rem" size="xl">
-        Resources
-      </Heading>
-      <Grid templateColumns={{ xs: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }}>
-        <ResourceCard
-          title="🚜 Yield Farming"
-          sectionContent={farmingSection}
-        />
-        <ResourceCard title="⚒️ Utilities" sectionContent={utilitySection} />
+    <Heading mx="1rem" size="xl">
+      Resources
+    </Heading>
+    <Grid templateColumns={{ xs: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }}>
+      <ResourceCard title="🚜 Yield Farming" sectionContent={farmingSection} />
+      <ResourceCard title="⚒️ Utilities" sectionContent={utilitySection} />
 
-        <ResourceCard
-          title="📈 Decentralized Trading"
-          sectionContent={tradingSection}
-        />
+      <ResourceCard
+        title="📈 Decentralized Trading"
+        sectionContent={tradingSection}
+      />
 
-        <ResourceCard title="🔒 Wallets" sectionContent={walletSection} />
-      </Grid>
-    </Wrapper>
-  </PoolProvider>
+      <ResourceCard title="🔒 Wallets" sectionContent={walletSection} />
+    </Grid>
+  </Wrapper>
 )
 
 export const getStaticProps = async () => {

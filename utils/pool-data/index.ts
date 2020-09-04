@@ -35,7 +35,7 @@ import yfl_2 from './pools/yflink/pool_2'
 import yfl_3 from './pools/yflink/pool_3'
 import * as yfvPools from './pools/yfv'
 
-export const pools = {
+export const getPools = {
   ibtc,
   musd_mta,
   musd_usdc,

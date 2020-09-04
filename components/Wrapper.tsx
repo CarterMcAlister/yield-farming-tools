@@ -5,6 +5,7 @@ import Head from 'next/head'
 import { useEffect } from 'react'
 import { EthContext } from '../contexts/ProviderContext'
 import { useAnalytics } from '../hooks/useAnalytics'
+import { PoolProvider } from './Pools'
 
 const GlobalStyles = css`
   .js-focus-visible :focus:not([data-focus-visible-added]) {
@@ -16,14 +17,16 @@ const GlobalStyles = css`
 const Wrapper = ({ children, ...props }) => (
   <ThemeProvider theme={theme}>
     <EthContext>
-      <CSSReset />
-      <Global styles={GlobalStyles} />
-      <SEO />
-      <Flex justifyContent="center">
-        <Box width="100%" {...props}>
-          {children}
-        </Box>
-      </Flex>
+      <PoolProvider>
+        <CSSReset />
+        <Global styles={GlobalStyles} />
+        <SEO />
+        <Flex justifyContent="center">
+          <Box width="100%" {...props}>
+            {children}
+          </Box>
+        </Flex>
+      </PoolProvider>
     </EthContext>
   </ThemeProvider>
 )

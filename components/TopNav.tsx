@@ -6,7 +6,6 @@ import {
   IconButton,
   Image,
   Input,
-  Link,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -15,7 +14,6 @@ import {
   Text,
   useDisclosure,
   useToast,
-  Icon,
 } from '@chakra-ui/core'
 import { useState } from 'react'
 import { Card } from '../components/Card'
@@ -24,7 +22,7 @@ import { PLACEHOLDER_ADDRESS } from '../data/constants'
 import { connectToWeb3, initInfura } from '../hooks/useEthers'
 import ethLogo from '../resources/eth-logo.svg'
 import metamaskLogo from '../resources/metamask-fox.svg'
-import farmerLogo from '../resources/farmer.png'
+import Link from 'next/link'
 
 export const TopNav = () => {
   const toast = useToast()
@@ -40,7 +38,6 @@ export const TopNav = () => {
       } else {
         app = await connectToWeb3()
       }
-
       setEthApp(app)
       toast({
         title: 'Address connected successfully',
@@ -85,15 +82,20 @@ export const TopNav = () => {
               : 'Connect Wallet'}
           </Button>
         </Box>
-        <Button
-          onClick={onOpen}
-          display={{ xs: 'none', sm: 'block' }}
-          variantColor="teal"
-        >
-          {ethApp && ethApp?.YOUR_ADDRESS != PLACEHOLDER_ADDRESS
-            ? 'Wallet Connected'
-            : 'Connect Wallet'}
-        </Button>
+        <Flex>
+          <Link href="/">Dashboard</Link>
+          <Link href="/pools">Pools</Link>
+          <Link href="/resources">Resources</Link>
+          <Button
+            onClick={onOpen}
+            display={{ xs: 'none', sm: 'block' }}
+            variantColor="teal"
+          >
+            {ethApp && ethApp?.YOUR_ADDRESS != PLACEHOLDER_ADDRESS
+              ? 'Wallet Connected'
+              : 'Connect Wallet'}
+          </Button>
+        </Flex>
       </Flex>
       <Modal isOpen={isOpen} onClose={onClose} size="xl">
         <ModalOverlay />
