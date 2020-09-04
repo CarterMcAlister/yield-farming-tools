@@ -42,9 +42,11 @@ export async function getSushiPoolData(
     wethTokenData.ABI,
     App.provider
   )
+  const multiplier = await REWARD_POOL.BONUS_MULTIPLIER()
+  const poolInfo = await REWARD_POOL.poolInfo(poolId)
+  const rewardPerBlock = parseInt(poolInfo.allocPoint)
 
-  const rewardPerBlock = await REWARD_POOL.sushiPerBlock()
-  const weeklyReward = Math.round(rewardPerBlock * (604800 / 18.75)) / 1e18
+  const weeklyReward = rewardPerBlock * (604800 / 30)
 
   let totalTokenOneInUniPool =
     (await POOL_TOKEN_1.balanceOf(uniPoolToken.address)) /
@@ -81,10 +83,8 @@ export async function getSushiPoolData(
     (totalEthInUniPool * ethPrice + totalTokenOneInUniPool * token1Price) /
     totalSupplyOfStakingToken
 
-  let weeklyRoi = (rewardPerToken * rewardTokenPrice * 100) / stakingTokenPrice
-  if (poolToken1.ticker === 'SUSHI') {
-    weeklyRoi = weeklyRoi * 2
-  }
+  let weeklyRoi =
+    (rewardPerToken * rewardTokenPrice * multiplier) / stakingTokenPrice
 
   return {
     provider: poolData.provider,
