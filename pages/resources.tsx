@@ -1,4 +1,4 @@
-import { Grid, Heading } from '@chakra-ui/core'
+import { Grid, Heading, Box } from '@chakra-ui/core'
 import { PoolProvider } from '../components/Pools'
 import { ResourceCard } from '../components/ResourceCard'
 import { TopNav } from '../components/TopNav'
@@ -11,9 +11,7 @@ export default ({
   farmingSection,
   utilitySection,
 }) => (
-  <Wrapper maxW="1200px">
-    <TopNav />
-
+  <Box>
     <Heading mx="1rem" size="xl">
       Resources
     </Heading>
@@ -28,7 +26,7 @@ export default ({
 
       <ResourceCard title="🔒 Wallets" sectionContent={walletSection} />
     </Grid>
-  </Wrapper>
+  </Box>
 )
 
 export const getStaticProps = async () => {

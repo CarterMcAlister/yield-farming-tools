@@ -24,6 +24,7 @@ import { getPools } from '../utils/pool-data'
 import { toDollar, toNumber } from '../utils/utils'
 import { Card } from './Card'
 import { useFilterSidebarContext } from './FilterSidebar'
+import pools from '../pages/pools'
 
 const usePools = () => {
   const { ethApp } = useEthContext()
@@ -128,7 +129,10 @@ export const PoolSection: React.FC<{ prefetchedPools: any }> = ({
   const sortByApr = (a, b) => parseFloat(b.apr) - parseFloat(a.apr)
 
   useEffect(() => {
-    setPools(prefetchedPools)
+    if (pools.length === 0) {
+      console.log('prefetchedPools')
+      setPools(prefetchedPools)
+    }
   }, [prefetchedPools])
 
   return (

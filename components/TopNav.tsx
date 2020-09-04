@@ -86,6 +86,7 @@ export const TopNav = () => {
           <Link href="/">Dashboard</Link>
           <Link href="/pools">Pools</Link>
           <Link href="/resources">Resources</Link>
+          <Link href="/tools">Tools</Link>
           <Button
             onClick={onOpen}
             display={{ xs: 'none', sm: 'block' }}
