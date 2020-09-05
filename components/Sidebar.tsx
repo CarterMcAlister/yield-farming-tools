@@ -40,11 +40,13 @@ export const Sidebar = () => {
   const { ethApp } = useEthContext()
 
   return (
-    <Box position="sticky" top={0} left={0} height="100vh" p={4}>
+    <Box position="sticky" top={0} left={0} height="100vh" p={4} pr={0}>
       <Card
         height="100%"
         m={0}
         rounded={20}
+        border={0}
+        boxShadow="lg"
         justifyContent="space-between"
         alignItems="center"
       >
@@ -62,7 +64,7 @@ export const Sidebar = () => {
               justifyContent="space-between"
               variant="solid"
               background="white"
-              boxShadow="md"
+              border="1px solid #dfe8f9"
               rightIcon={<ChevronDownIcon />}
             >
               {ethApp?.YOUR_ADDRESS &&
@@ -76,7 +78,7 @@ export const Sidebar = () => {
               )}
             </MenuButton>
             <MenuList>
-              <MenuItem onClick={onOpen}>Connect a wallet +</MenuItem>
+              <MenuItem onClick={onOpen}>Add a wallet +</MenuItem>
             </MenuList>
           </Menu>
 

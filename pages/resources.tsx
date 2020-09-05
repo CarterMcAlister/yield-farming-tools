@@ -1,8 +1,6 @@
-import { Grid, Heading, Box } from '@chakra-ui/core'
-import { PoolProvider } from '../components/Pools'
+import { Box, Grid } from '@chakra-ui/core'
 import { ResourceCard } from '../components/ResourceCard'
-import { TopNav } from '../components/TopNav'
-import Wrapper from '../components/Wrapper'
+import { SectionHeading } from '../components/SectionHeading'
 import { graphcms, linkSectionContents } from '../services/graph-cms-service'
 
 export default ({
@@ -12,9 +10,8 @@ export default ({
   utilitySection,
 }) => (
   <Box>
-    <Heading mx="1rem" size="xl">
-      Resources
-    </Heading>
+    <SectionHeading title="Resources" />
+
     <Grid templateColumns={{ xs: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }}>
       <ResourceCard title="🚜 Yield Farming" sectionContent={farmingSection} />
       <ResourceCard title="⚒️ Utilities" sectionContent={utilitySection} />

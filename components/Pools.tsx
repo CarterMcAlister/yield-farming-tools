@@ -11,26 +11,25 @@ import {
   Link,
   SimpleGrid,
   Skeleton,
-  Text,
-  Tooltip,
   Spinner,
   Stat,
-  StatLabel,
-  StatNumber,
   StatHelpText,
+  StatNumber,
+  Text,
+  Tooltip,
 } from '@chakra-ui/core'
+import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons'
 import constate from 'constate'
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import CountUp from 'react-countup'
 import { FiFilter } from 'react-icons/fi'
 import { useEthContext } from '../contexts/ProviderContext'
+import pools from '../pages/pools'
 import { LoadState, RiskLevel } from '../types'
 import { getPools } from '../utils/pool-data'
 import { toDollar, toNumber } from '../utils/utils'
 import { Card } from './Card'
 import { useFilterSidebarContext } from './FilterSidebar'
-import pools from '../pages/pools'
-import CountUp from 'react-countup'
-import { ChevronUpIcon, ChevronDownIcon } from '@chakra-ui/icons'
 
 const usePools = () => {
   const { ethApp } = useEthContext()
@@ -40,8 +39,8 @@ const usePools = () => {
   const [expandAllStateChanged, setExpandAllStateChanged] = useState(0)
   const [loadState, setLoadState] = useState(LoadState.LOADED)
   const [totalWeeklyRoi, setTotalWeeklyRoi] = useState(0)
-  const [claimableRewards, setClaimableRewards] = useState([])
   const [poolPositions, setPoolPositions] = useState([])
+  const [yourPoolGroupings, setYourPoolGroupings] = useState({})
 
   const expandOrCollapseAll = (value: boolean) => {
     setExpandAllStateChanged(expandAllStateChanged + 1)
@@ -54,7 +53,6 @@ const usePools = () => {
       setLoadState(LoadState.LOADING)
 
       const fetchedPools = []
-      const claimableRewards = []
       const yourPoolPositions = []
       let weeklyRoi = 0
       await Promise.all(
@@ -73,19 +71,9 @@ const usePools = () => {
                       weeklyRoi += roi
                     }
                     if (toNumber(data?.staking[1]?.value) > 10) {
-                      yourPoolPositions.push({
-                        label: data.name,
-                        value: data?.staking[1].value,
-                      })
+                      yourPoolPositions.push(data)
                     }
                   }
-                  if (
-                    data?.rewards[0]?.value &&
-                    toNumber(data?.rewards[0]?.value) > 10
-                  ) {
-                    claimableRewards.push(data?.rewards[0])
-                  }
-
                   resolve()
                 })
                 .catch((e) => {
@@ -95,9 +83,17 @@ const usePools = () => {
             })
         )
       )
+
+      const yourPools = yourPoolPositions.reduce((acc, item) => {
+        const key = item.provider
+        acc[key] = acc[key] || []
+        acc[key].push(item)
+        return acc
+      }, {})
+
       setTotalWeeklyRoi(weeklyRoi)
-      setClaimableRewards(claimableRewards)
       setPoolPositions(yourPoolPositions)
+      setYourPoolGroupings(yourPools)
       setPools(fetchedPools)
       setLoadState(LoadState.LOADED)
     }
@@ -117,11 +113,10 @@ const usePools = () => {
     setLoadState,
     totalWeeklyRoi,
     setTotalWeeklyRoi,
-    claimableRewards,
-    setClaimableRewards,
     poolPositions,
     setPoolPositions,
     getPoolInfo,
+    yourPoolGroupings,
   }
 }
 export const [PoolProvider, usePoolContext] = constate(usePools)
@@ -408,8 +403,23 @@ const DetailItem = ({ title, data, totalValue = '' }) =>
   ) : null
 
 export const EarningsSection = ({ ...props }) => {
-  const { totalWeeklyRoi, claimableRewards, poolPositions } = usePoolContext()
-  const totalClaimableRewards = claimableRewards?.reduce(
+  const { totalWeeklyRoi, poolPositions, yourPoolGroupings } = usePoolContext()
+  const [roiView, setRoiView] = useState(0)
+
+  const toggleRoi = () => {
+    if (roiView === 2) {
+      setRoiView(0)
+    } else {
+      setRoiView(roiView + 1)
+    }
+  }
+
+  // const combinedRewards = Object.keys(yourPoolGroupings).map(poolProvider => {
+  //   const rewardList
+  //   return {provider: poolProvider}
+  // })
+
+  const totalClaimableRewards = poolPositions?.reduce(
     (total, item) => total + toNumber(item.value),
     0
   )
@@ -421,36 +431,40 @@ export const EarningsSection = ({ ...props }) => {
     {
       label: 'Hourly',
       value: toDollar(totalWeeklyRoi / 7 / 24),
+      text: 'Per Hour',
     },
     {
       label: 'Daily',
       value: toDollar(totalWeeklyRoi / 7),
+      text: 'Per Day',
     },
     {
       label: 'Weekly',
       value: toDollar(totalWeeklyRoi),
+      text: 'Per Week',
     },
   ]
-  return totalWeeklyRoi > 0 ||
-    claimableRewards.length > 0 ||
-    poolPositions.length > 0 ? (
+  return totalWeeklyRoi > 0 || poolPositions.length > 0 ? (
     <Box {...props}>
       <SimpleGrid columns={3} spacing={6}>
         <Flex flexDir="column">
           <Text color="gray.600" fontWeight="bold" pt="1rem" pl="20px">
             Estimated Earnings
           </Text>
-          <Card height="100%">
-            <Stat>
-              <StatNumber>
-                <CountUp
-                  end={toNumber(rois[0].value)}
-                  decimals={2}
-                  prefix="$"
-                />
-              </StatNumber>
-              <StatHelpText>Per Hour</StatHelpText>
-            </Stat>
+          <Card height="100%" rounded={20}>
+            <Box onClick={toggleRoi} cursor="pointer">
+              <Stat>
+                <StatNumber>
+                  <CountUp
+                    end={toNumber(rois[roiView].value)}
+                    decimals={2}
+                    separator=","
+                    prefix="$"
+                  />
+                </StatNumber>
+                <StatHelpText>{rois[roiView].text}</StatHelpText>
+              </Stat>
+            </Box>
             <DetailItem title="" data={rois} />
           </Card>
         </Flex>
@@ -458,24 +472,31 @@ export const EarningsSection = ({ ...props }) => {
           <Text color="gray.600" fontWeight="bold" pt="1rem" pl="20px">
             Claimable Rewards
           </Text>
-          <Card height="100%">
-            <DetailItem
-              title=""
-              data={claimableRewards}
-              totalValue={toDollar(totalClaimableRewards)}
-            />
+          <Card height="100%" rounded={20}>
+            {/* {Object.keys(yourPoolGroupings).map((provider) => (
+              <Box>
+                {provider}
+                <DetailItem title="" data={yourPoolGroupings[provider]} />
+              </Box>
+            ))} */}
+            {Object.keys(yourPoolGroupings).map((provider) => (
+              <ClaimableList poolList={yourPoolGroupings[provider]} />
+            ))}
           </Card>
         </Flex>
         <Flex flexDir="column">
           <Text color="gray.600" fontWeight="bold" pt="1rem" pl="20px">
             Pool Positions
           </Text>
-          <Card height="100%">
-            <DetailItem
+          <Card height="100%" rounded={20}>
+            {Object.keys(yourPoolGroupings).map((provider) => (
+              <RewardList poolList={yourPoolGroupings[provider]} />
+            ))}
+            {/* <DetailItem
               title=""
               data={poolPositions}
               totalValue={toDollar(totalPoolPositions)}
-            />
+            /> */}
           </Card>
         </Flex>
       </SimpleGrid>
@@ -563,3 +584,45 @@ export const YourPools: React.FC = () => {
     </Flex>
   )
 }
+
+const RewardList = ({ poolList }) =>
+  poolList && poolList.length > 0 ? (
+    <Box>
+      <Text>{poolList[0].provider}</Text>
+      <Grid templateColumns="repeat(3, 1fr)" rowGap={1} columnGap={4}>
+        {poolList.map((poolItem) => (
+          <>
+            <Text fontWeight="bold" key={poolItem.name} pb=".1rem">
+              {poolItem.name}
+            </Text>
+            <Text key={poolItem.name + '-val'} pb=".1rem">
+              {poolItem.staking[1].value}
+            </Text>
+          </>
+        ))}
+      </Grid>
+    </Box>
+  ) : null
+
+const ClaimableList = ({ poolList }) =>
+  poolList &&
+  poolList.length > 0 &&
+  poolList[0]?.rewards &&
+  poolList[0]?.rewards.length > 0 ? (
+    <Box>
+      <Text>{poolList[0].provider}</Text>
+      <Grid templateColumns="repeat(2, 1fr)" rowGap={1} columnGap={4}>
+        {poolList.map((poolItem) => (
+          <>
+            {console.log(poolItem)}
+            <Text fontWeight="bold" key={poolItem.name} pb=".1rem">
+              {poolItem?.rewards[0]?.label}
+            </Text>
+            <Text key={poolItem.name + '-val'} pb=".1rem">
+              {poolItem?.rewards[0]?.value}
+            </Text>
+          </>
+        ))}
+      </Grid>
+    </Box>
+  ) : null

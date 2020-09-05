@@ -1,14 +1,10 @@
-import { Box, Divider, Heading } from '@chakra-ui/core'
-import { FilterSidebarProvider } from '../components/FilterSidebar'
-import { Footer } from '../components/Footer'
+import { Box } from '@chakra-ui/core'
 import { EarningsSection, YourPools } from '../components/Pools'
-import { TopNav } from '../components/TopNav'
-import Wrapper from '../components/Wrapper'
+import { SectionHeading } from '../components/SectionHeading'
 
 export default () => (
   <Box>
-    <Heading as="h2">Your Farms</Heading>
-    <Divider />
+    <SectionHeading title="Overview" />
     <EarningsSection />
     <YourPools />
   </Box>

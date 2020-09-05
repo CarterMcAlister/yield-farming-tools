@@ -11,7 +11,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <Box>
           <Sidebar />
         </Box>
-        <Box>
+        <Box p={4}>
           <Component {...pageProps} />
         </Box>
       </Grid>
