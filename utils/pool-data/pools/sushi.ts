@@ -20,6 +20,7 @@ import {
   YAMV2_TOKEN,
   REN_TOKEN,
   CRV_TOKEN,
+  BASED_TOKEN,
 } from '../../../data/token-data'
 
 const poolData: PoolData = {
@@ -555,4 +556,35 @@ export const crvEthPool = async (App) =>
     crvEthPoolData,
     WETH_TOKEN,
     crvEthPoolId
+  )
+
+
+//sUSD-BASED
+const susdBasedPoolId = 14
+const susdBasedPoolToken: TokenData = {
+  address: '0xaAD22f5543FCDaA694B68f94Be177B561836AE57',
+  ABI: ERC20_ABI,
+  ticker: 'UNIV2',
+}
+const susdBasedPoolData = Object.assign({}, poolData, {
+  links: [
+    ...poolData.links,
+    {
+      title: 'Pool',
+      link:
+        'https://uniswap.info/pair/0xaAD22f5543FCDaA694B68f94Be177B561836AE57',
+    },
+  ],
+})
+
+export const susdBasedPool = async (App) =>
+  await getSushiPoolData(
+    App,
+    BASED_TOKEN,
+    SUSHI_TOKEN,
+    susdBasedPoolToken,
+    masterChefStakingPool,
+    susdBasedPoolData,
+    SUSD_TOKEN,
+    susdBasedPoolId
   )

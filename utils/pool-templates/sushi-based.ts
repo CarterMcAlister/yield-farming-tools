@@ -10,7 +10,7 @@ export async function getSushiPoolData(
   uniPoolToken: TokenData,
   rewardStakingPool: TokenData,
   poolData: PoolData,
-  wethTokenData: TokenData,
+  poolToken2: TokenData,
   poolId
 ) {
   const REWARD_POOL = new ethers.Contract(
@@ -31,15 +31,9 @@ export async function getSushiPoolData(
     App.provider
   )
 
-  //   const REWARD_TOKEN = new ethers.Contract(
-  //     rewardToken.address,
-  //     rewardToken.ABI,
-  //     App.provider
-  //   )
-
-  const WETH_TOKEN = new ethers.Contract(
-    wethTokenData.address,
-    wethTokenData.ABI,
+  const POOL_TOKEN_2 = new ethers.Contract(
+    poolToken2.address,
+    poolToken2.ABI,
     App.provider
   )
   const multiplier = await REWARD_POOL.BONUS_MULTIPLIER()
@@ -51,9 +45,10 @@ export async function getSushiPoolData(
   let totalTokenOneInUniPool =
     (await POOL_TOKEN_1.balanceOf(uniPoolToken.address)) /
     (poolToken1?.numBase || 1e18)
+    
 
   const totalEthInUniPool =
-    (await WETH_TOKEN.balanceOf(uniPoolToken.address)) / 1e18
+    (await POOL_TOKEN_2.balanceOf(uniPoolToken.address)) / 1e18
 
   const totalStaked =
     (await UNI_POOL.balanceOf(rewardStakingPool.address)) / 1e18
@@ -72,15 +67,15 @@ export async function getSushiPoolData(
   const {
     [rewardToken.tokenId]: rewardTokenPrice,
     [poolToken1.tokenId]: token1Price,
-    ethereum: ethPrice,
+    [poolToken2.tokenId]: token2Price,
   } = await priceLookupService.getPrices([
     rewardToken.tokenId,
     poolToken1.tokenId,
-    'ethereum',
+    poolToken2.tokenId,
   ])
 
   const stakingTokenPrice =
-    (totalEthInUniPool * ethPrice + totalTokenOneInUniPool * token1Price) /
+    (totalEthInUniPool * token2Price + totalTokenOneInUniPool * token1Price) /
     totalSupplyOfStakingToken
 
   let weeklyRoi =
@@ -88,14 +83,14 @@ export async function getSushiPoolData(
 
   return {
     provider: poolData.provider,
-    name: `${poolData.name} ${poolToken1.ticker}/ETH`,
+    name: `${poolData.name} ${poolToken1.ticker}/${poolToken2.ticker}`,
     poolRewards: [rewardToken.ticker],
     links: poolData.links,
     risk: poolData.risk,
     apr: toFixed(weeklyRoi * 52, 4),
     prices: [
       { label: poolToken1.ticker, value: toDollar(token1Price) },
-      { label: 'ETH', value: toDollar(ethPrice) },
+      { label: poolToken2.ticker, value: toDollar(token2Price) },
       { label: rewardToken.ticker, value: toDollar(rewardTokenPrice) },
     ],
     staking: [
