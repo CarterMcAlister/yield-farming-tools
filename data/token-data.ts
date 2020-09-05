@@ -18,6 +18,7 @@ import {
   YAM_TOKEN_ADDR,
   YCRV_TOKEN_ADDR,
   YFI_TOKEN_ADDR,
+  YAMv2_TOKEN_ABI,
 } from './constants'
 import { TokenData } from '../types'
 
@@ -250,13 +251,17 @@ export const SERUM_TOKEN: TokenData = {
   ABI: ERC20_ABI,
   ticker: 'SRM',
   tokenId: 'serum',
+  numBase: 1e6,
+  
 }
 
 export const YAMV2_TOKEN: TokenData = {
   address: '0xAba8cAc6866B83Ae4eec97DD07ED254282f6aD8A',
-  ABI: ERC20_ABI,
+  ABI: YAM_TOKEN_ABI,
   ticker: 'YAMv2',
   tokenId: 'yam-v2',
+  numBase: 1e24,
+
 }
 
 export const CRV_TOKEN: TokenData = {

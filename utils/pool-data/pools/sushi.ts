@@ -437,7 +437,7 @@ export const susdEthPool = async (App) =>
     ethSusdPoolId
   )
 
-//SERUM-ETH
+//SRM-ETH
 const serumEthPoolId = 15
 const serumEthPoolToken: TokenData = {
   address: '0xCc3d1EceF1F9fD25599dbeA2755019DC09db3c54',
@@ -467,7 +467,7 @@ export const serumEthPool = async (App) =>
     serumEthPoolId
   )
 
-//YAMv2-ETH
+// YAMv2-ETH
 const yamv2EthPoolId = 16
 const yamv2EthPoolToken: TokenData = {
   address: '0xA5904961f61baE7c4dD8478077556c91BF291cFD',
