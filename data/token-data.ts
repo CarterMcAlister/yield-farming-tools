@@ -101,7 +101,7 @@ export const SNX_TOKEN: TokenData = {
 export const WETH_TOKEN: TokenData = {
   address: WETH_TOKEN_ADDR,
   ABI: ERC20_ABI,
-  ticker: 'WETH',
+  ticker: 'ETH',
   tokenId: 'ethereum',
 }
 
@@ -252,7 +252,6 @@ export const SERUM_TOKEN: TokenData = {
   ticker: 'SRM',
   tokenId: 'serum',
   numBase: 1e6,
-  
 }
 
 export const YAMV2_TOKEN: TokenData = {
@@ -261,7 +260,6 @@ export const YAMV2_TOKEN: TokenData = {
   ticker: 'YAMv2',
   tokenId: 'yam-v2',
   numBase: 1e24,
-
 }
 
 export const CRV_TOKEN: TokenData = {
