@@ -420,11 +420,13 @@ export const EarningsSection = ({ ...props }) => {
   // })
 
   const totalClaimableRewards = poolPositions?.reduce(
-    (total, item) => total + toNumber(item.value),
+    (total, item) =>
+      total +
+      (item?.rewards?.length > 0 ? toNumber(item?.rewards[0]?.value) : 0),
     0
   )
   const totalPoolPositions = poolPositions?.reduce(
-    (total, item) => total + toNumber(item.value),
+    (total, item) => total + toNumber(item?.staking[1]?.value),
     0
   )
   const rois = [
@@ -473,12 +475,17 @@ export const EarningsSection = ({ ...props }) => {
             Claimable Rewards
           </Text>
           <Card height="100%" rounded={20}>
-            {/* {Object.keys(yourPoolGroupings).map((provider) => (
-              <Box>
-                {provider}
-                <DetailItem title="" data={yourPoolGroupings[provider]} />
-              </Box>
-            ))} */}
+            <Stat>
+              <StatNumber>
+                <CountUp
+                  end={totalClaimableRewards}
+                  decimals={2}
+                  separator=","
+                  prefix="$"
+                />
+              </StatNumber>
+              <StatHelpText>Total Claimable</StatHelpText>
+            </Stat>
             {Object.keys(yourPoolGroupings).map((provider) => (
               <ClaimableList poolList={yourPoolGroupings[provider]} />
             ))}
@@ -489,14 +496,20 @@ export const EarningsSection = ({ ...props }) => {
             Pool Positions
           </Text>
           <Card height="100%" rounded={20}>
+            <Stat>
+              <StatNumber>
+                <CountUp
+                  end={totalPoolPositions}
+                  decimals={2}
+                  separator=","
+                  prefix="$"
+                />
+              </StatNumber>
+              <StatHelpText>Total Pooled</StatHelpText>
+            </Stat>
             {Object.keys(yourPoolGroupings).map((provider) => (
               <RewardList poolList={yourPoolGroupings[provider]} />
             ))}
-            {/* <DetailItem
-              title=""
-              data={poolPositions}
-              totalValue={toDollar(totalPoolPositions)}
-            /> */}
           </Card>
         </Flex>
       </SimpleGrid>
@@ -592,7 +605,12 @@ const RewardList = ({ poolList }) =>
       <Grid templateColumns="repeat(3, 1fr)" rowGap={1} columnGap={4}>
         {poolList.map((poolItem) => (
           <>
-            <Text fontWeight="bold" key={poolItem.name} pb=".1rem">
+            <Text
+              fontWeight="bold"
+              key={poolItem.name}
+              pb=".1rem"
+              whiteSpace="nowrap"
+            >
               {poolItem.name}
             </Text>
             <Text key={poolItem.name + '-val'} pb=".1rem">

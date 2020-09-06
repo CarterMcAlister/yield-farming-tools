@@ -1,12 +1,4 @@
-import {
-  Link,
-  ListItem,
-  Text,
-  Tooltip,
-  Box,
-  Heading,
-  Divider,
-} from '@chakra-ui/core'
+import { Box, Divider, Heading } from '@chakra-ui/core'
 
 export const SectionHeading = ({ title, ...props }) => (
   <Box pt={2} {...props} px={4}>

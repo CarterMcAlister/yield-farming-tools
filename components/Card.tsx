@@ -2,9 +2,10 @@ import { Box } from '@chakra-ui/core'
 
 export const Card = ({ children, ...props }) => (
   <Box
-    backgroundColor="#fff"
+    backgroundColor="white"
     rounded="lg"
-    border="1px solid #dfe8f9"
+    borderWidth="1px"
+    borderRadius="lg"
     m={4}
     p={4}
     {...props}

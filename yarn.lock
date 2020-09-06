@@ -1274,7 +1274,7 @@
   dependencies:
     "@chakra-ui/utils" "1.0.0-rc.3"
 
-"@chakra-ui/icons@^1.0.0-rc.3":
+"@chakra-ui/icons@next":
   version "1.0.0-rc.3"
   resolved "https://registry.yarnpkg.com/@chakra-ui/icons/-/icons-1.0.0-rc.3.tgz#f297cf833e8a85da08c3e7aca9b6db4a867d4ef9"
   integrity sha512-3odRMaexYgoMAAIIkyk/n4+fRSCczC69aZ6eeq/JoIwSpHAJQWTlqhOvHT5PBgWFI/50JbcgnninESyz7Hr9tQ==
@@ -1507,7 +1507,7 @@
     "@chakra-ui/form-control" "1.0.0-rc.3"
     "@chakra-ui/utils" "1.0.0-rc.3"
 
-"@chakra-ui/theme-tools@1.0.0-rc.3":
+"@chakra-ui/theme-tools@1.0.0-rc.3", "@chakra-ui/theme-tools@next":
   version "1.0.0-rc.3"
   resolved "https://registry.yarnpkg.com/@chakra-ui/theme-tools/-/theme-tools-1.0.0-rc.3.tgz#8aab04bfce2c03a70c3739b28a4992eca08253d7"
   integrity sha512-Jka7fcAwQu18lBtwNwe1/K9N7xcRDmFDsTt7SmuzUYecqqmy5+Zga/ggkUqXa9YI8DLVip+SN8PMl26vNiIj3g==
@@ -1516,7 +1516,7 @@
     "@types/tinycolor2" "1.4.2"
     tinycolor2 "1.4.1"
 
-"@chakra-ui/theme@1.0.0-rc.3":
+"@chakra-ui/theme@1.0.0-rc.3", "@chakra-ui/theme@next":
   version "1.0.0-rc.3"
   resolved "https://registry.yarnpkg.com/@chakra-ui/theme/-/theme-1.0.0-rc.3.tgz#e1166c3a3813ba9608fab7bc35fb92568fc92827"
   integrity sha512-dclGn5CUhq6w9wi9TWFB3xmeYNpzqhJM9+ow+p/KaH+SF9IV8Se+QlpxHCPwRc521VuQ1vLzp8dAwrQycFijzg==

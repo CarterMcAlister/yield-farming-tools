@@ -1,4 +1,11 @@
-import { Box, CSSReset, Flex, theme, ChakraProvider } from '@chakra-ui/core'
+import {
+  Box,
+  ChakraProvider,
+  ColorModeProvider,
+  ColorModeScript,
+  Flex,
+  theme,
+} from '@chakra-ui/core'
 // import { css, Global } from '@emotion/core'
 import 'focus-visible/dist/focus-visible'
 import Head from 'next/head'
@@ -17,17 +24,20 @@ import { PoolProvider } from './Pools'
 
 const Wrapper = ({ children, ...props }) => (
   <ChakraProvider resetCSS theme={theme}>
-    <EthContext>
-      <PoolProvider>
-        {/* <Global styles={GlobalStyles} /> */}
-        <SEO />
-        <Flex justifyContent="center">
-          <Box width="100%" {...props}>
-            {children}
-          </Box>
-        </Flex>
-      </PoolProvider>
-    </EthContext>
+    <ColorModeProvider>
+      <EthContext>
+        <PoolProvider>
+          {/* <Global styles={GlobalStyles} /> */}
+          <SEO />
+          <ColorModeScript defaultColorMode="light" />
+          <Flex justifyContent="center">
+            <Box width="100%" {...props}>
+              {children}
+            </Box>
+          </Flex>
+        </PoolProvider>
+      </EthContext>
+    </ColorModeProvider>
   </ChakraProvider>
 )
 
