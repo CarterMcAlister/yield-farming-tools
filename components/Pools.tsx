@@ -18,7 +18,7 @@ import {
   Text,
   Tooltip,
 } from '@chakra-ui/core'
-import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons'
+import { ChevronDownIcon, ChevronUpIcon, RepeatIcon } from '@chakra-ui/icons'
 import constate from 'constate'
 import { useEffect, useMemo, useState } from 'react'
 import CountUp from 'react-countup'
@@ -137,17 +137,7 @@ export const PoolSection: React.FC<{ prefetchedPools: any }> = ({
   }, [prefetchedPools])
 
   return (
-    <Box pt={{ xs: 1, lg: 4 }}>
-      <Button
-        onClick={onOpen}
-        d={{ xs: 'flex', lg: 'none' }}
-        marginLeft="1rem"
-        marginBottom="1rem"
-        colorScheme="teal"
-        leftIcon={FiFilter}
-      >
-        Filters
-      </Button>
+    <Box pt={4}>
       <Grid
         templateColumns={['1.5fr 1fr 1.2fr 0.2fr', '1fr 1.5fr 1.3fr 1fr 0.2fr']}
         marginX="2rem"
@@ -190,7 +180,7 @@ export const PoolSection: React.FC<{ prefetchedPools: any }> = ({
           onClick={getPoolInfo}
           aria-label="refresh"
           title="Refresh Pools"
-          icon="repeat"
+          icon={<RepeatIcon />}
           variant="ghost"
           justifySelf="end"
           isRound={true}
@@ -447,13 +437,13 @@ export const EarningsSection = ({ ...props }) => {
     },
   ]
   return totalWeeklyRoi > 0 || poolPositions.length > 0 ? (
-    <Box {...props}>
-      <SimpleGrid columns={3} spacing={6}>
+    <Box pt={1} pb={[8, 8, 8, 2]} mx="1rem" {...props}>
+      <SimpleGrid columns={[0, 0, 3]} spacing={[1, 1, 12]}>
         <Flex flexDir="column">
-          <Text color="gray.600" fontWeight="bold" pt="1rem" pl="20px">
+          <Text color="gray.600" fontWeight="bold" pt="1rem" pl={1}>
             Estimated Earnings
           </Text>
-          <Card height="100%" rounded={20}>
+          <Card h="100%" w="100%" m={0} mt={2}>
             <Box onClick={toggleRoi} cursor="pointer">
               <Stat>
                 <StatNumber>
@@ -471,31 +461,31 @@ export const EarningsSection = ({ ...props }) => {
           </Card>
         </Flex>
         <Flex flexDir="column">
-          <Text color="gray.600" fontWeight="bold" pt="1rem" pl="20px">
+          <Text color="gray.600" fontWeight="bold" pt="1rem" pl={1}>
             Claimable Rewards
           </Text>
-          <Card height="100%" rounded={20}>
-            <Stat>
-              <StatNumber>
-                <CountUp
-                  end={totalClaimableRewards}
-                  decimals={2}
-                  separator=","
-                  prefix="$"
-                />
-              </StatNumber>
-              <StatHelpText>Total Claimable</StatHelpText>
-            </Stat>
-            {Object.keys(yourPoolGroupings).map((provider) => (
-              <ClaimableList poolList={yourPoolGroupings[provider]} />
-            ))}
+          <Card h="100%" w="100%" m={0} mt={2} rounded={20}>
+            <Box pb={1}>
+              <Stat>
+                <StatNumber>
+                  <CountUp
+                    end={totalClaimableRewards}
+                    decimals={2}
+                    separator=","
+                    prefix="$"
+                  />
+                </StatNumber>
+                <StatHelpText>Total Claimable</StatHelpText>
+              </Stat>
+            </Box>
+            <ClaimableList yourPoolGroupings={yourPoolGroupings} />
           </Card>
         </Flex>
         <Flex flexDir="column">
-          <Text color="gray.600" fontWeight="bold" pt="1rem" pl="20px">
+          <Text color="gray.600" fontWeight="bold" pt="1rem" pl={1}>
             Pool Positions
           </Text>
-          <Card height="100%" rounded={20}>
+          <Card h="100%" w="100%" m={0} mt={2} rounded={20}>
             <Stat>
               <StatNumber>
                 <CountUp
@@ -507,9 +497,7 @@ export const EarningsSection = ({ ...props }) => {
               </StatNumber>
               <StatHelpText>Total Pooled</StatHelpText>
             </Stat>
-            {Object.keys(yourPoolGroupings).map((provider) => (
-              <RewardList poolList={yourPoolGroupings[provider]} />
-            ))}
+            <RewardList yourPoolGroupings={yourPoolGroupings} />
           </Card>
         </Flex>
       </SimpleGrid>
@@ -577,7 +565,7 @@ export const YourPools: React.FC = () => {
           onClick={getPoolInfo}
           aria-label="refresh"
           title="Refresh Pools"
-          icon="repeat"
+          icon={<RepeatIcon />}
           variant="ghost"
           justifySelf="end"
           isRound={true}
@@ -598,49 +586,72 @@ export const YourPools: React.FC = () => {
   )
 }
 
-const RewardList = ({ poolList }) =>
-  poolList && poolList.length > 0 ? (
-    <Box>
-      <Text>{poolList[0].provider}</Text>
-      <Grid templateColumns="repeat(3, 1fr)" rowGap={1} columnGap={4}>
-        {poolList.map((poolItem) => (
+const RewardList = ({ yourPoolGroupings }) =>
+  yourPoolGroupings ? (
+    <Box maxW={350} pt={1}>
+      <Grid templateColumns="repeat(2, fit-content(8ch))" columnGap={4}>
+        {Object.keys(yourPoolGroupings).map((provider) => (
           <>
-            <Text
-              fontWeight="bold"
-              key={poolItem.name}
-              pb=".1rem"
-              whiteSpace="nowrap"
-            >
-              {poolItem.name}
+            <Text color="gray.600" fontWeight="bold">
+              {provider}
             </Text>
-            <Text key={poolItem.name + '-val'} pb=".1rem">
-              {poolItem.staking[1].value}
-            </Text>
+            <Box></Box>
+            {yourPoolGroupings[provider].map((poolItem) => (
+              <>
+                <Text
+                  fontWeight="bold"
+                  key={poolItem.name}
+                  pb={2}
+                  whiteSpace="nowrap"
+                >
+                  {poolItem.name}
+                </Text>
+                <Text key={poolItem.name + '-val'}>
+                  {poolItem.staking[1].value}
+                </Text>
+              </>
+            ))}
           </>
         ))}
       </Grid>
     </Box>
   ) : null
 
-const ClaimableList = ({ poolList }) =>
-  poolList &&
-  poolList.length > 0 &&
-  poolList[0]?.rewards &&
-  poolList[0]?.rewards.length > 0 ? (
-    <Box>
-      <Text>{poolList[0].provider}</Text>
-      <Grid templateColumns="repeat(2, 1fr)" rowGap={1} columnGap={4}>
-        {poolList.map((poolItem) => (
-          <>
-            {console.log(poolItem)}
-            <Text fontWeight="bold" key={poolItem.name} pb=".1rem">
-              {poolItem?.rewards[0]?.label}
-            </Text>
-            <Text key={poolItem.name + '-val'} pb=".1rem">
-              {poolItem?.rewards[0]?.value}
-            </Text>
-          </>
-        ))}
+const ClaimableList = ({ yourPoolGroupings, ...props }) =>
+  yourPoolGroupings ? (
+    <Box maxW={350} {...props}>
+      <Grid templateColumns="repeat(2, fit-content(8ch))" columnGap={4}>
+        {Object.keys(yourPoolGroupings).map((provider) =>
+          yourPoolGroupings[provider][0] &&
+          yourPoolGroupings[provider][0]?.rewards &&
+          yourPoolGroupings[provider][0]?.rewards.length > 0 ? (
+            <>
+              <Text color="gray.600" fontWeight="bold">
+                {provider}
+              </Text>
+              <Box></Box>
+              {yourPoolGroupings[provider].map((poolItem) =>
+                poolItem &&
+                poolItem?.rewards &&
+                poolItem?.rewards.length > 0 ? (
+                  <>
+                    <Text
+                      fontWeight="bold"
+                      key={poolItem.name}
+                      pb={2}
+                      whiteSpace="nowrap"
+                    >
+                      {poolItem?.rewards[0]?.label}
+                    </Text>
+                    <Text key={poolItem.name + '-val'}>
+                      {poolItem?.rewards[0]?.value}
+                    </Text>
+                  </>
+                ) : null
+              )}
+            </>
+          ) : null
+        )}
       </Grid>
     </Box>
   ) : null

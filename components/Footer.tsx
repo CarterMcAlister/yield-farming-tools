@@ -1,18 +1,16 @@
-import { Box, Flex, Link, Text, Stack } from '@chakra-ui/core'
-import { BiDonateHeart } from 'react-icons/bi'
-import { VscGithub } from 'react-icons/vsc'
+import { Box, Link, Stack, Text } from '@chakra-ui/core'
+import { FaTelegramPlane, FaTwitter, FaGithub } from 'react-icons/fa'
 export const Footer = () => (
   <Stack spacing={2} py={4}>
-    <Text textAlign="center" fontSize="sm">
-      Built with 🖤 and ☕️ by{' '}
-      <Link
-        href="https://twitter.com/CarterMcAIister"
-        target="_blank"
-        rel="noopener"
-      >
-        @CarterMcAlister
-      </Link>
-    </Text>
+    <Link
+      href="https://carterm126.typeform.com/to/lrvZbH3E"
+      target="_blank"
+      rel="noopener"
+    >
+      <Text textAlign="center" fontSize="sm">
+        Request features
+      </Text>
+    </Link>
 
     <Link
       display="flex"
@@ -22,9 +20,32 @@ export const Footer = () => (
       target="_blank"
       rel="noopener"
       fontSize="sm"
+      pb={1}
     >
-      <Box as={BiDonateHeart} size={4} mr={2} />
       Support development
     </Link>
+    <Stack isInline justifyContent="center" spacing={3}>
+      <Link
+        href="https://t.me/yield_farming"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <FaTelegramPlane />
+      </Link>
+      <Link
+        href="https://twitter.com/CarterMcAIister"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <FaTwitter />
+      </Link>
+      <Link
+        href="https://github.com/CarterMcalister/yield-farming-tools"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <FaGithub />
+      </Link>
+    </Stack>
   </Stack>
 )

@@ -155,28 +155,9 @@ export const Filters = () => {
 
   return (
     <Box>
-      <Stack isInline pb={4}>
-        <Button
-          onClick={() => expandOrCollapseAll(true)}
-          size="sm"
-          variant="outline"
-          d={{ xs: 'none', lg: 'block' }}
-        >
-          Expand All
-        </Button>
-        <Button
-          onClick={() => expandOrCollapseAll(false)}
-          size="sm"
-          variant="outline"
-          d={{ xs: 'none', lg: 'block' }}
-        >
-          Collapse All
-        </Button>
-        <Button onClick={clearFilters} size="sm" variant="outline">
-          Clear Filters
-        </Button>
-      </Stack>
-
+      <Button onClick={clearFilters} size="sm" variant="outline">
+        Clear Filters
+      </Button>
       <FilterSection title="Pools">
         <Stack spacing={2}>
           <Checkbox

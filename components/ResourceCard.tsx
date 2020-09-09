@@ -25,7 +25,7 @@ const ResourceItem = ({ name, url, description, isForBeginners = false }) => (
 
 export const ResourceCard = ({ title, sectionContent, ...props }) => (
   <Card {...props}>
-    <Heading as="h2" size="lg">
+    <Heading as="h2" size="md">
       {title}
     </Heading>
     <List>

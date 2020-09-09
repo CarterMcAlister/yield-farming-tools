@@ -4,15 +4,16 @@ import {
   ColorModeProvider,
   ColorModeScript,
   Flex,
-  theme,
 } from '@chakra-ui/core'
-// import { css, Global } from '@emotion/core'
 import 'focus-visible/dist/focus-visible'
 import Head from 'next/head'
 import { useEffect } from 'react'
 import { EthContext } from '../contexts/ProviderContext'
 import { useAnalytics } from '../hooks/useAnalytics'
+import { theme } from '../theme'
 import { PoolProvider } from './Pools'
+import { NavSidebarProvider } from './NavSidebar'
+import { FilterSidebarProvider } from './FilterSidebar'
 
 // todo: update
 // const GlobalStyles = css`
@@ -27,14 +28,18 @@ const Wrapper = ({ children, ...props }) => (
     <ColorModeProvider>
       <EthContext>
         <PoolProvider>
-          {/* <Global styles={GlobalStyles} /> */}
-          <SEO />
-          <ColorModeScript defaultColorMode="light" />
-          <Flex justifyContent="center">
-            <Box width="100%" {...props}>
-              {children}
-            </Box>
-          </Flex>
+          <NavSidebarProvider>
+            <FilterSidebarProvider>
+              {/* <Global styles={GlobalStyles} /> */}
+              <SEO />
+              <ColorModeScript defaultColorMode="light" />
+              <Flex justifyContent="center">
+                <Box width="100%" {...props}>
+                  {children}
+                </Box>
+              </Flex>
+            </FilterSidebarProvider>
+          </NavSidebarProvider>
         </PoolProvider>
       </EthContext>
     </ColorModeProvider>

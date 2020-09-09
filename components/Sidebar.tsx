@@ -34,23 +34,19 @@ import { connectToWeb3, initInfura } from '../hooks/useEthers'
 import ethLogo from '../resources/eth-logo.svg'
 import metamaskLogo from '../resources/metamask-fox.svg'
 import { abbrWallet } from '../utils/utils'
+import { Footer } from './Footer'
 
-export const Sidebar = () => {
+export const Sidebar: React.FC<{ showTitle?: boolean }> = ({
+  showTitle = true,
+  ...props
+}) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { ethApp } = useEthContext()
 
   return (
-    <Box position="sticky" top={0} left={0} height="100vh" p={4} pr={0}>
-      <Card
-        height="100%"
-        m={0}
-        rounded={20}
-        border={0}
-        boxShadow="lg"
-        justifyContent="space-between"
-        alignItems="center"
-      >
-        <Stack>
+    <Stack pt={6.1} justifyContent="space-between" h="100%" {...props}>
+      <Stack>
+        {showTitle && (
           <Heading
             as="h1"
             size="sm"
@@ -62,58 +58,57 @@ export const Sidebar = () => {
               🚜 YIELD FARMING TOOLS
             </Link>
           </Heading>
+        )}
+        <Menu>
+          <MenuButton
+            as={Button}
+            display="flex"
+            justifyContent="space-between"
+            variant="solid"
+            background="white"
+            border="1px solid #dfe8f9"
+            rightIcon={<ChevronDownIcon />}
+          >
+            <Flex alignItems="center">
+              {ethApp?.YOUR_ADDRESS &&
+              ethApp?.YOUR_ADDRESS !== PLACEHOLDER_ADDRESS ? (
+                <>
+                  <Status size="10px" color="green.300" mr={2} />
+                  {abbrWallet(ethApp.YOUR_ADDRESS)}
+                </>
+              ) : (
+                <>
+                  <Status size="10px" color="red.300" mr={2} />
+                  Connect Wallet
+                </>
+              )}
+            </Flex>
+          </MenuButton>
+          <MenuList>
+            <MenuItem onClick={onOpen}>
+              Add a wallet <SmallAddIcon ml={1} />
+            </MenuItem>
+          </MenuList>
+        </Menu>
 
-          <Menu>
-            <MenuButton
-              as={Button}
-              display="flex"
-              justifyContent="space-between"
-              variant="solid"
-              background="white"
-              border="1px solid #dfe8f9"
-              rightIcon={<ChevronDownIcon />}
-            >
-              <Flex alignItems="center">
-                {ethApp?.YOUR_ADDRESS &&
-                ethApp?.YOUR_ADDRESS !== PLACEHOLDER_ADDRESS ? (
-                  <>
-                    <Status size="10px" color="green.300" mr={2} />
-                    {abbrWallet(ethApp.YOUR_ADDRESS)}
-                  </>
-                ) : (
-                  <>
-                    <Status size="10px" color="red.300" mr={2} />
-                    Connect Wallet
-                  </>
-                )}
-              </Flex>
-            </MenuButton>
-            <MenuList>
-              <MenuItem onClick={onOpen}>
-                Add a wallet <SmallAddIcon ml={1} />
-              </MenuItem>
-            </MenuList>
-          </Menu>
-
-          <Stack pt={5}>
-            <SidebarLink link="/" icon={<RiDashboardFill />}>
-              Dashboard
-            </SidebarLink>
-            <SidebarLink link="/pools" icon={<GrStackOverflow />}>
-              Pools
-            </SidebarLink>
-            <SidebarLink link="/resources" icon={<MdLibraryBooks />}>
-              Resources
-            </SidebarLink>
-            <SidebarLink link="/tools" icon={<FaToolbox />}>
-              Tools
-            </SidebarLink>
-          </Stack>
+        <Stack pt={5}>
+          <SidebarLink link="/" icon={<RiDashboardFill />}>
+            Dashboard
+          </SidebarLink>
+          <SidebarLink link="/pools" icon={<GrStackOverflow />}>
+            Pools
+          </SidebarLink>
+          <SidebarLink link="/resources" icon={<MdLibraryBooks />}>
+            Resources
+          </SidebarLink>
+          <SidebarLink link="/tools" icon={<FaToolbox />}>
+            Tools
+          </SidebarLink>
         </Stack>
-        {/* <Footer /> */}
-        <WalletModal isOpen={isOpen} onClose={onClose} />
-      </Card>
-    </Box>
+      </Stack>
+      <Footer />
+      <WalletModal isOpen={isOpen} onClose={onClose} />
+    </Stack>
   )
 }
 
