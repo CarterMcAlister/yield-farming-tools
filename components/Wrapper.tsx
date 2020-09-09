@@ -11,17 +11,10 @@ import { useEffect } from 'react'
 import { EthContext } from '../contexts/ProviderContext'
 import { useAnalytics } from '../hooks/useAnalytics'
 import { theme } from '../theme'
-import { PoolProvider } from './Pools'
-import { NavSidebarProvider } from './NavSidebar'
 import { FilterSidebarProvider } from './FilterSidebar'
-
-// todo: update
-// const GlobalStyles = css`
-//   .js-focus-visible :focus:not([data-focus-visible-added]) {
-//     outline: none;
-//     box-shadow: none;
-//   }
-// `
+import { NavSidebarProvider } from './NavSidebar'
+import { PoolProvider } from './Pools'
+import 'focus-visible/dist/focus-visible'
 
 const Wrapper = ({ children, ...props }) => (
   <ChakraProvider resetCSS theme={theme}>
@@ -30,7 +23,6 @@ const Wrapper = ({ children, ...props }) => (
         <PoolProvider>
           <NavSidebarProvider>
             <FilterSidebarProvider>
-              {/* <Global styles={GlobalStyles} /> */}
               <SEO />
               <ColorModeScript defaultColorMode="light" />
               <Flex justifyContent="center">

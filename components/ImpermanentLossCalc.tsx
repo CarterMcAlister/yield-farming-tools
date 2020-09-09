@@ -42,6 +42,7 @@ export const ImpermanentLossCalculator = () => {
   }
 
   const updatePoolWeights = (newValue, pool) => {
+    console.log(newValue, pool)
     if (pool === 1) {
       setAsset1PoolPercent(newValue)
       setAsset2PoolPercent(100 - newValue)
@@ -82,6 +83,7 @@ export const ImpermanentLossCalculator = () => {
           <SliderInput
             value={asset1PriceChange}
             setValue={setAsset1PriceChange}
+            maxValue={500}
           />
 
           <FormLabel>Pool Weight</FormLabel>
@@ -100,6 +102,7 @@ export const ImpermanentLossCalculator = () => {
           <SliderInput
             value={asset2PriceChange}
             setValue={setAsset2PriceChange}
+            maxValue={500}
           />
 
           <FormLabel>Pool Weight</FormLabel>
@@ -113,16 +116,23 @@ export const ImpermanentLossCalculator = () => {
   )
 }
 
-const SliderInput = ({ value, setValue, sliderColor = 'teal' }) => (
+const SliderInput = ({
+  value,
+  setValue,
+  sliderColor = 'teal',
+  maxValue = 100,
+}) => (
   <Flex>
     <Slider
       flex="1"
       value={value}
       color={sliderColor}
+      max={maxValue}
       onChange={(value) => setValue(value)}
     >
-      <SliderTrack />
-      <SliderFilledTrack />
+      <SliderTrack>
+        <SliderFilledTrack />
+      </SliderTrack>
       <SliderThumb fontSize="sm" width="32px" height="20px" children={value} />
     </Slider>
 
@@ -132,9 +142,10 @@ const SliderInput = ({ value, setValue, sliderColor = 'teal' }) => (
           maxW="100px"
           ml="2rem"
           value={value}
-          max={100}
+          max={maxValue}
           onChange={(event) =>
-            event.target.value <= 100 && setValue(event.target.value)
+            parseInt(event.target.value) <= maxValue &&
+            setValue(event.target.value)
           }
         />
         <InputRightElement children="%" />

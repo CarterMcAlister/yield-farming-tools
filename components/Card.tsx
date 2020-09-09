@@ -5,7 +5,7 @@ export const Card = ({ children, ...props }) => (
     backgroundColor="white"
     rounded="lg"
     borderWidth="1px"
-    borderRadius="lg"
+    borderRadius={18}
     m={4}
     p={4}
     {...props}
