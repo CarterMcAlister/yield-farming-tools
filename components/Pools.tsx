@@ -32,6 +32,7 @@ import { toDollar, toNumber } from '../utils/utils'
 import { Card } from './Card'
 import { useFilterSidebarContext } from './FilterSidebar'
 import { useWalletModalContext } from './Sidebar'
+import { PLACEHOLDER_ADDRESS } from '../data/constants'
 
 const usePools = () => {
   const { ethApp } = useEthContext()
@@ -510,6 +511,7 @@ export const YourPools: React.FC = () => {
   const { getPoolInfo, loadState, pools } = usePoolContext()
   const router = useRouter()
   const { onOpen } = useWalletModalContext()
+  const { ethApp } = useEthContext()
 
   useEffect(() => {
     const filteredPools = pools.filter(
@@ -522,7 +524,11 @@ export const YourPools: React.FC = () => {
 
   const sortByApr = (a, b) => parseFloat(b.apr) - parseFloat(a.apr)
 
-  if (loadState === LoadState.LOADED && yourPools.length <= 0) {
+  if (
+    !ethApp?.YOUR_ADDRESS ||
+    ethApp?.YOUR_ADDRESS === PLACEHOLDER_ADDRESS ||
+    (loadState === LoadState.LOADED && yourPools.length <= 0)
+  ) {
     return (
       <Flex alignItems="center" justifyContent="center" pt={100}>
         <Box>

@@ -82,7 +82,6 @@ export const getStaticProps = async () => {
 }
 
 const prerenderPoolData = async () => {
-  return []
   const ethApp = await initInfuraServer()
   if (ethApp) {
     const fetchedPools = []

@@ -24,7 +24,7 @@ export const Footer = () => (
     >
       Support development
     </Link>
-    <Stack isInline justifyContent="center" spacing={3}>
+    {/* <Stack isInline justifyContent="center" spacing={3}>
       <Link
         href="https://t.me/yield_farming"
         target="_blank"
@@ -46,6 +46,6 @@ export const Footer = () => (
       >
         <FaGithub />
       </Link>
-    </Stack>
+    </Stack> */}
   </Stack>
 )
