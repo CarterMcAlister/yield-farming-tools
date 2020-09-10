@@ -73,9 +73,7 @@ export async function connectToWeb3() {
 export async function initInfura(address?: string) {
   const App: any = {}
 
-  App.provider = new ethers.providers.JsonRpcProvider(
-    'https://mainnet.infura.io/v3/26ad962f630d4a188571cb17d58a84fb'
-  )
+  App.provider = new ethers.providers.InfuraProvider('homestead')
   sleep(10)
 
   App.YOUR_ADDRESS = address || getUrlParameter('addr')
