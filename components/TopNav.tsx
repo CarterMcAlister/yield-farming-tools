@@ -10,7 +10,7 @@ export const TopNav = () => {
   return (
     <Flex as={Card} justifyContent="space-between" alignItems="center">
       <Heading as="h1" size="lg">
-        <Link href="/" style={{ textDecoration: 'none' }}>
+        <Link href="/" sx={{ textDecoration: 'none' }}>
           🚜 Yield Farming Tools
         </Link>
       </Heading>
