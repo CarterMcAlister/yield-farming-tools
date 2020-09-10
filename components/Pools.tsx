@@ -25,7 +25,6 @@ import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
 import CountUp from 'react-countup'
 import { useEthContext } from '../contexts/ProviderContext'
-import pools from '../pages/pools'
 import { LoadState, RiskLevel } from '../types'
 import { getPools } from '../utils/pool-data'
 import { toDollar, toNumber } from '../utils/utils'
@@ -126,7 +125,13 @@ export const [PoolProvider, usePoolContext] = constate(usePools)
 export const PoolSection: React.FC<{ prefetchedPools: any }> = ({
   prefetchedPools,
 }) => {
-  const { setPools, filteredPools, loadState, getPoolInfo } = usePoolContext()
+  const {
+    pools,
+    setPools,
+    filteredPools,
+    loadState,
+    getPoolInfo,
+  } = usePoolContext()
   const { onOpen } = useFilterSidebarContext()
 
   const sortByApr = (a, b) => parseFloat(b.apr) - parseFloat(a.apr)
