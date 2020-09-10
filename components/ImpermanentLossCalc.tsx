@@ -42,7 +42,6 @@ export const ImpermanentLossCalculator = () => {
   }
 
   const updatePoolWeights = (newValue, pool) => {
-    console.log(newValue, pool)
     if (pool === 1) {
       setAsset1PoolPercent(newValue)
       setAsset2PoolPercent(100 - newValue)
@@ -66,53 +65,58 @@ export const ImpermanentLossCalculator = () => {
   }, [debouncedImpermanentLoss])
 
   return (
-    <Card boxShadow="sm" mx={0} width="100%" maxW={600}>
-      <Heading size="md" fontWeight="normal" pb={3}>
-        Impermanent Loss:{' '}
-        <Text fontWeight="medium" display="inline">
-          {displayedImpermanentLoss}%
-        </Text>
-      </Heading>
-      <Flex direction="column">
-        <Box>
-          <Heading size="sm" pb={2}>
-            Asset 1
-          </Heading>
+    <Box w="100%" pl={20}>
+      <Text color="gray.600" fontWeight="bold" pt="1rem" pl={1}>
+        Impermanent Loss Estimator
+      </Text>
+      <Card boxShadow="sm" mx={0} width="100%" maxW={600}>
+        <Heading size="md" fontWeight="normal" pb={3}>
+          Impermanent Loss:{' '}
+          <Text fontWeight="medium" display="inline">
+            {displayedImpermanentLoss}%
+          </Text>
+        </Heading>
+        <Flex direction="column">
+          <Box>
+            <Heading size="sm" pb={2}>
+              Asset 1
+            </Heading>
 
-          <FormLabel>Price Change</FormLabel>
-          <SliderInput
-            value={asset1PriceChange}
-            setValue={setAsset1PriceChange}
-            maxValue={500}
-          />
+            <FormLabel>Price Change</FormLabel>
+            <SliderInput
+              value={asset1PriceChange}
+              setValue={setAsset1PriceChange}
+              maxValue={500}
+            />
 
-          <FormLabel>Pool Weight</FormLabel>
-          <SliderInput
-            value={asset1PoolPercent}
-            setValue={(value) => updatePoolWeights(value, 1)}
-          />
-        </Box>
-        <Divider my={6} />
-        <Box>
-          <Heading size="sm" pb={4}>
-            Asset 2
-          </Heading>
+            <FormLabel>Pool Weight</FormLabel>
+            <SliderInput
+              value={asset1PoolPercent}
+              setValue={(value) => updatePoolWeights(value, 1)}
+            />
+          </Box>
+          <Divider my={6} />
+          <Box>
+            <Heading size="sm" pb={4}>
+              Asset 2
+            </Heading>
 
-          <FormLabel>Price Change</FormLabel>
-          <SliderInput
-            value={asset2PriceChange}
-            setValue={setAsset2PriceChange}
-            maxValue={500}
-          />
+            <FormLabel>Price Change</FormLabel>
+            <SliderInput
+              value={asset2PriceChange}
+              setValue={setAsset2PriceChange}
+              maxValue={500}
+            />
 
-          <FormLabel>Pool Weight</FormLabel>
-          <SliderInput
-            value={asset2PoolPercent}
-            setValue={(value) => updatePoolWeights(value, 2)}
-          />
-        </Box>
-      </Flex>
-    </Card>
+            <FormLabel>Pool Weight</FormLabel>
+            <SliderInput
+              value={asset2PoolPercent}
+              setValue={(value) => updatePoolWeights(value, 2)}
+            />
+          </Box>
+        </Flex>
+      </Card>
+    </Box>
   )
 }
 
@@ -122,7 +126,7 @@ const SliderInput = ({
   sliderColor = 'teal',
   maxValue = 100,
 }) => (
-  <Flex>
+  <Flex pb={4}>
     <Slider
       flex="1"
       value={value}
@@ -136,7 +140,7 @@ const SliderInput = ({
       <SliderThumb fontSize="sm" width="32px" height="20px" children={value} />
     </Slider>
 
-    <NumberInput>
+    {/* <NumberInput>
       <InputGroup>
         <NumberInputField
           maxW="100px"
@@ -150,6 +154,6 @@ const SliderInput = ({
         />
         <InputRightElement children="%" />
       </InputGroup>
-    </NumberInput>
+    </NumberInput> */}
   </Flex>
 )

@@ -12,6 +12,7 @@ import {
   SimpleGrid,
   Skeleton,
   Spinner,
+  Stack,
   Stat,
   StatHelpText,
   StatNumber,
@@ -20,9 +21,9 @@ import {
 } from '@chakra-ui/core'
 import { ChevronDownIcon, ChevronUpIcon, RepeatIcon } from '@chakra-ui/icons'
 import constate from 'constate'
+import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
 import CountUp from 'react-countup'
-import { FiFilter } from 'react-icons/fi'
 import { useEthContext } from '../contexts/ProviderContext'
 import pools from '../pages/pools'
 import { LoadState, RiskLevel } from '../types'
@@ -30,6 +31,7 @@ import { getPools } from '../utils/pool-data'
 import { toDollar, toNumber } from '../utils/utils'
 import { Card } from './Card'
 import { useFilterSidebarContext } from './FilterSidebar'
+import { useWalletModalContext } from './Sidebar'
 
 const usePools = () => {
   const { ethApp } = useEthContext()
@@ -49,7 +51,6 @@ const usePools = () => {
 
   const getPoolInfo = async () => {
     if (ethApp && typeof window !== 'undefined') {
-      console.log('gpi')
       setLoadState(LoadState.LOADING)
 
       const fetchedPools = []
@@ -131,7 +132,6 @@ export const PoolSection: React.FC<{ prefetchedPools: any }> = ({
 
   useEffect(() => {
     if (pools.length === 0) {
-      console.log('prefetchedPools')
       setPools(prefetchedPools)
     }
   }, [prefetchedPools])
@@ -508,75 +508,114 @@ export const EarningsSection = ({ ...props }) => {
 export const YourPools: React.FC = () => {
   const [yourPools, setYourPools] = useState([])
   const { getPoolInfo, loadState, pools } = usePoolContext()
+  const router = useRouter()
+  const { onOpen } = useWalletModalContext()
 
   useEffect(() => {
     const filteredPools = pools.filter(
       (item) =>
-        toNumber(item?.staking[1]?.value) > 0 ||
-        (item?.rewards?.length > 0 && toNumber(item?.rewards[0]?.value) > 0)
+        toNumber(item?.staking[1]?.value) > 5 ||
+        (item?.rewards?.length > 0 && toNumber(item?.rewards[0]?.value) > 10)
     )
-    console.log(filteredPools)
     setYourPools(filteredPools)
   }, [pools])
 
   const sortByApr = (a, b) => parseFloat(b.apr) - parseFloat(a.apr)
 
+  if (loadState === LoadState.LOADED && yourPools.length <= 0) {
+    return (
+      <Flex alignItems="center" justifyContent="center" pt={100}>
+        <Box>
+          <Text as="h2" fontSize="2xl" fontWeight="medium" pb={2}>
+            Connect an Ethereum wallet to see your yield farming dashboard.
+          </Text>
+          <Text as="h3" fontSize="xl" color="gray.600" fontWeight="medium">
+            Or view pools to find the best opportunities.
+          </Text>
+          <Stack isInline spacing={3} pt={6}>
+            <Button colorScheme="teal" onClick={onOpen}>
+              Connect Wallet
+            </Button>
+            <Text d="flex" alignItems="center">
+              or
+            </Text>
+            <Button
+              variant="outline"
+              onClick={(e) => {
+                e.preventDefault()
+                router.push('/pools')
+              }}
+            >
+              View pools
+            </Button>
+          </Stack>
+        </Box>
+      </Flex>
+    )
+  }
   return yourPools.length > 0 ? (
-    <Box pt={{ xs: 1, lg: 4 }}>
-      <Grid
-        templateColumns={['1.5fr 1fr 1.2fr 0.2fr', '1fr 1.5fr 1.3fr 1fr 0.2fr']}
-        marginX="2rem"
-        marginBottom="0.3rem"
-      >
-        <Text
-          d={{ xs: 'none', md: 'flex' }}
-          color="gray.600"
-          fontWeight="bold"
-          alignItems="center"
+    <Box>
+      <EarningsSection />
+
+      <Box pt={{ xs: 1, lg: 4 }}>
+        <Grid
+          templateColumns={[
+            '1.5fr 1fr 1.2fr 0.2fr',
+            '1fr 1.5fr 1.3fr 1fr 0.2fr',
+          ]}
+          marginX="2rem"
+          marginBottom="0.3rem"
         >
-          Provider
-        </Text>
-        <Text
-          color="gray.600"
-          fontWeight="bold"
-          display="flex"
-          alignItems="center"
-        >
-          Pool
-        </Text>
-        <Text
-          color="gray.600"
-          fontWeight="bold"
-          display="flex"
-          alignItems="center"
-        >
-          Rewards
-        </Text>
-        <Text
-          color="gray.600"
-          fontWeight="bold"
-          display="flex"
-          alignItems="center"
-        >
-          APR
-        </Text>
-        <IconButton
-          isLoading={loadState === LoadState.LOADING}
-          onClick={getPoolInfo}
-          aria-label="refresh"
-          title="Refresh Pools"
-          icon={<RepeatIcon />}
-          variant="ghost"
-          justifySelf="end"
-          isRound={true}
-        />
-      </Grid>
-      <Box mx="1rem">
-        <Flex direction="column" justifyContent="center">
-          {yourPools?.sort(sortByApr)?.map((poolItemData, index) => (
-            <PoolItem key={index} poolItemData={poolItemData} />
-          ))}
-        </Flex>
+          <Text
+            d={{ xs: 'none', md: 'flex' }}
+            color="gray.600"
+            fontWeight="bold"
+            alignItems="center"
+          >
+            Provider
+          </Text>
+          <Text
+            color="gray.600"
+            fontWeight="bold"
+            display="flex"
+            alignItems="center"
+          >
+            Pool
+          </Text>
+          <Text
+            color="gray.600"
+            fontWeight="bold"
+            display="flex"
+            alignItems="center"
+          >
+            Rewards
+          </Text>
+          <Text
+            color="gray.600"
+            fontWeight="bold"
+            display="flex"
+            alignItems="center"
+          >
+            APR
+          </Text>
+          <IconButton
+            isLoading={loadState === LoadState.LOADING}
+            onClick={getPoolInfo}
+            aria-label="refresh"
+            title="Refresh Pools"
+            icon={<RepeatIcon />}
+            variant="ghost"
+            justifySelf="end"
+            isRound={true}
+          />
+        </Grid>
+        <Box mx="1rem">
+          <Flex direction="column" justifyContent="center">
+            {yourPools?.sort(sortByApr)?.map((poolItemData, index) => (
+              <PoolItem key={index} poolItemData={poolItemData} />
+            ))}
+          </Flex>
+        </Box>
       </Box>
     </Box>
   ) : (

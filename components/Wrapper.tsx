@@ -15,6 +15,7 @@ import { FilterSidebarProvider } from './FilterSidebar'
 import { NavSidebarProvider } from './NavSidebar'
 import { PoolProvider } from './Pools'
 import 'focus-visible/dist/focus-visible'
+import { WalletModalProvider } from './Sidebar'
 
 const Wrapper = ({ children, ...props }) => (
   <ChakraProvider resetCSS theme={theme}>
@@ -23,13 +24,15 @@ const Wrapper = ({ children, ...props }) => (
         <PoolProvider>
           <NavSidebarProvider>
             <FilterSidebarProvider>
-              <SEO />
-              <ColorModeScript defaultColorMode="light" />
-              <Flex justifyContent="center">
-                <Box width="100%" {...props}>
-                  {children}
-                </Box>
-              </Flex>
+              <WalletModalProvider>
+                <SEO />
+                <ColorModeScript defaultColorMode="light" />
+                <Flex justifyContent="center">
+                  <Box width="100%" {...props}>
+                    {children}
+                  </Box>
+                </Flex>
+              </WalletModalProvider>
             </FilterSidebarProvider>
           </NavSidebarProvider>
         </PoolProvider>

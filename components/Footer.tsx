@@ -1,7 +1,7 @@
-import { Box, Link, Stack, Text } from '@chakra-ui/core'
-import { FaTelegramPlane, FaTwitter, FaGithub } from 'react-icons/fa'
+import { Link, Stack, Text } from '@chakra-ui/core'
+import { FaGithub, FaTelegramPlane, FaTwitter } from 'react-icons/fa'
 export const Footer = () => (
-  <Stack spacing={2} py={4}>
+  <Stack spacing={2} py={4} alignItems="flex-start" pl="15px">
     <Link
       href="https://carterm126.typeform.com/to/lrvZbH3E"
       target="_blank"

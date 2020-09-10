@@ -35,12 +35,13 @@ import ethLogo from '../resources/eth-logo.svg'
 import metamaskLogo from '../resources/metamask-fox.svg'
 import { abbrWallet } from '../utils/utils'
 import { Footer } from './Footer'
+import constate from 'constate'
 
 export const Sidebar: React.FC<{ showTitle?: boolean }> = ({
   showTitle = true,
   ...props
 }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { onOpen } = useWalletModalContext()
   const { ethApp } = useEthContext()
 
   return (
@@ -86,7 +87,7 @@ export const Sidebar: React.FC<{ showTitle?: boolean }> = ({
           </MenuButton>
           <MenuList>
             <MenuItem onClick={onOpen}>
-              Add a wallet <SmallAddIcon ml={1} />
+              Connect Wallet <SmallAddIcon ml={1} />
             </MenuItem>
           </MenuList>
         </Menu>
@@ -107,7 +108,7 @@ export const Sidebar: React.FC<{ showTitle?: boolean }> = ({
         </Stack>
       </Stack>
       <Footer />
-      <WalletModal isOpen={isOpen} onClose={onClose} />
+      <WalletModal />
     </Stack>
   )
 }
@@ -142,8 +143,19 @@ const SidebarLink: React.FC<{ link: string; icon: any }> = ({
   )
 }
 
-const WalletModal = ({ isOpen, onClose }) => {
+const useWalletModal = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  return { isOpen, onOpen, onClose }
+}
+
+export const [WalletModalProvider, useWalletModalContext] = constate(
+  useWalletModal
+)
+
+const WalletModal = () => {
   const toast = useToast()
+  const { isOpen, onClose } = useWalletModalContext()
+
   const [ethAddress, setEthAddress] = useState('')
   const { setEthApp } = useEthContext()
 
