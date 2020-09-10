@@ -56,7 +56,7 @@ export const Sidebar: React.FC<{ showTitle?: boolean } & BoxProps> = ({
             display="flex"
             justifyContent="center"
           >
-            <Link href="/" style={{ textDecoration: 'none' }}>
+            <Link href="/" sx={{ textDecoration: 'none' }}>
               🚜 YIELD FARMING TOOLS
             </Link>
           </Heading>
