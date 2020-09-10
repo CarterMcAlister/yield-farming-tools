@@ -18,6 +18,7 @@ import {
   Stack,
   useDisclosure,
   useToast,
+  BoxProps,
 } from '@chakra-ui/core'
 import { CheckIcon, ChevronDownIcon, SmallAddIcon } from '@chakra-ui/icons'
 import Link from 'next/link'
@@ -37,7 +38,7 @@ import { abbrWallet } from '../utils/utils'
 import { Footer } from './Footer'
 import constate from 'constate'
 
-export const Sidebar: React.FC<{ showTitle?: boolean }> = ({
+export const Sidebar: React.FC<{ showTitle?: boolean } & BoxProps> = ({
   showTitle = true,
   ...props
 }) => {
