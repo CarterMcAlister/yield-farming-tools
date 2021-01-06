@@ -10,7 +10,7 @@
   "dependencies": {
     "@chakra-ui/core": "next",
     "@chakra-ui/icons": "^1.0.0-rc.3",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "constate": "^2.0.0",
     "emotion": "^10.0.27",
     "ethers": "^5.0.7",
